@@ -1,0 +1,198 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--gold:#c9a84c;--gold-b:rgba(201,168,76,0.3);--navy:#0a1628;--n3:#111e35;--n4:#0d1c35;--bm:#1e3054;--tm:#8fa0c0;--td:#4a6080}
+  body{background:var(--navy);font-family:'Montserrat',Arial,sans-serif;color:#e8dfc4;min-height:600px}
+  .page{max-width:820px;margin:0 auto;padding:48px 32px 60px}
+  .back{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--td);text-decoration:none;margin-bottom:36px;transition:color 0.2s}
+  .back:hover{color:var(--gold)}
+  .back svg{width:14px;height:14px}
+  .brand{font-size:9px;font-weight:700;letter-spacing:5px;color:var(--gold);text-align:center;margin-bottom:6px}
+  .dot{text-align:center;color:var(--gold);font-size:11px;margin:2px 0 6px}
+  .title{text-align:center;font-size:clamp(20px,4vw,28px);font-weight:900;color:#fff;letter-spacing:1.5px;margin-bottom:4px}
+  .title span{color:var(--gold)}
+  .dv{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 16px}
+  .dl{width:60px;height:0.5px;background:var(--gold-b)}
+  .dd{width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+  .dbadge{display:flex;justify-content:center;margin-bottom:36px}
+  .dbadge span{border:1.5px solid var(--gold);border-radius:20px;padding:5px 20px;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold)}
+  .timeline{display:flex;flex-direction:column;gap:0}
+
+  /* neutral rows */
+  .row{display:grid;grid-template-columns:110px 1fr 130px;align-items:center;gap:0;padding:14px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
+  .row-time{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;padding-right:16px}
+  .row-act{font-size:12px;font-weight:700;color:#f0f4ff;letter-spacing:0.3px}
+  .row-sub{font-size:10px;font-weight:400;color:var(--tm);margin-top:2px}
+  .row-resp{text-align:right;font-size:11px;font-weight:600;color:var(--td);letter-spacing:0.5px}
+
+  /* highlighted block */
+  .block{position:relative;margin:6px 0;border-radius:7px;overflow:hidden}
+  .block::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+  .block-inner{background:var(--n3);padding:16px 18px 16px 22px}
+  .block-row{display:grid;grid-template-columns:110px 1fr 130px;align-items:center;gap:0}
+  .block-time{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px}
+  .block-act{font-size:13px;font-weight:800;color:#fff;letter-spacing:0.5px}
+  .block-resp{text-align:right;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.5px}
+  .block-topics{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--bm);display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:4px 16px}
+  .bt{font-size:10px;color:var(--tm);display:flex;align-items:flex-start;gap:5px;line-height:1.4;padding:2px 0}
+  .bt::before{content:'';width:3px;height:3px;border-radius:50%;background:rgba(201,168,76,0.5);margin-top:5px;flex-shrink:0}
+
+  /* RH main block */
+  .block-rh .block-inner{background:#0f1c32;border:0.5px solid rgba(201,168,76,0.25)}
+  .block-rh .block-inner::after{content:'BLOCO PRINCIPAL';position:absolute;top:14px;right:14px;font-size:7px;font-weight:700;letter-spacing:2px;background:var(--gold);color:var(--navy);padding:3px 8px;border-radius:10px}
+
+  /* divider rows */
+  .sep{display:grid;grid-template-columns:110px 1fr 130px;align-items:center;gap:0;padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.04);opacity:0.5}
+  .sep .row-time{color:var(--td)}
+  .sep .row-act{font-size:11px;font-weight:600;color:var(--td)}
+
+  /* encerramento */
+  .block-enc .block-inner{background:rgba(201,168,76,0.07);border:0.5px solid rgba(201,168,76,0.2)}
+
+  .hdr-row{display:grid;grid-template-columns:110px 1fr 130px;gap:0;padding:0 0 10px;border-bottom:0.5px solid rgba(201,168,76,0.3);margin-bottom:4px}
+  .hdr-row span{font-size:8px;font-weight:700;letter-spacing:3px;color:rgba(201,168,76,0.5)}
+  .hdr-row span:last-child{text-align:right}
+
+  .ft{text-align:center;margin-top:48px;padding-top:20px;border-top:0.5px solid var(--bm)}
+  .ft p{font-size:9px;color:var(--td);letter-spacing:2px}
+</style>
+
+<div class="page">
+  <a href="index.html" class="back">
+    <svg viewBox="0 0 14 14" fill="none"><path d="M9 12L4 7l5-5" stroke="#4a6080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    VOLTAR AO INÍCIO
+  </a>
+
+  <div class="brand">MAXIMIANO ADVOGADOS</div>
+  <div class="dot">•</div>
+  <h1 class="title">REUNIÃO ESTRATÉGICA<br><span>DE LÍDERES</span></h1>
+  <div class="dv"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
+  <div class="dbadge"><span>SEXTA-FEIRA — 08 DE MAIO DE 2026</span></div>
+
+  <div class="timeline">
+    <div class="hdr-row">
+      <span>HORÁRIO</span><span>ATIVIDADE</span><span>RESPONSÁVEL</span>
+    </div>
+
+    <div class="row sep">
+      <div class="row-time">13H00</div>
+      <div><div class="row-act">Recepção & Credenciamento</div></div>
+      <div class="row-resp">—</div>
+    </div>
+
+    <div class="block">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">13H20</div>
+          <div class="block-act">Abertura Oficial</div>
+          <div class="block-resp">Jean Barbosa</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">13H30</div>
+          <div class="block-act">Comercial</div>
+          <div class="block-resp">Geovani</div>
+        </div>
+        <div class="block-topics">
+          <div class="bt">Metas e resultados jan–abr</div>
+          <div class="bt">Programa Indico Ganhou</div>
+          <div class="bt">Roleta Comercial & Kit Embaixador</div>
+          <div class="bt">Agenda de visitas nas unidades</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">14H00</div>
+          <div class="block-act">Marketing</div>
+          <div class="block-resp">Débora</div>
+        </div>
+        <div class="block-topics">
+          <div class="bt">Tráfego pago e redes sociais</div>
+          <div class="bt">Projeto MAXDRIVE</div>
+          <div class="bt">Próximos conteúdos e gravações</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">14H30</div>
+          <div class="block-act">Financeiro</div>
+          <div class="block-resp">Glauco</div>
+        </div>
+        <div class="block-topics">
+          <div class="bt">Faturamento das unidades — 1º tri</div>
+          <div class="bt">Implantação do sistema Omie</div>
+          <div class="bt">Metas de faturamento 2º semestre</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row sep">
+      <div class="row-time">14H50</div>
+      <div><div class="row-act">Intervalo & Café</div></div>
+      <div class="row-resp">—</div>
+    </div>
+
+    <div class="block">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">15H05</div>
+          <div class="block-act">TI</div>
+          <div class="block-resp">Rodrigo & Jean</div>
+        </div>
+        <div class="block-topics">
+          <div class="bt">Estruturação e status do sistema</div>
+          <div class="bt">Novos projetos e prazos</div>
+          <div class="bt">Suporte às unidades</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block block-rh" style="position:relative">
+      <div class="block-inner" style="position:relative">
+        <div class="block-row">
+          <div class="block-time">15H20</div>
+          <div class="block-act">RH</div>
+          <div class="block-resp" style="padding-right:90px">Elisa</div>
+        </div>
+        <div class="block-topics">
+          <div class="bt">Novo organograma</div>
+          <div class="bt">Pesquisa de satisfação</div>
+          <div class="bt">PDI — Plano de Desenvolvimento</div>
+          <div class="bt">Espaço aberto aos líderes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block block-enc">
+      <div class="block-inner">
+        <div class="block-row">
+          <div class="block-time">16H40</div>
+          <div class="block-act">Encerramento</div>
+          <div class="block-resp">Jean Barbosa</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row sep">
+      <div class="row-time">17H00</div>
+      <div><div class="row-act">Saída</div></div>
+      <div class="row-resp">—</div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <p>© MAXIMIANO ADVOGADOS · 2026</p>
+    <p style="margin-top:5px">Pontualidade e comprometimento fazem parte da nossa cultura.</p>
+  </div>
+</div>
