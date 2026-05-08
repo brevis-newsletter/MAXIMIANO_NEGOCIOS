@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Guia BARS — Maximiano Advogados 2026</title>
+<style>
+:root{
+  --dk:#06101E;--nv:#0D1B3E;--nv2:#112252;--nv3:#1A3060;
+  --gd:#F5A623;--gd2:#FFD080;--gd3:rgba(245,166,35,.12);
+  --wh:#FFFFFF;--muted:#7A8FB5;--card:#0F1F45;
+  --border:rgba(245,166,35,.18);--border2:rgba(255,255,255,.07);
+  --green2:#5FCF8A;--red2:#FF7070;--amber2:#FFB84A;--r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2.5rem;background:rgba(6,16,30,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:.12em;color:var(--green2);text-transform:uppercase}
+.nav-brand span{color:rgba(255,255,255,.35);margin:0 .4rem}
+.nav-back{display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.4rem .9rem;border:1px solid var(--border2);border-radius:6px;transition:all .2s}
+.nav-back:hover{color:var(--green2);border-color:rgba(95,207,138,.3)}
+
+/* HERO */
+#hero{min-height:55vh;display:flex;align-items:center;padding-top:60px;background:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(30,122,66,.25),transparent 65%),radial-gradient(ellipse 30% 30% at 85% 70%,rgba(95,207,138,.08),transparent 60%),var(--dk);position:relative;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(95,207,138,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(95,207,138,.035) 1px,transparent 1px);background-size:60px 60px}
+.hero-inner{max-width:1100px;margin:0 auto;padding:4rem 2rem;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(95,207,138,.1);border:1px solid rgba(95,207,138,.3);border-radius:20px;padding:.35rem 1rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green2);margin-bottom:1.5rem;font-weight:700}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hero-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(2.8rem,5.5vw,4.5rem);line-height:.95;color:var(--wh)}
+.hero-title em{color:var(--green2);font-style:normal}
+.hero-sub{margin-top:1.25rem;font-size:.95rem;font-weight:300;color:rgba(255,255,255,.6);max-width:580px;line-height:1.7}
+.hero-why{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem;max-width:680px}
+@media(max-width:600px){.hero-why{grid-template-columns:1fr}}
+.why-card{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:1rem 1.25rem}
+.why-label{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem}
+.wl-bad{color:var(--red2)}.wl-good{color:var(--green2)}
+.why-text{font-size:.8rem;color:rgba(255,255,255,.7);line-height:1.5}
+
+/* SECTIONS */
+section{position:relative;padding:5rem 0}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.sec-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green2);font-weight:700;margin-bottom:.75rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::before{content:'';width:20px;height:2px;background:var(--green2);border-radius:1px}
+.sec-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1}
+.sec-title em{color:var(--green2);font-style:normal}
+.sec-body{margin-top:.75rem;color:rgba(255,255,255,.55);max-width:620px;font-size:.92rem;line-height:1.75}
+
+/* COMO USAR */
+#s-como{background:var(--nv)}
+.como-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem}
+.como-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.5rem;border-top:2px solid var(--green2)}
+.cc-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2rem;color:rgba(95,207,138,.3);line-height:1;margin-bottom:.5rem}
+.cc-title{font-size:.85rem;font-weight:700;color:var(--wh);margin-bottom:.4rem}
+.cc-text{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.55}
+
+/* LEGENDA NOTAS */
+.notas-strip{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem}
+.nota-item{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:20px;padding:.4rem .9rem}
+.ni-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1rem}
+.ni-label{font-size:.72rem;color:rgba(255,255,255,.65)}
+.n1c{color:var(--red2)}.n2c{color:var(--amber2)}.n3c{color:var(--gd)}.n4c{color:var(--green2)}.n5c{color:#FFD700}
+
+/* INDICADORES ACCORDION */
+#s-indicadores{background:var(--dk)}
+.ind-list{display:flex;flex-direction:column;gap:.75rem;margin-top:2rem}
+.ind-item{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
+.ind-item.open{border-color:rgba(95,207,138,.3)}
+.ind-trigger{display:flex;align-items:center;gap:1.25rem;padding:1.4rem 1.75rem;cursor:pointer;user-select:none;transition:background .15s}
+.ind-trigger:hover{background:rgba(255,255,255,.03)}
+.ind-num{width:36px;height:36px;border-radius:50%;background:rgba(95,207,138,.1);border:1px solid rgba(95,207,138,.25);display:flex;align-items:center;justify-content:center;font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:.95rem;color:var(--green2);flex-shrink:0}
+.ind-item.open .ind-num{background:rgba(95,207,138,.2);border-color:rgba(95,207,138,.5)}
+.ind-trigger-text{flex:1}
+.ind-name{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.2rem;color:var(--wh)}
+.ind-tagline{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+.ind-arrow{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:transform .3s,background .2s;flex-shrink:0}
+.ind-item.open .ind-arrow{transform:rotate(180deg);background:rgba(95,207,138,.1);border-color:rgba(95,207,138,.3)}
+.ind-body{display:none;padding:0 1.75rem 1.75rem}
+.ind-item.open .ind-body{display:block}
+
+/* Content inside accordion */
+.ind-why{background:rgba(255,255,255,.03);border-left:2px solid rgba(95,207,138,.35);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin-bottom:1.5rem}
+.ind-why-label{font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green2);margin-bottom:.4rem}
+.ind-why-text{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.6}
+
+.ind-metrics{margin-bottom:1.5rem}
+.ind-metrics-label{font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.metrics-list{display:flex;flex-direction:column;gap:.3rem}
+.metric-item{display:flex;align-items:flex-start;gap:.6rem;font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.4}
+.metric-dot{width:4px;height:4px;border-radius:50%;background:rgba(95,207,138,.5);margin-top:.5rem;flex-shrink:0}
+
+/* BARS scale */
+.bars-scale{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.bars-label{font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.bars-nota{border-radius:8px;overflow:hidden;border:1px solid}
+.bn1{border-color:rgba(255,112,112,.2);background:rgba(255,112,112,.04)}
+.bn2{border-color:rgba(255,184,74,.2);background:rgba(255,184,74,.04)}
+.bn3{border-color:rgba(245,166,35,.2);background:rgba(245,166,35,.04)}
+.bn4{border-color:rgba(95,207,138,.2);background:rgba(95,207,138,.04)}
+.bn5{border-color:rgba(255,215,0,.2);background:rgba(255,215,0,.04)}
+.bars-nota-head{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;cursor:pointer;user-select:none}
+.bars-nota-head:hover{background:rgba(255,255,255,.03)}
+.bn-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.1rem;width:24px;text-align:center;flex-shrink:0}
+.bn1 .bn-num{color:var(--red2)}.bn2 .bn-num{color:var(--amber2)}.bn3 .bn-num{color:var(--gd)}.bn4 .bn-num{color:var(--green2)}.bn5 .bn-num{color:#FFD700}
+.bn-class{font-size:.75rem;font-weight:700;flex:1}
+.bn1 .bn-class{color:var(--red2)}.bn2 .bn-class{color:var(--amber2)}.bn3 .bn-class{color:var(--gd)}.bn4 .bn-class{color:var(--green2)}.bn5 .bn-class{color:#FFD700}
+.bn-chevron{font-size:.65rem;color:var(--muted);transition:transform .2s}
+.bars-nota.bopen .bn-chevron{transform:rotate(180deg)}
+.bars-nota-body{display:none;padding:.5rem 1rem 1rem 1rem;border-top:1px solid rgba(255,255,255,.05)}
+.bars-nota.bopen .bars-nota-body{display:block}
+.bars-behavior{display:flex;align-items:flex-start;gap:.6rem;font-size:.78rem;color:rgba(255,255,255,.7);margin-bottom:.4rem;line-height:1.45}
+.bars-behavior::before{content:'•';color:rgba(95,207,138,.4);flex-shrink:0;margin-top:.05rem}
+
+/* Exemplo calibração */
+.calib-box{background:rgba(26,48,96,.4);border:1px solid var(--border2);border-radius:8px;padding:1.25rem;margin-top:1.5rem}
+.calib-label{font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.calib-item{margin-bottom:1rem}
+.calib-item:last-child{margin-bottom:0}
+.calib-nota-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:20px;margin-bottom:.4rem}
+.cb-n2{background:rgba(255,184,74,.12);color:var(--amber2);border:0.5px solid rgba(255,184,74,.25)}
+.cb-n4{background:rgba(95,207,138,.12);color:var(--green2);border:0.5px solid rgba(95,207,138,.3)}
+.calib-text{font-size:.8rem;color:rgba(255,255,255,.7);line-height:1.55}
+
+/* RITUAIS */
+#s-rituais{background:var(--nv)}
+.rituais-table{width:100%;border-collapse:collapse;margin-top:2rem}
+.rituais-table th{background:rgba(13,27,62,.8);color:var(--green2);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 1.25rem;text-align:left;font-weight:700;border-bottom:1px solid var(--border)}
+.rituais-table td{padding:.85rem 1.25rem;font-size:.83rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+.rituais-table tr:hover td{background:rgba(95,207,138,.02)}
+.freq-badge{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .65rem;border-radius:20px;white-space:nowrap}
+.fb-weekly{background:rgba(245,166,35,.12);color:var(--gd);border:0.5px solid rgba(245,166,35,.25)}
+.fb-monthly{background:rgba(74,144,217,.12);color:#4A90D9;border:0.5px solid rgba(74,144,217,.25)}
+.fb-quarterly{background:rgba(95,207,138,.12);color:var(--green2);border:0.5px solid rgba(95,207,138,.3)}
+.fb-annual{background:rgba(255,112,112,.1);color:var(--red2);border:0.5px solid rgba(255,112,112,.2)}
+
+/* RH section */
+.rh-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.5rem}
+.rh-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:1.25rem}
+.rh-card-title{font-size:.75rem;font-weight:700;color:var(--green2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.rh-card-text{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.55}
+
+/* REGRA DE OURO */
+.regra-ouro{background:linear-gradient(135deg,rgba(95,207,138,.08),rgba(13,27,62,.9));border:1px solid rgba(95,207,138,.25);border-radius:var(--r);padding:2rem;text-align:center;margin-top:2.5rem}
+.ro-icon{font-size:2rem;margin-bottom:.75rem}
+.ro-text{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.3rem;color:var(--wh);line-height:1.3;max-width:700px;margin:0 auto .75rem}
+.ro-text em{color:var(--green2);font-style:normal}
+.ro-sub{font-size:.82rem;color:rgba(255,255,255,.55);max-width:560px;margin:0 auto;line-height:1.6}
+
+/* DISTRIBUIÇÃO */
+.dist-cards{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
+.dist-card{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:.75rem 1rem;flex:1;min-width:130px;text-align:center}
+.dc-nota{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.8rem;line-height:1}
+.dc-label{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+.dc-freq{font-size:.7rem;font-weight:600;margin-top:.3rem}
+
+/* ANIMATIONS */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .65s,transform .65s}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border2)}
+footer p{font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">MAXIMIANO<span>|</span>BARS 2026</div>
+  <a href="rh.html" class="nav-back">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 10L4 6l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    Voltar ao RH
+  </a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge rv"><span class="badge-dot"></span>RH — Elisa Sementile · Ciclo 2026</div>
+    <h1 class="hero-title rv" style="transition-delay:.1s">GUIA DE AVALIAÇÃO<br><em>COMPORTAMENTAL</em></h1>
+    <p class="hero-sub rv" style="transition-delay:.2s">Escalas BARS — Behaviorally Anchored Rating Scales. 5 indicadores comportamentais com descrições concretas para cada nota. Nenhuma avaliação baseada em percepção.</p>
+
+    <div class="hero-why rv" style="transition-delay:.3s">
+      <div class="why-card">
+        <div class="why-label wl-bad">Sem BARS — o problema</div>
+        <div class="why-text">Cada líder interpreta "comunicação 3" de forma diferente. Resultado: injustiça percebida, contestação e perda de credibilidade do processo.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-label wl-good">Com BARS — a solução</div>
+        <div class="why-text">Cada nota está ancorada em comportamentos concretos e observáveis. A avaliação é baseada no que foi visto, não no que foi sentido.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMO USAR -->
+<section id="s-como">
+  <div class="container">
+    <div class="rv">
+      <div class="sec-label">ANTES DE COMEÇAR</div>
+      <h2 class="sec-title">COMO <em>USAR NA PRÁTICA</em></h2>
+    </div>
+    <div class="como-grid rv" style="transition-delay:.1s">
+      <div class="como-card">
+        <div class="cc-num">01</div>
+        <div class="cc-title">Cite pelo menos 1 evidência</div>
+        <div class="cc-text">Antes de dar uma nota, o avaliador deve ser capaz de citar pelo menos 1 situação concreta observada no período. Sem evidência, a nota não é válida.</div>
+      </div>
+      <div class="como-card">
+        <div class="cc-num">02</div>
+        <div class="cc-title">Padrão, não episódio isolado</div>
+        <div class="cc-text">A nota é determinada pela descrição que melhor representa o padrão de comportamento do colaborador ao longo do ciclo — não por um episódio pontual.</div>
+      </div>
+      <div class="como-card">
+        <div class="cc-num">03</div>
+        <div class="cc-title">Use os exemplos de calibração</div>
+        <div class="cc-text">Em caso de dúvida entre duas notas, use os exemplos práticos ao final de cada indicador. Eles mostram situações reais que correspondem a cada nota.</div>
+      </div>
+      <div class="como-card">
+        <div class="cc-num">04</div>
+        <div class="cc-title">Reunião de calibração com RH</div>
+        <div class="cc-text">O RH fará reunião de calibração antes do fechamento do ciclo. Cada líder apresenta as notas com evidências e o RH valida consistência entre as unidades.</div>
+      </div>
+    </div>
+
+    <div class="rv" style="transition-delay:.2s;margin-top:2rem">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem">Legenda de Notas</div>
+      <div class="notas-strip">
+        <div class="nota-item"><span class="ni-num n1c">1</span><span class="ni-label">Insuficiente</span></div>
+        <div class="nota-item"><span class="ni-num n2c">2</span><span class="ni-label">Em Desenvolvimento</span></div>
+        <div class="nota-item"><span class="ni-num n3c">3</span><span class="ni-label">Adequado</span></div>
+        <div class="nota-item"><span class="ni-num n4c">4</span><span class="ni-label">Acima do Esperado</span></div>
+        <div class="nota-item"><span class="ni-num n5c">5</span><span class="ni-label">Referência</span></div>
+      </div>
+      <p style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:.85rem;line-height:1.6"><strong style="color:var(--gd)">Distribuição esperada:</strong> Nota 3 deve ser a mais frequente. Notas 1 e 5 devem ser raras e sempre acompanhadas de evidências sólidas. Equipe inteira com 4 e 5 = sinal de leniência. Maioria em 1 e 2 = problema sistêmico ou critério excessivamente rigoroso.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INDICADORES ACCORDION -->
+<section id="s-indicadores">
+  <div class="container">
+    <div class="rv">
+      <div class="sec-label">OS 5 INDICADORES</div>
+      <h2 class="sec-title">ESCALAS <em>BARS</em></h2>
+      <p class="sec-body">Clique em cada indicador para expandir a escala completa com comportamentos observáveis por nota e exemplos de calibração.</p>
+    </div>
+
+    <div class="ind-list rv" style="transition-delay:.1s">
+
+      <!-- 1. ORGANIZAÇÃO -->
+      <div class="ind-item" id="ind-1">
+        <div class="ind-trigger" onclick="toggleInd('ind-1')">
+          <div class="ind-num">1</div>
+          <div class="ind-trigger-text">
+            <div class="ind-name">Organização</div>
+            <div class="ind-tagline">Gerir agenda, priorizar tarefas, cumprir prazos com autonomia e previsibilidade</div>
+          </div>
+          <div class="ind-arrow"><svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="ind-body">
+          <div class="ind-why">
+            <div class="ind-why-label">Por que importa no contexto jurídico</div>
+            <div class="ind-why-text">Em um escritório jurídico, o prazo é o ativo mais crítico. Organização falha gera perda de prazo, retrabalho, cliente insatisfeito e risco para a empresa. O colaborador organizado é aquele que não precisa ser lembrado — ele antecipa.</div>
+          </div>
+          <div class="ind-metrics">
+            <div class="ind-metrics-label">Como medir e rastrear</div>
+            <div class="metrics-list">
+              <div class="metric-item"><span class="metric-dot"></span>% de cumprimento de agenda no Bitrix (meta 90%)</div>
+              <div class="metric-item"><span class="metric-dot"></span>Número de prazos perdidos ou atrasados no período</div>
+              <div class="metric-item"><span class="metric-dot"></span>Frequência com que precisou ser cobrado para atualizar o Bitrix</div>
+              <div class="metric-item"><span class="metric-dot"></span>Número de retrabalhos originados por desorganização</div>
+            </div>
+          </div>
+          <div class="bars-label">Escala BARS — comportamentos observáveis por nota</div>
+          <div class="bars-scale">
+            <div class="bars-nota bn1" id="bn-1-1"><div class="bars-nota-head" onclick="toggleBars('bn-1-1')"><span class="bn-num n1c">1</span><span class="bn-class">Não demonstra organização básica</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Perde prazos processuais com frequência mesmo quando avisado com antecedência</div><div class="bars-behavior">O Bitrix fica dias ou semanas sem atualização — líder precisa cobrar repetidamente</div><div class="bars-behavior">Entrega documentos incompletos ou com informações erradas por falta de checklist</div><div class="bars-behavior">Não sabe o que está pendente sem consultar o líder — não tem controle da própria agenda</div><div class="bars-behavior">Retrabalho frequente e evitável decorrente de desorganização</div></div></div>
+            <div class="bars-nota bn2" id="bn-1-2"><div class="bars-nota-head" onclick="toggleBars('bn-1-2')"><span class="bn-num n2c">2</span><span class="bn-class">Organização inconsistente — funciona sob cobrança</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Cumpre prazos apenas quando o líder acompanha de perto ou cobra ativamente</div><div class="bars-behavior">Atualiza o Bitrix de forma incompleta ou só quando lembrado</div><div class="bars-behavior">Prioriza mal: trata demandas urgentes e não urgentes com o mesmo peso</div><div class="bars-behavior">Perde detalhes importantes por não utilizar checklists ou anotações</div><div class="bars-behavior">Quando tem mais de 3 demandas simultâneas, alguma costuma ficar para trás</div></div></div>
+            <div class="bars-nota bn3" id="bn-1-3"><div class="bars-nota-head" onclick="toggleBars('bn-1-3')"><span class="bn-num n3c">3</span><span class="bn-class">Organização adequada — cumpre o esperado</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Cumpre a maioria dos prazos sem necessidade de cobrança ativa do líder</div><div class="bars-behavior">Registra as principais tarefas no Bitrix, com eventuais lacunas</div><div class="bars-behavior">Comunica ao líder quando percebe risco de não entregar no prazo — mas às vezes tardiamente</div><div class="bars-behavior">Consegue manter o controle da agenda em semanas com demanda moderada</div><div class="bars-behavior">Raramente gera retrabalho por desorganização</div></div></div>
+            <div class="bars-nota bn4" id="bn-1-4"><div class="bars-nota-head" onclick="toggleBars('bn-1-4')"><span class="bn-num n4c">4</span><span class="bn-class">Organização consistente e proativa</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Cumpre todos os prazos com consistência — não precisa de cobrança</div><div class="bars-behavior">Bitrix atualizado diariamente com todas as tarefas e status</div><div class="bars-behavior">Antecipa imprevistos: quando identifica risco de prazo, avisa o líder antes que ele precise perguntar</div><div class="bars-behavior">Usa checklists ou sistemas próprios para garantir que nada escapa</div><div class="bars-behavior">Em semanas de alta demanda, reorganiza prioridades e comunica o que precisará de mais tempo</div></div></div>
+            <div class="bars-nota bn5" id="bn-1-5"><div class="bars-nota-head" onclick="toggleBars('bn-1-5')"><span class="bn-num n5c">5</span><span class="bn-class">Referência de organização para a equipe</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Zero atraso de prazo no período — e quando há risco, resolve com antecedência</div><div class="bars-behavior">Bitrix 100% atualizado — outros membros consultam o histórico como referência</div><div class="bars-behavior">Propõe melhorias no processo de controle de prazos da equipe</div><div class="bars-behavior">Serve de modelo para colegas menos organizados — lidera pelo exemplo</div><div class="bars-behavior">Consegue manter qualidade e organização mesmo em períodos de pico de demanda</div></div></div>
+          </div>
+          <div class="calib-box">
+            <div class="calib-label">Exemplo Prático de Calibração — Organização</div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n2">Nota 2 — o que foi observado</div>
+              <div class="calib-text">Iago precisou ser cobrado 4 vezes no 2º trimestre para atualizar o Bitrix. Em setembro, uma petição foi entregue com prazo de recurso já vencido por falta de controle da agenda.</div>
+            </div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n4">Nota 4 — o que foi observado</div>
+              <div class="calib-text">Iago avisou o líder com 3 dias de antecedência que não conseguiria entregar 2 iniciais na semana do recesso. Reorganizou as prioridades sozinho, comunicou os clientes afetados e cumpriu o restante.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. COMUNICAÇÃO -->
+      <div class="ind-item" id="ind-2">
+        <div class="ind-trigger" onclick="toggleInd('ind-2')">
+          <div class="ind-num">2</div>
+          <div class="ind-trigger-text">
+            <div class="ind-name">Comunicação</div>
+            <div class="ind-tagline">Transmitir informações com clareza, assertividade e empatia — com clientes e equipe</div>
+          </div>
+          <div class="ind-arrow"><svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="ind-body">
+          <div class="ind-why">
+            <div class="ind-why-label">Por que importa no contexto jurídico</div>
+            <div class="ind-why-text">No escritório jurídico, comunicação falha com o cliente gera reclamação, perda de contrato e dano à reputação. Comunicação falha interna gera retrabalho, conflito e perda de prazo. O colaborador que comunica bem protege a empresa mesmo quando a notícia é ruim.</div>
+          </div>
+          <div class="ind-metrics">
+            <div class="ind-metrics-label">Como medir e rastrear</div>
+            <div class="metrics-list">
+              <div class="metric-item"><span class="metric-dot"></span>CSAT — notas 4 e 5 / total de avaliações (meta 90%)</div>
+              <div class="metric-item"><span class="metric-dot"></span>Registros de reclamações de clientes por falta de informação ou resposta demorada</div>
+              <div class="metric-item"><span class="metric-dot"></span>Frequência com que o líder precisou intermediar uma comunicação que o colaborador deveria ter feito</div>
+              <div class="metric-item"><span class="metric-dot"></span>Número de situações em que comunicou um risco antes de se tornar problema</div>
+            </div>
+          </div>
+          <div class="bars-label">Escala BARS — comportamentos observáveis por nota</div>
+          <div class="bars-scale">
+            <div class="bars-nota bn1" id="bn-2-1"><div class="bars-nota-head" onclick="toggleBars('bn-2-1')"><span class="bn-num n1c">1</span><span class="bn-class">Comunicação insuficiente — gera problemas recorrentes</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Clientes reclamam de falta de retorno ou de não serem informados sobre o andamento do processo</div><div class="bars-behavior">Não comunica ao líder quando identifica um risco — o líder descobre por terceiros</div><div class="bars-behavior">Usa linguagem técnica excessiva com clientes sem formação jurídica, gerando confusão</div><div class="bars-behavior">Omite informações relevantes em reuniões de equipe por medo de conflito</div><div class="bars-behavior">Demora mais de 48h para responder clientes sem justificativa</div></div></div>
+            <div class="bars-nota bn2" id="bn-2-2"><div class="bars-nota-head" onclick="toggleBars('bn-2-2')"><span class="bn-num n2c">2</span><span class="bn-class">Comunicação reativa — fala quando perguntado, mas não antecipa</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Responde aos clientes quando acionado, mas raramente toma iniciativa de atualizar</div><div class="bars-behavior">Comunica problemas ao líder apenas quando já não há como resolver sozinho</div><div class="bars-behavior">Às vezes usa linguagem inadequada ao perfil do cliente</div><div class="bars-behavior">Em reuniões, fala pouco e tende a concordar passivamente</div><div class="bars-behavior">CSAT consistentemente abaixo de 85% por ausência de proatividade no contato</div></div></div>
+            <div class="bars-nota bn3" id="bn-2-3"><div class="bars-nota-head" onclick="toggleBars('bn-2-3')"><span class="bn-num n3c">3</span><span class="bn-class">Comunicação adequada — clara e respeitosa</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Responde clientes em até 24h na maioria das situações</div><div class="bars-behavior">Comunica ao líder quando há um risco, mesmo que às vezes tardiamente</div><div class="bars-behavior">Adapta a linguagem ao perfil do cliente na maior parte do tempo</div><div class="bars-behavior">Participa das reuniões com contribuições pontuais e relevantes</div><div class="bars-behavior">CSAT em torno de 85–89% — poucos registros de reclamação de comunicação</div></div></div>
+            <div class="bars-nota bn4" id="bn-2-4"><div class="bars-nota-head" onclick="toggleBars('bn-2-4')"><span class="bn-num n4c">4</span><span class="bn-class">Comunicação proativa e assertiva</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Atualiza clientes proativamente sobre o andamento do processo sem esperar serem perguntados</div><div class="bars-behavior">Comunica riscos e imprevistos ao líder antes que se tornem problemas — com proposta de solução</div><div class="bars-behavior">Adapta linguagem, tom e canal ao perfil de cada cliente com naturalidade</div><div class="bars-behavior">Em reuniões, posiciona-se com clareza mesmo quando discorda</div><div class="bars-behavior">CSAT consistentemente ≥ 90% — clientes elogiam a clareza e a atenção recebida</div></div></div>
+            <div class="bars-nota bn5" id="bn-2-5"><div class="bars-nota-head" onclick="toggleBars('bn-2-5')"><span class="bn-num n5c">5</span><span class="bn-class">Referência de comunicação — influencia positivamente a equipe</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Zero reclamação de cliente por falta de comunicação no período</div><div class="bars-behavior">Outros membros consultam esse colaborador para saber como comunicar situações difíceis</div><div class="bars-behavior">Consegue comunicar más notícias aos clientes de forma empática, mantendo a relação</div><div class="bars-behavior">Propõe melhorias no processo de comunicação com o cliente (templates, fluxos)</div><div class="bars-behavior">CSAT consistentemente ≥ 95% — clientes indicam o escritório mencionando o atendimento</div></div></div>
+          </div>
+          <div class="calib-box">
+            <div class="calib-label">Exemplo Prático de Calibração — Comunicação</div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n2">Nota 2 — o que foi observado</div>
+              <div class="calib-text">Em outubro, 3 clientes ligaram para saber o andamento depois de 5 dias sem retorno. Fernanda Lima estava esperando o advogado atualizar antes de entrar em contato — mas não comunicou ao cliente o motivo da demora.</div>
+            </div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n4">Nota 4 — o que foi observado</div>
+              <div class="calib-text">Em novembro, Fernanda Lima identificou que um cliente estava ligando com frequência por ansiedade, não por problema real. Ligou proativamente para explicar o andamento e reduziu as ligações sem precisar acionar a advogada.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. RESPONSABILIDADE E EXECUÇÃO -->
+      <div class="ind-item" id="ind-3">
+        <div class="ind-trigger" onclick="toggleInd('ind-3')">
+          <div class="ind-num">3</div>
+          <div class="ind-trigger-text">
+            <div class="ind-name">Responsabilidade e Execução</div>
+            <div class="ind-tagline">Assumir compromissos, entregar no prazo e qualidade, responsabilizar-se pelos resultados</div>
+          </div>
+          <div class="ind-arrow"><svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="ind-body">
+          <div class="ind-why">
+            <div class="ind-why-label">Por que importa no contexto jurídico</div>
+            <div class="ind-why-text">Responsabilidade é o indicador mais diretamente ligado à confiança que a empresa pode depositar em cada pessoa. Um colaborador irresponsável sobrecarrega o líder e compromete a entrega coletiva. Um colaborador responsável pode receber autonomia crescente — que é o que gera progressão de carreira.</div>
+          </div>
+          <div class="ind-metrics">
+            <div class="ind-metrics-label">Como medir e rastrear</div>
+            <div class="metrics-list">
+              <div class="metric-item"><span class="metric-dot"></span>Taxa de cumprimento de tarefas acordadas no prazo — registrado no Bitrix</div>
+              <div class="metric-item"><span class="metric-dot"></span>Qualidade/BSC — % de cumprimento dos indicadores de qualidade da área</div>
+              <div class="metric-item"><span class="metric-dot"></span>Frequência de retrabalho por entrega incompleta ou incorreta</div>
+              <div class="metric-item"><span class="metric-dot"></span>Frequência com que assumiu o erro e propôs solução vs. transferiu a culpa</div>
+            </div>
+          </div>
+          <div class="bars-label">Escala BARS — comportamentos observáveis por nota</div>
+          <div class="bars-scale">
+            <div class="bars-nota bn1" id="bn-3-1"><div class="bars-nota-head" onclick="toggleBars('bn-3-1')"><span class="bn-num n1c">1</span><span class="bn-class">Não assume responsabilidade — compromissos não são honrados</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Não entrega o que foi acordado e justifica com fatores externos (sistema, colega, cliente)</div><div class="bars-behavior">Quando algo dá errado, a primeira resposta é explicar por que não foi culpa sua</div><div class="bars-behavior">Retrabalho frequente e recorrente — os mesmos erros se repetem sem melhora</div><div class="bars-behavior">O líder não consegue delegar tarefas críticas sem supervisão intensa</div><div class="bars-behavior">Prazo judicial perdido por falta de acompanhamento da própria responsabilidade</div></div></div>
+            <div class="bars-nota bn2" id="bn-3-2"><div class="bars-nota-head" onclick="toggleBars('bn-3-2')"><span class="bn-num n2c">2</span><span class="bn-class">Executa com supervisão — assume parcialmente a responsabilidade</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Entrega o que foi combinado quando há acompanhamento próximo do líder</div><div class="bars-behavior">Quando algo dá errado, reconhece o erro mas não propõe solução — espera ser direcionado</div><div class="bars-behavior">Qualidade da entrega é variável: às vezes completa, às vezes incompleta</div><div class="bars-behavior">Tende a esperar o prazo chegar para sinalizar dificuldades</div><div class="bars-behavior">BSC/Qualidade abaixo da meta — indicadores evidenciam inconsistência de entrega</div></div></div>
+            <div class="bars-nota bn3" id="bn-3-3"><div class="bars-nota-head" onclick="toggleBars('bn-3-3')"><span class="bn-num n3c">3</span><span class="bn-class">Responsável dentro do esperado — cumpre o que foi combinado</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Cumpre os compromissos acordados na maior parte do tempo, com poucas exceções</div><div class="bars-behavior">Quando não consegue entregar, avisa com antecedência razoável</div><div class="bars-behavior">Assume a responsabilidade pelo erro quando acionado, sem defensividade excessiva</div><div class="bars-behavior">Retrabalho é raro e não se repete no mesmo tipo de entrega</div><div class="bars-behavior">BSC/Qualidade na faixa esperada (70–80% da meta)</div></div></div>
+            <div class="bars-nota bn4" id="bn-3-4"><div class="bars-nota-head" onclick="toggleBars('bn-3-4')"><span class="bn-num n4c">4</span><span class="bn-class">Alto nível de responsabilidade — referência de confiabilidade</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">O líder pode delegar tarefas críticas sem precisar acompanhar de perto</div><div class="bars-behavior">Quando algo dá errado, chega ao líder com o erro E a solução proposta</div><div class="bars-behavior">Cumpre 100% dos prazos acordados ou comunica impedimentos com antecedência</div><div class="bars-behavior">BSC/Qualidade consistentemente ≥ meta</div><div class="bars-behavior">Outros colaboradores pedem esse profissional para trabalhar em casos críticos</div></div></div>
+            <div class="bars-nota bn5" id="bn-3-5"><div class="bars-nota-head" onclick="toggleBars('bn-3-5')"><span class="bn-num n5c">5</span><span class="bn-class">Nível exemplar — promove responsabilidade na equipe</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Zero compromisso não honrado no período sem comunicação prévia</div><div class="bars-behavior">Quando identifica que um colega vai atrasar algo que impacta o cliente, age para minimizar antes de ser solicitado</div><div class="bars-behavior">Propõe melhorias de processo para reduzir erros sistêmicos da área</div><div class="bars-behavior">É a referência que o líder usa como padrão ao definir expectativas para a equipe</div><div class="bars-behavior">BSC/Qualidade acima da meta de forma consistente</div></div></div>
+          </div>
+          <div class="calib-box">
+            <div class="calib-label">Exemplo Prático de Calibração — Responsabilidade e Execução</div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n2">Nota 2 — o que foi observado</div>
+              <div class="calib-text">Em novembro, 3 requerimentos administrativos que Jaqueline ficou responsável ficaram vencidos sem aviso. Quando questionada, disse que estava esperando retorno do INSS — mas não havia comunicado o risco ao Paulo.</div>
+            </div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n4">Nota 4 — o que foi observado</div>
+              <div class="calib-text">Em dezembro, Jaqueline percebeu que um prazo de exigência coincidiria com seu período de provas. Avisou Paulo com 10 dias de antecedência, propôs redistribuir 2 dos processos para uma colega e entregou os demais antes do prazo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CULTURA -->
+      <div class="ind-item" id="ind-4">
+        <div class="ind-trigger" onclick="toggleInd('ind-4')">
+          <div class="ind-num">4</div>
+          <div class="ind-trigger-text">
+            <div class="ind-name">Cultura</div>
+            <div class="ind-tagline">Alinhamento com valores, senso de dono, protagonismo e contribuição além do cargo</div>
+          </div>
+          <div class="ind-arrow"><svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="ind-body">
+          <div class="ind-why">
+            <div class="ind-why-label">Por que importa no contexto jurídico</div>
+            <div class="ind-why-text">Cultura é o que permanece quando o líder não está olhando. Um colaborador com alta cultura protege a marca do escritório em qualquer interação. Um colaborador com cultura baixa pode destruir em minutos o que a empresa construiu em anos. É também o indicador que mais impacta o clima da equipe.</div>
+          </div>
+          <div class="ind-metrics">
+            <div class="ind-metrics-label">Como medir e rastrear</div>
+            <div class="metrics-list">
+              <div class="metric-item"><span class="metric-dot"></span>Observações diretas em situações não monitoradas (atendimento sem supervisão, reuniões, como fala do escritório para terceiros)</div>
+              <div class="metric-item"><span class="metric-dot"></span>Feedback espontâneo de clientes sobre a postura do colaborador</div>
+              <div class="metric-item"><span class="metric-dot"></span>Comportamento em situações de pressão — como age quando algo dá errado</div>
+              <div class="metric-item"><span class="metric-dot"></span>Nível de engajamento em iniciativas da empresa (treinamentos, feedbacks, pesquisas de clima)</div>
+            </div>
+          </div>
+          <div class="bars-label">Escala BARS — comportamentos observáveis por nota</div>
+          <div class="bars-scale">
+            <div class="bars-nota bn1" id="bn-4-1"><div class="bars-nota-head" onclick="toggleBars('bn-4-1')"><span class="bn-num n1c">1</span><span class="bn-class">Desalinhamento claro com a cultura da empresa</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Fala mal do escritório, dos colegas ou das lideranças para clientes ou terceiros</div><div class="bars-behavior">Age de forma diferente quando não está sendo observado pelo líder</div><div class="bars-behavior">Não respeita os processos e normas internas — faz do seu jeito mesmo após ser orientado</div><div class="bars-behavior">Em situações de crise, abandona as responsabilidades ou culpa a empresa</div><div class="bars-behavior">Não participa de nenhuma iniciativa coletiva — reuniões, treinamentos, pesquisas</div></div></div>
+            <div class="bars-nota bn2" id="bn-4-2"><div class="bars-nota-head" onclick="toggleBars('bn-4-2')"><span class="bn-num n2c">2</span><span class="bn-class">Alinhamento parcial — atende o mínimo, sem engajamento genuíno</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Cumpre o que é pedido mas não demonstra identificação com o propósito do escritório</div><div class="bars-behavior">Participa de reuniões e treinamentos formalmente, mas sem contribuição real</div><div class="bars-behavior">Em situações adversas, tende a se retrair ou transferir responsabilidade</div><div class="bars-behavior">Não conhece ou não utiliza os valores do escritório como referência de decisão</div><div class="bars-behavior">Relacionamento com a equipe é funcional, mas sem colaboração espontânea</div></div></div>
+            <div class="bars-nota bn3" id="bn-4-3"><div class="bars-nota-head" onclick="toggleBars('bn-4-3')"><span class="bn-num n3c">3</span><span class="bn-class">Alinhamento adequado — vive a cultura no cotidiano</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Age de forma consistente com os valores do escritório nas situações do dia a dia</div><div class="bars-behavior">Trata clientes e colegas com respeito independente de estar sendo observado</div><div class="bars-behavior">Participa ativamente dos treinamentos e reuniões de equipe</div><div class="bars-behavior">Em situações de pressão, mantém a postura esperada</div><div class="bars-behavior">Conhece os valores da empresa e consegue explicá-los com suas próprias palavras</div></div></div>
+            <div class="bars-nota bn4" id="bn-4-4"><div class="bars-nota-head" onclick="toggleBars('bn-4-4')"><span class="bn-num n4c">4</span><span class="bn-class">Alta aderência cultural — protagonismo e senso de dono</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Demonstra senso de dono: age como se o problema do cliente ou da equipe fosse seu</div><div class="bars-behavior">Em situações não mapeadas, toma a decisão mais alinhada com os valores sem precisar consultar o líder</div><div class="bars-behavior">Contribui voluntariamente em iniciativas além do seu cargo</div><div class="bars-behavior">Clientes e colegas comentam espontaneamente sobre a postura e o profissionalismo desse colaborador</div><div class="bars-behavior">Quando discorda de algo, faz pelo canal certo — conversa com o líder, não com os colegas</div></div></div>
+            <div class="bars-nota bn5" id="bn-4-5"><div class="bars-nota-head" onclick="toggleBars('bn-4-5')"><span class="bn-num n5c">5</span><span class="bn-class">Embaixador da cultura — referência e multiplicador</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Outros colaboradores o citam como referência de como agir em situações difíceis</div><div class="bars-behavior">Novos colaboradores são direcionados para esse profissional como modelo de postura</div><div class="bars-behavior">Quando identifica comportamentos desalinhados na equipe, endereça com cuidado e sem criar conflito</div><div class="bars-behavior">Representa a marca do escritório com excelência em qualquer contexto</div><div class="bars-behavior">Sugere rituais, celebra conquistas, dá reconhecimento público aos colegas</div></div></div>
+          </div>
+          <div class="calib-box">
+            <div class="calib-label">Exemplo Prático de Calibração — Cultura (Augusto · Advogado Jr. · Poços de Caldas)</div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n2">Nota 2 — referência</div>
+              <div class="calib-text">Colaborador cumpre suas tarefas individualmente mas raramente contribui em momentos coletivos. Em treinamento do trimestre, participou formalmente mas não demonstrou engajamento ou aplicação posterior do conteúdo.</div>
+            </div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n4">Nota 4 — referência</div>
+              <div class="calib-text">Em situação de sobrecarga da equipe, assumiu voluntariamente dois processos de um colega afastado sem ser solicitado. Comunicou ao líder que estava fazendo isso e entregou dentro do prazo, mantendo qualidade.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. DESENVOLVIMENTO -->
+      <div class="ind-item" id="ind-5">
+        <div class="ind-trigger" onclick="toggleInd('ind-5')">
+          <div class="ind-num">5</div>
+          <div class="ind-trigger-text">
+            <div class="ind-name">Desenvolvimento</div>
+            <div class="ind-tagline">Comprometimento com evolução profissional, cumprimento do PDI e aplicação prática do aprendizado</div>
+          </div>
+          <div class="ind-arrow"><svg viewBox="0 0 12 12" fill="none" width="12" height="12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="ind-body">
+          <div class="ind-why">
+            <div class="ind-why-label">Por que importa no contexto jurídico</div>
+            <div class="ind-why-text">O colaborador que não se desenvolve involui — porque o mercado e os clientes evoluem. O PDI é o contrato de crescimento entre a pessoa e a empresa. Avaliar desenvolvimento é avaliar se esse contrato está sendo honrado de ambos os lados: o colaborador fez sua parte? A empresa deu as condições?</div>
+          </div>
+          <div class="ind-metrics">
+            <div class="ind-metrics-label">Como medir e rastrear</div>
+            <div class="metrics-list">
+              <div class="metric-item"><span class="metric-dot"></span>% de ações do PDI concluídas com evidência documentada (certificado, registro, feedback do líder)</div>
+              <div class="metric-item"><span class="metric-dot"></span>Aplicação prática visível — o comportamento ou resultado mudou?</div>
+              <div class="metric-item"><span class="metric-dot"></span>Participação e engajamento nos treinamentos e feedbacks oferecidos pela empresa</div>
+              <div class="metric-item"><span class="metric-dot"></span>Iniciativa própria de desenvolvimento além do PDI acordado</div>
+            </div>
+          </div>
+          <div class="bars-label">Escala BARS — comportamentos observáveis por nota</div>
+          <div class="bars-scale">
+            <div class="bars-nota bn1" id="bn-5-1"><div class="bars-nota-head" onclick="toggleBars('bn-5-1')"><span class="bn-num n1c">1</span><span class="bn-class">Sem compromisso com desenvolvimento — PDI não executado</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Nenhuma ação do PDI foi concluída no período sem justificativa válida</div><div class="bars-behavior">Não participa dos treinamentos oferecidos ou participa sem engajamento</div><div class="bars-behavior">Os mesmos gaps identificados no ciclo anterior se repetem sem evolução perceptível</div><div class="bars-behavior">Quando questionado sobre o PDI, não sabe dizer o que foi acordado</div><div class="bars-behavior">Nega ou minimiza os pontos de desenvolvimento identificados na avaliação anterior</div></div></div>
+            <div class="bars-nota bn2" id="bn-5-2"><div class="bars-nota-head" onclick="toggleBars('bn-5-2')"><span class="bn-num n2c">2</span><span class="bn-class">Desenvolvimento incipiente — iniciou mas não sustentou</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Começou algumas ações do PDI mas não concluiu — sem comunicar o motivo ao líder</div><div class="bars-behavior">Participa dos treinamentos formalmente mas não demonstra aplicação prática</div><div class="bars-behavior">Reconhece os gaps mas não prioriza ações concretas para endereçá-los</div><div class="bars-behavior">PDI parcialmente cumprido (menos de 30% das ações com evidência)</div><div class="bars-behavior">A evolução percebida pelo líder é baixa em relação ao que foi acordado</div></div></div>
+            <div class="bars-nota bn3" id="bn-5-3"><div class="bars-nota-head" onclick="toggleBars('bn-5-3')"><span class="bn-num n3c">3</span><span class="bn-class">Desenvolvimento dentro do esperado — PDI parcialmente cumprido</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Concluiu entre 50–70% das ações do PDI com evidência documentada</div><div class="bars-behavior">Demonstra aplicação prática de pelo menos parte do que foi desenvolvido</div><div class="bars-behavior">Participa com engajamento dos treinamentos e feedbacks</div><div class="bars-behavior">Quando não concluiu uma ação, tem justificativa válida e comunica ao líder</div><div class="bars-behavior">Evolução perceptível em pelo menos 2 dos indicadores acordados no PDI</div></div></div>
+            <div class="bars-nota bn4" id="bn-5-4"><div class="bars-nota-head" onclick="toggleBars('bn-5-4')"><span class="bn-num n4c">4</span><span class="bn-class">Alto comprometimento — PDI cumprido com aplicação prática</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">Concluiu ≥ 80% das ações do PDI com evidência documentada</div><div class="bars-behavior">A evolução é claramente perceptível nos indicadores técnicos e/ou comportamentais do ciclo</div><div class="bars-behavior">Trouxe para o líder pelo menos 1 aprendizado concreto e como o aplicou no trabalho</div><div class="bars-behavior">Buscou ativamente os recursos necessários para cumprir o PDI — não esperou a empresa providenciar tudo</div><div class="bars-behavior">Lidera pelo exemplo: outros na equipe comentam sobre a evolução desse colaborador</div></div></div>
+            <div class="bars-nota bn5" id="bn-5-5"><div class="bars-nota-head" onclick="toggleBars('bn-5-5')"><span class="bn-num n5c">5</span><span class="bn-class">Desenvolvimento exemplar — vai além do PDI e desenvolve outros</span><span class="bn-chevron">▾</span></div><div class="bars-nota-body"><div class="bars-behavior">100% das ações do PDI concluídas com evidência e aplicação prática documentada</div><div class="bars-behavior">Buscou desenvolvimento adicional além do PDI por iniciativa própria</div><div class="bars-behavior">Os resultados técnicos do ciclo refletem claramente a evolução obtida no PDI</div><div class="bars-behavior">Compartilha aprendizados espontaneamente com a equipe — multiplica o que aprendeu</div><div class="bars-behavior">Propõe ações de desenvolvimento para o próprio PDI do próximo ciclo antes da reunião formal</div></div></div>
+          </div>
+          <div class="calib-box">
+            <div class="calib-label">Exemplo Prático de Calibração — Desenvolvimento (José Gabriel · Estagiário · Botelhos)</div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n2">Nota 2 — referência</div>
+              <div class="calib-text">Iniciou o curso de prática previdenciária acordado no PDI, mas parou após o 1º módulo sem comunicar ao líder. No trimestral, não conseguiu apresentar nenhuma evidência concreta de aplicação do que havia estudado.</div>
+            </div>
+            <div class="calib-item">
+              <div class="calib-nota-badge cb-n4">Nota 4 — referência</div>
+              <div class="calib-text">Concluiu o curso com certificado, apresentou ao líder 2 situações concretas onde aplicou o conteúdo em processos reais. Propôs compartilhar o template de petição que desenvolveu durante o curso com a equipe de Botelhos.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ind-list -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RITUAIS E IMPLEMENTAÇÃO -->
+<section id="s-rituais">
+  <div class="container">
+    <div class="rv">
+      <div class="sec-label">GUIA DE IMPLEMENTAÇÃO</div>
+      <h2 class="sec-title">RITUAIS DO <em>LÍDER</em></h2>
+      <p class="sec-body">O que o líder deve fazer ao longo do ano para construir a trilha de evidências que sustenta a avaliação.</p>
+    </div>
+
+    <div class="rv" style="transition-delay:.1s;overflow-x:auto;margin-top:2rem">
+      <table class="rituais-table">
+        <thead>
+          <tr><th>Frequência</th><th>Ação do Líder</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="freq-badge fb-weekly">Semanal</span></td>
+            <td style="color:rgba(255,255,255,.8)">Registrar no Bitrix 1 observação comportamental por liderado. Formato mínimo: <span style="color:var(--gd)">[Data] · [Nome] · [Indicador] · [O que observei e a nota estimada]</span>. Isso constrói a trilha de evidências que sustenta a avaliação final.</td>
+          </tr>
+          <tr>
+            <td><span class="freq-badge fb-monthly">Mensal</span></td>
+            <td style="color:rgba(255,255,255,.8)">Check-in de 15 minutos com cada liderado: 1 comportamento positivo com exemplo concreto + 1 comportamento de atenção com exemplo concreto. Não é reunião de feedback estruturado — é conversa de desenvolvimento.</td>
+          </tr>
+          <tr>
+            <td><span class="freq-badge fb-quarterly">Trimestral</span></td>
+            <td style="color:rgba(255,255,255,.8)">Revisão formal do PDI junto com o RH: ações do PDI em andamento? Os comportamentos estão evoluindo? Ajuste as metas se necessário.</td>
+          </tr>
+          <tr>
+            <td><span class="freq-badge fb-annual">Fechamento</span></td>
+            <td style="color:rgba(255,255,255,.8)">Abrir os registros acumulados no Bitrix. Para cada indicador, identificar o <strong style="color:var(--wh)">padrão de comportamento do período</strong> — não o episódio mais recente. Dar a nota com base na descrição BARS, não na intuição.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rv" style="transition-delay:.2s;margin-top:2.5rem">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">O que o RH faz para garantir justiça</div>
+      <div class="rh-cards">
+        <div class="rh-card">
+          <div class="rh-card-title">Semestral — Calibração</div>
+          <div class="rh-card-text">Reúne todos os líderes, percorre casos com notas extremas (1 ou 5) e casos com inconsistência entre indicadores. O líder que não tem evidência revisita a nota.</div>
+        </div>
+        <div class="rh-card">
+          <div class="rh-card-title">Fechamento — Distribuição</div>
+          <div class="rh-card-text">Verifica se a distribuição de notas por líder é razoável. Líder com todos em 4 e 5 pode estar sendo leniente. Líder com todos em 1 e 2 pode estar sendo rigoroso demais ou há problema sistêmico.</div>
+        </div>
+        <div class="rh-card">
+          <div class="rh-card-title">Pós-ciclo — Feedback ao Líder</div>
+          <div class="rh-card-text">O RH devolve ao líder um resumo de como suas avaliações se compararam ao grupo. Cria aprendizado contínuo sobre o calibre do olhar de cada avaliador.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="regra-ouro rv" style="transition-delay:.3s">
+      <div class="ro-icon">⚖️</div>
+      <div class="ro-text">"Nenhuma nota comportamental será aceita sem <em>pelo menos uma evidência concreta</em> observada no período."</div>
+      <div class="ro-sub">Essa é a garantia de que o processo é justo — para quem avalia e para quem é avaliado. A evidência protege o colaborador e protege o líder.</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© MAXIMIANO ADVOGADOS &nbsp;·&nbsp; GUIA BARS · CICLO 2026 &nbsp;·&nbsp; Documento interno restrito</p>
+  <p style="margin-top:.3rem">A avaliação justa começa no registro diário — não na reunião de fechamento.</p>
+</footer>
+
+<script>
+function toggleInd(id){
+  const el=document.getElementById(id);
+  const wasOpen=el.classList.contains('open');
+  document.querySelectorAll('.ind-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)el.classList.add('open');
+}
+function toggleBars(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('bopen');
+}
+
+// Reveal animation
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}});
+},{threshold:0.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
