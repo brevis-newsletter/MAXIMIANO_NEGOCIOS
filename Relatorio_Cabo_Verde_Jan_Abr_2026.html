@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Maximiano Cabo Verde — Relatório Estratégico 2026</title>
+<style>
+:root{
+  --dk:#04111F;--nv:#091A2E;--nv2:#0E2441;--nv3:#152D50;
+  --gd:#E8A030;--gd2:#F5C060;
+  --wh:#FFFFFF;--muted:#6B84A8;--card:#0A1F38;
+  --border:rgba(232,160,48,.16);--border2:rgba(255,255,255,.06);
+  --green:#3EC98E;--red:#F06060;--amber:#F5A030;
+  --teal:#0EA89A;--teal2:#14C4B4;--r:12px;
+  --cv:#1E6B8A;--cv2:#2899C0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:.7rem 2rem;background:rgba(4,17,31,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1rem;letter-spacing:.12em;color:var(--gd);text-transform:uppercase}
+.nav-brand span{color:rgba(255,255,255,.3);margin:0 .4rem}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{padding:.38rem .75rem;font-size:.67rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.38);text-decoration:none;border-radius:6px;transition:all .2s;cursor:pointer;font-weight:600}
+.nav-links a:hover,.nav-links a.active{color:var(--gd);background:rgba(232,160,48,.08)}
+.nav-pill{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:.18rem .7rem;border-radius:20px}
+@media(max-width:900px){.nav-links{display:none}.nav-pill{display:none}}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:60px;background:
+  radial-gradient(ellipse 60% 45% at 55% 0%,rgba(14,168,154,.2) 0%,transparent 65%),
+  radial-gradient(ellipse 30% 30% at 95% 75%,rgba(232,160,48,.1) 0%,transparent 55%),
+  var(--dk);position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,160,48,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,160,48,.035) 1px,transparent 1px);background-size:60px 60px}
+.hero-inner{max-width:1140px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(232,160,48,.1);border:1px solid rgba(232,160,48,.3);border-radius:20px;padding:.32rem .9rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);margin-bottom:1.4rem;font-weight:700}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gd);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hero-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(2.8rem,6vw,5.2rem);line-height:.92;color:var(--wh)}
+.hero-title em{color:var(--gd);font-style:normal}
+.hero-note{margin-top:1.1rem;font-size:.8rem;color:rgba(20,196,180,.85);background:rgba(20,196,180,.07);border:1px solid rgba(20,196,180,.22);border-radius:6px;padding:.55rem .9rem;line-height:1.5}
+.hero-sub{margin-top:.7rem;font-size:.9rem;font-weight:300;color:rgba(255,255,255,.5);max-width:440px;line-height:1.7}
+.hero-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:1.8rem;background:var(--border);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.hkpi{background:rgba(9,26,46,.7);padding:1rem 1.3rem}
+.hkpi-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.75rem;color:var(--gd);line-height:1}
+.hkpi-label{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.hero-vis{position:relative;display:flex;align-items:center;justify-content:center}
+.vis-wrap{position:relative;width:300px;height:300px;margin:0 auto}
+.vis-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(14,168,154,.25);animation:spin 38s linear infinite}
+.vis-ring2{position:absolute;inset:26px;border-radius:50%;border:1px dashed rgba(232,160,48,.18);animation:spin 24s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vis-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,rgba(14,168,154,.55),rgba(9,26,46,.95));border:1px solid rgba(232,160,48,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 55px rgba(14,168,154,.22)}
+.vis-core-v{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2rem;color:var(--gd)}
+.vis-core-l{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.vis-dot{position:absolute;width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.52rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gd);font-weight:700;text-align:center;line-height:1.2}
+.vd1{top:-20px;left:calc(50% - 20px)}.vd2{bottom:-20px;left:calc(50% - 20px)}
+.vd3{left:-20px;top:calc(50% - 20px)}.vd4{right:-20px;top:calc(50% - 20px)}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr}.hero-vis{display:none}}
+
+/* LAYOUT */
+section{position:relative;padding:5rem 0}
+.container{max-width:1140px;margin:0 auto;padding:0 2rem}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.sec-label{font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gd);font-weight:700;margin-bottom:.65rem;display:flex;align-items:center;gap:.55rem}
+.sec-label::before{content:'';width:16px;height:2px;background:var(--gd);border-radius:1px}
+.sec-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(1.8rem,3.8vw,2.7rem);line-height:1}
+.sec-title em{color:var(--gd);font-style:normal}
+.sec-body{margin-top:.75rem;color:rgba(255,255,255,.5);max-width:580px;font-size:.9rem;line-height:1.75}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:2rem 0}
+.kpi-strip-4{grid-template-columns:repeat(4,1fr)}
+.kpi-strip-3{grid-template-columns:repeat(3,1fr)}
+.kpi-strip-5{grid-template-columns:repeat(5,1fr)}
+.kpi{background:rgba(9,26,46,.8);padding:1.2rem .9rem;text-align:center;transition:background .2s}
+.kpi:hover{background:rgba(21,45,80,.8)}
+.kval{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--gd);line-height:1}
+.kdelta{display:inline-block;font-size:.67rem;font-weight:700;padding:.1rem .48rem;border-radius:20px;margin:.22rem 0;letter-spacing:.03em}
+.delta-up{background:rgba(62,201,142,.14);color:var(--green)}
+.delta-dn{background:rgba(240,96,96,.1);color:var(--red)}
+.delta-warn{background:rgba(245,160,48,.1);color:var(--amber)}
+.delta-cv{background:rgba(14,168,154,.12);color:var(--teal)}
+.klabel{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* CHART BOX */
+.chart-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.5rem}
+.chart-title{font-size:.67rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3rem;font-weight:700}
+.chart2col{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-top:1.3rem}
+@media(max-width:680px){.chart2col{grid-template-columns:1fr}}
+
+/* TABLES */
+.ftable{width:100%;border-collapse:collapse}
+.ftable th{background:rgba(9,26,46,.9);color:var(--gd);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.82rem .88rem;text-align:right;font-weight:700;border-bottom:1px solid var(--border)}
+.ftable th:first-child{text-align:left}
+.ftable td{padding:.82rem .88rem;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:right}
+.ftable td:first-child{text-align:left;font-weight:600}
+.ftable tr:last-child td{font-weight:700;background:rgba(9,26,46,.5);border-top:1px solid var(--border)}
+.ftable tr:hover td{background:rgba(232,160,48,.025)}
+.tv-g{color:var(--green)}.tv-r{color:var(--red)}.tv-a{color:var(--amber)}.tv-gd{color:var(--gd);font-weight:700}.tv-t{color:var(--teal)}
+
+/* BADGES */
+.badge{font-size:.67rem;font-weight:700;padding:.16rem .5rem;border-radius:20px}
+.b-green{background:rgba(62,201,142,.13);color:var(--green)}
+.b-red{background:rgba(240,96,96,.1);color:var(--red)}
+.b-warn{background:rgba(245,160,48,.1);color:var(--amber)}
+.b-teal{background:rgba(14,168,154,.12);color:var(--teal)}
+.b-gold{background:rgba(232,160,48,.13);color:var(--gd)}
+
+/* MARGEM CARDS */
+.mcard{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden}
+.mcard-head{padding:.9rem 1.1rem;border-bottom:1px solid var(--border2)}
+.mcard-name{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.28rem}
+.mcard-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.9rem;line-height:1}
+.mcard-body{padding:.9rem 1.1rem}
+.mcard-row{display:flex;justify-content:space-between;font-size:.74rem;padding:.18rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.mcard-row:last-child{border:none}
+.mcard-row .lbl{color:var(--muted)}
+
+/* INADIM CARDS */
+.dev-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.3rem;transition:border-color .2s}
+.dev-card:hover{border-color:rgba(232,160,48,.3)}
+.dev-rank{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2.2rem;line-height:.9;opacity:.18;margin-bottom:.4rem}
+.dev-name{font-weight:700;font-size:.95rem;margin-bottom:.3rem}
+.dev-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.6rem;color:var(--gd);line-height:1;margin-bottom:.4rem}
+.dev-items{display:flex;flex-direction:column;gap:.32rem;margin-top:.6rem}
+.dev-item{display:flex;gap:.5rem;font-size:.79rem;color:rgba(255,255,255,.58);line-height:1.4}
+.dev-item::before{content:'→';color:var(--gd);flex-shrink:0;font-size:.72rem;margin-top:.05rem}
+.dev-action{margin-top:.75rem;padding:.55rem .75rem;background:rgba(232,160,48,.07);border-left:2px solid var(--gd);border-radius:0 6px 6px 0;font-size:.76rem;color:rgba(232,160,48,.85);line-height:1.45}
+
+/* RECOMENDAÇÕES */
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2rem}
+@media(max-width:680px){.rec-grid{grid-template-columns:1fr}}
+.rec-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.6rem;border-top:3px solid var(--gd)}
+.rec-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2.5rem;color:rgba(232,160,48,.2);line-height:.9;margin-bottom:.5rem}
+.rec-title{font-weight:700;font-size:1rem;color:var(--gd2);margin-bottom:.6rem}
+.rec-body{font-size:.84rem;color:rgba(255,255,255,.62);line-height:1.65}
+.rec-tag{display:inline-block;margin-top:.75rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .65rem;border-radius:20px;background:rgba(14,168,154,.12);color:var(--teal)}
+
+/* PROGRESS BAR */
+.pbar-wrap{margin:.4rem 0}
+.pbar-label{display:flex;justify-content:space-between;font-size:.73rem;margin-bottom:.28rem;color:rgba(255,255,255,.55)}
+.pbar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* PIPELINE BOX */
+.pipe-box{background:rgba(232,160,48,.07);border:1px solid rgba(232,160,48,.2);border-radius:var(--r);padding:1.2rem 1.5rem;margin-top:1.3rem}
+.pipe-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2rem;color:var(--gd)}
+.pipe-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+
+/* PRÓXIMOS PASSOS */
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2rem}
+@media(max-width:680px){.pp-grid{grid-template-columns:1fr}}
+.pp-card{background:rgba(232,160,48,.06);border:1px solid rgba(232,160,48,.18);border-radius:var(--r);padding:1.25rem;transition:background .2s}
+.pp-card:hover{background:rgba(232,160,48,.1)}
+.pp-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.9rem;color:rgba(232,160,48,.28);line-height:1;margin-bottom:.35rem}
+.pp-title{font-weight:700;font-size:.92rem;color:var(--gd2);margin-bottom:.35rem}
+.pp-desc{font-size:.79rem;color:rgba(255,255,255,.5);line-height:1.55}
+.pp-prazo{margin-top:.65rem;font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+
+/* INADIM STATS */
+.inadim-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:1.8rem}
+.istat{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.3rem;text-align:center}
+.istat-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.9rem;color:var(--gd);line-height:1}
+.istat-sub{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.28rem}
+.istat.good{border-color:rgba(62,201,142,.3);background:rgba(62,201,142,.05)}.istat.good .istat-val{color:var(--green)}
+.istat.warn{border-color:rgba(245,160,48,.25)}.istat.warn .istat-val{color:var(--amber)}
+
+/* MISC */
+footer{border-top:1px solid var(--border);padding:1.6rem;text-align:center}
+footer p{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.07s}.rv-d2{transition-delay:.14s}.rv-d3{transition-delay:.21s}.rv-d4{transition-delay:.28s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--dk)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* LEG */
+#leg-fat,#leg-rec,#leg-marg,#leg-desp,#leg-ina{display:flex;gap:14px;margin-top:9px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Maximiano <span>·</span> Cabo Verde</div>
+  <ul class="nav-links">
+    <li><a onclick="goto('hero')" id="nl-hero" class="active">Início</a></li>
+    <li><a onclick="goto('s-comercial')" id="nl-s-comercial">Comercial</a></li>
+    <li><a onclick="goto('s-receita')" id="nl-s-receita">Receita</a></li>
+    <li><a onclick="goto('s-composicao')" id="nl-s-composicao">Composição</a></li>
+    <li><a onclick="goto('s-dre')" id="nl-s-dre">DRE</a></li>
+    <li><a onclick="goto('s-dist')" id="nl-s-dist">Distribuição</a></li>
+    <li><a onclick="goto('s-margem')" id="nl-s-margem">Margem</a></li>
+    <li><a onclick="goto('s-pe')" id="nl-s-pe">P. Equilíbrio</a></li>
+    <li><a onclick="goto('s-inadim')" id="nl-s-inadim">Inadimplência</a></li>
+    <li><a onclick="goto('s-analise')" id="nl-s-analise">Análise</a></li>
+  </ul>
+  <div class="nav-pill">Jan – Abr 2026 · Confidencial</div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span class="badge-dot"></span>Relatório Estratégico · Confidencial</div>
+      <div class="hero-title">CABO<br/><em>VERDE</em><br/>2026</div>
+      <div class="hero-note">📍 Unidade com maior margem operacional da rede — 70,9% em Abril. Dados completos de receita, despesa e resultado.</div>
+      <p class="hero-sub">Janeiro a Abril · Comercial, Financeiro e Inadimplência · Análise integrada · Recomendações estratégicas.</p>
+      <div class="hero-kpis">
+        <div class="hkpi"><div class="hkpi-val">R$ 916K</div><div class="hkpi-label">Faturamento Jan–Abr</div></div>
+        <div class="hkpi"><div class="hkpi-val">R$ 217K</div><div class="hkpi-label">Receita em caixa</div></div>
+        <div class="hkpi"><div class="hkpi-val">55,8%</div><div class="hkpi-label">Margem média</div></div>
+        <div class="hkpi"><div class="hkpi-val">R$ 699K</div><div class="hkpi-label">Pipeline represado</div></div>
+      </div>
+    </div>
+    <div class="hero-vis">
+      <div class="vis-wrap">
+        <div class="vis-ring"></div>
+        <div class="vis-ring2"></div>
+        <div class="vis-core"><div class="vis-core-v">70,9%</div><div class="vis-core-l">Margem Abr</div></div>
+        <div class="vis-dot vd1" style="font-size:.5rem">R$<br/>916K</div>
+        <div class="vis-dot vd2" style="font-size:.5rem">31<br/>DEV</div>
+        <div class="vis-dot vd3" style="font-size:.5rem">R$<br/>217K</div>
+        <div class="vis-dot vd4" style="font-size:.5rem">R$<br/>125K</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ COMERCIAL ══ -->
+<section id="s-comercial" style="background:var(--nv)">
+  <div class="container">
+    <div class="sec-label rv">Comercial</div>
+    <h2 class="sec-title rv rv-d1">Faturamento e <em>Meta</em></h2>
+    <p class="sec-body rv rv-d2">Março foi o mês de maior captação do quadrimestre — R$ 375K em contratos firmados. Abril apresentou a melhor conversão: 70,5% da meta de receita atingida, confirmando aceleração comercial.</p>
+
+    <div class="kpi-strip kpi-strip-4 rv rv-d2">
+      <div class="kpi"><div class="kval">R$ 134K</div><div class="kdelta delta-warn">Meta 47,7%</div><div class="klabel">Janeiro</div></div>
+      <div class="kpi"><div class="kval">R$ 150K</div><div class="kdelta delta-warn">Meta 42,5%</div><div class="klabel">Fevereiro</div></div>
+      <div class="kpi"><div class="kval">R$ 375K</div><div class="kdelta delta-up">Pico do quadrimestre ★</div><div class="klabel">Março</div></div>
+      <div class="kpi"><div class="kval">R$ 256K</div><div class="kdelta delta-up">Meta 70,5% ↑</div><div class="klabel">Abril</div></div>
+    </div>
+
+    <div class="chart2col rv rv-d3">
+      <div class="chart-box">
+        <div class="chart-title">Faturamento mensal vs meta comercial (R$ mil)</div>
+        <div style="position:relative;height:260px"><canvas id="c-fat"></canvas></div>
+        <div id="leg-fat"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">% de atingimento da meta de receita por mês</div>
+        <div style="padding:.5rem 0">
+          <div class="pbar-wrap"><div class="pbar-label"><span>Janeiro</span><span style="color:var(--amber)">47,7%</span></div><div class="pbar"><div class="pbar-fill" style="width:47.7%;background:var(--amber)"></div></div></div>
+          <div class="pbar-wrap" style="margin-top:.8rem"><div class="pbar-label"><span>Fevereiro</span><span style="color:var(--red)">42,5%</span></div><div class="pbar"><div class="pbar-fill" style="width:42.5%;background:var(--red)"></div></div></div>
+          <div class="pbar-wrap" style="margin-top:.8rem"><div class="pbar-label"><span>Março</span><span style="color:var(--amber)">47,7%</span></div><div class="pbar"><div class="pbar-fill" style="width:47.7%;background:var(--amber)"></div></div></div>
+          <div class="pbar-wrap" style="margin-top:.8rem"><div class="pbar-label"><span>Abril</span><span style="color:var(--green)">70,5% ↑</span></div><div class="pbar"><div class="pbar-fill" style="width:70.5%;background:var(--green)"></div></div></div>
+          <div style="margin-top:1.2rem;padding:.7rem .9rem;background:rgba(14,168,154,.07);border-left:2px solid var(--teal);border-radius:0 6px 6px 0;font-size:.8rem;color:rgba(255,255,255,.62);line-height:1.55">
+            Meta mensal de receita: <strong style="color:var(--gd)">R$ 104.167</strong>. Abril foi o único mês acima de 70%. A trajetória é de alta — Cabo Verde está acelerando.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-box rv rv-d4" style="margin-top:1.3rem;overflow-x:auto">
+      <div class="chart-title">Faturamento vs receita em caixa — % de conversão por mês</div>
+      <table class="ftable">
+        <thead><tr>
+          <th style="text-align:left">Mês</th><th>Faturamento</th><th>Receita (Caixa)</th><th>Represado</th><th>% Conversão</th><th style="text-align:center">Leitura</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Janeiro</td><td>R$ 134.016</td><td>R$ 49.682</td><td class="tv-a">R$ 84.334</td><td class="tv-a">37,1%</td><td style="text-align:center"><span class="badge b-warn">Moderada</span></td></tr>
+          <tr><td>Fevereiro</td><td>R$ 150.286</td><td>R$ 44.270</td><td class="tv-r">R$ 106.016</td><td class="tv-r">29,5%</td><td style="text-align:center"><span class="badge b-red">Baixa</span></td></tr>
+          <tr><td>Março</td><td>R$ 375.182</td><td>R$ 49.737</td><td class="tv-r">R$ 325.445</td><td class="tv-r">13,3%</td><td style="text-align:center"><span class="badge b-red">Pico represado</span></td></tr>
+          <tr><td>Abril</td><td>R$ 256.398</td><td>R$ 73.406</td><td class="tv-a">R$ 182.992</td><td class="tv-a">28,6%</td><td style="text-align:center"><span class="badge b-warn">Melhorando</span></td></tr>
+          <tr><td><strong>Jan–Abr</strong></td><td><strong>R$ 915.882</strong></td><td><strong>R$ 217.095</strong></td><td class="tv-a"><strong>R$ 698.787</strong></td><td class="tv-a"><strong>23,7%</strong></td><td style="text-align:center"><span class="badge b-warn">Pipeline ativo</span></td></tr>
+        </tbody>
+      </table>
+      <div class="pipe-box" style="margin-top:1.1rem">
+        <div class="pipe-label">Pipeline financeiro represado</div>
+        <div class="pipe-val">R$ 698.787</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.58);margin-top:.5rem;line-height:1.65">
+          Honorários faturados que ainda não converteram para o caixa. No modelo previdenciário, contratos assinados levam em média <strong style="color:var(--gd2)">1 a 2 anos</strong> para gerar receita — dependendo do andamento do processo e concessão do benefício. <strong style="color:var(--teal)">Março represou R$ 325K em um único mês</strong>, o que indica volume expressivo de contratos novos que gerarão caixa ao longo de 2026 e 2027.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ RECEITA ══ -->
+<section id="s-receita" style="background:var(--dk)">
+  <div class="container">
+    <div class="sec-label rv">Receita Operacional</div>
+    <h2 class="sec-title rv rv-d1">Receita em <em>Caixa</em></h2>
+    <p class="sec-body rv rv-d2">A receita em caixa de Abril (R$ 73,4K) foi o melhor resultado do quadrimestre — 65,8% acima da média dos três meses anteriores. A tendência de alta é o sinal mais importante do período.</p>
+
+    <div class="kpi-strip kpi-strip-5 rv rv-d2">
+      <div class="kpi"><div class="kval">R$ 49,7K</div><div class="kdelta delta-warn">+18% vs meta</div><div class="klabel">Janeiro</div></div>
+      <div class="kpi"><div class="kval">R$ 44,3K</div><div class="kdelta delta-dn">Menor mês</div><div class="klabel">Fevereiro</div></div>
+      <div class="kpi"><div class="kval">R$ 49,7K</div><div class="kdelta delta-warn">Estável</div><div class="klabel">Março</div></div>
+      <div class="kpi"><div class="kval">R$ 73,4K</div><div class="kdelta delta-up">Melhor mês ★</div><div class="klabel">Abril</div></div>
+      <div class="kpi"><div class="kval">R$ 217K</div><div class="kdelta delta-cv">Acumulado</div><div class="klabel">Jan–Abr</div></div>
+    </div>
+
+    <div class="chart2col rv rv-d3">
+      <div class="chart-box">
+        <div class="chart-title">Receita mensal em caixa (R$ mil)</div>
+        <div style="position:relative;height:260px"><canvas id="c-rec"></canvas></div>
+        <div id="leg-rec"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Cabo Verde vs média do grupo — receita relativa</div>
+        <div style="display:flex;flex-direction:column;justify-content:center;height:260px;gap:1rem;padding:.5rem 0">
+          <div>
+            <div style="font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem">Receita média mensal</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+              <div style="background:rgba(14,168,154,.08);border:1px solid rgba(14,168,154,.25);border-radius:8px;padding:.8rem;text-align:center">
+                <div style="font-size:1.2rem;font-weight:700;color:var(--teal)">R$ 54,3K</div>
+                <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem">Cabo Verde</div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:.8rem;text-align:center">
+                <div style="font-size:1.2rem;font-weight:700;color:var(--muted)">R$ 325K</div>
+                <div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem">Média grupo</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem">Participação na receita consolidada</div>
+            <div style="height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden"><div style="height:100%;width:16.7%;background:var(--teal);border-radius:4px"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:.3rem;font-size:.72rem;color:rgba(255,255,255,.45)"><span>Cabo Verde 16,7%</span><span>Restante 83,3%</span></div>
+          </div>
+          <div style="padding:.7rem .9rem;background:rgba(14,168,154,.07);border-left:2px solid var(--teal);border-radius:0 6px 6px 0;font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.55">
+            Cabo Verde tem menor receita absoluta mas <strong style="color:var(--teal)">maior margem da rede</strong>. Com 16,7% da receita gera resultado proporcional superior ao grupo pela estrutura de custo enxuta.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ COMPOSIÇÃO DE RECEITA ══ -->
+<section id="s-composicao" style="background:var(--nv)">
+  <div class="container">
+    <div class="sec-label rv">Mix de Receita</div>
+    <h2 class="sec-title rv rv-d1">Composição da <em>Receita</em></h2>
+    <p class="sec-body rv rv-d2">Cabo Verde está expandindo além do previdenciário. O Cível representa 40,4% da receita do quadrimestre — uma base mais diversificada do que a maioria das unidades da rede. Março e Abril mostram tendência de maior concentração no previdenciário, o que merece acompanhamento.</p>
+
+    <div class="kpi-strip kpi-strip-3 rv rv-d2">
+      <div class="kpi"><div class="kval">R$ 129,7K</div><div class="kdelta delta-cv">59,8% da receita</div><div class="klabel">Previdenciário Total</div></div>
+      <div class="kpi"><div class="kval">R$ 87,7K</div><div class="kdelta delta-warn">40,4% da receita</div><div class="klabel">Honorários Cível + RPV</div></div>
+      <div class="kpi"><div class="kval">R$ 15,7K</div><div class="kdelta delta-up">7,2% da receita</div><div class="klabel">Serviços, Consultas e Outros</div></div>
+    </div>
+
+    <div class="chart2col rv rv-d3">
+      <div class="chart-box">
+        <div class="chart-title">Mix de receita — quadrimestre Jan–Abr (R$)</div>
+        <div style="position:relative;height:280px"><canvas id="c-comp-pie"></canvas></div>
+        <div id="leg-comp-pie" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Prev. Total vs Cível vs Outros — evolução mensal (R$ mil)</div>
+        <div style="position:relative;height:280px"><canvas id="c-comp-mensal"></canvas></div>
+        <div id="leg-comp-mensal" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)"></div>
+      </div>
+    </div>
+
+    <div class="chart-box rv rv-d4" style="margin-top:1.3rem;overflow-x:auto">
+      <div class="chart-title">Dependência do previdenciário — % da receita mensal</div>
+      <div style="position:relative;height:220px"><canvas id="c-dep-prev"></canvas></div>
+      <div style="margin-top:.9rem;padding:.7rem 1rem;background:rgba(14,168,154,.06);border-left:2px solid var(--teal);border-radius:0 6px 6px 0;font-size:.8rem;color:rgba(255,255,255,.62);line-height:1.6">
+        📌 Jan e Fev mantiveram equilíbrio saudável (~50% prev / 50% cível). Março e Abril aumentaram a dependência previdenciária (72,7% e 67,3%). <strong style="color:var(--teal)">Isso não é necessariamente negativo</strong> — a área previdenciária é o core do escritório. Mas diversificar o Cível é uma proteção contra a variação de fluxo de RPV/precatórios.
+      </div>
+    </div>
+  </div>
+</section>
+<section id="s-dre" style="background:var(--nv)">
+  <div class="container">
+    <div class="sec-label rv">DRE Completa</div>
+    <h2 class="sec-title rv rv-d1">Receita, Despesa e <em>Resultado</em></h2>
+    <p class="sec-body rv rv-d2">Demonstrativo completo de resultado — todas as linhas abertas. Fevereiro foi o mês mais pressionado pelo custo: R$ 6,2K em custas de clientes e R$ 3,2K em endomarketing elevaram a despesa e comprimiram a margem para 31,5%.</p>
+
+    <div class="chart-box rv rv-d2" style="overflow-x:auto;margin-bottom:1.3rem">
+      <div class="chart-title">DRE completa — Cabo Verde Jan–Abr 2026 (R$)</div>
+      <table class="ftable">
+        <thead><tr>
+          <th style="text-align:left">Linha</th><th>Jan/26</th><th>Fev/26</th><th>Mar/26</th><th>Abr/26</th><th>Total</th>
+        </tr></thead>
+        <tbody>
+          <tr style="background:rgba(14,168,154,.04)"><td colspan="6" style="text-align:left;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);padding:.55rem .88rem">RECEITA</td></tr>
+          <tr><td style="padding-left:1.5rem">Hon. Prev. Administrativo</td><td>18.533</td><td>17.288</td><td>36.168</td><td>30.987</td><td class="tv-gd">102.976</td></tr>
+          <tr><td style="padding-left:1.5rem">Consultas</td><td>1.250</td><td>1.800</td><td>1.850</td><td>1.200</td><td class="tv-gd">6.100</td></tr>
+          <tr><td style="padding-left:1.5rem">Hon. Prev. Judicial</td><td>6.030</td><td>2.286</td><td>—</td><td>18.431</td><td class="tv-gd">26.747</td></tr>
+          <tr><td style="padding-left:1.5rem">Hon. Civil</td><td>21.212</td><td>20.990</td><td>6.936</td><td>21.428</td><td class="tv-gd">70.566</td></tr>
+          <tr><td style="padding-left:1.5rem">Hon. Criminal</td><td>500</td><td>1.000</td><td>1.000</td><td>—</td><td class="tv-gd">2.500</td></tr>
+          <tr><td style="padding-left:1.5rem">Serviços / Taxa / MEI</td><td>2.156</td><td>905</td><td>3.783</td><td>1.360</td><td class="tv-gd">8.204</td></tr>
+          <tr style="font-weight:700;background:rgba(9,26,46,.6)"><td>TOTAL RECEITA</td><td class="tv-t">49.682</td><td class="tv-t">44.270</td><td class="tv-t">49.737</td><td class="tv-t">73.406</td><td class="tv-gd">217.095</td></tr>
+
+          <tr style="background:rgba(240,96,96,.04)"><td colspan="6" style="text-align:left;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);padding:.55rem .88rem">CUSTOS E DESPESAS</td></tr>
+          <tr><td style="padding-left:1.5rem">Simples Nacional</td><td class="tv-r">-5.082</td><td class="tv-r">-3.778</td><td class="tv-r">-2.606</td><td class="tv-r">-2.610</td><td class="tv-r">-14.076</td></tr>
+          <tr><td style="padding-left:1.5rem">Salários + Encargos</td><td class="tv-r">-4.201</td><td class="tv-r">-5.003</td><td class="tv-r">-5.497</td><td class="tv-r">-6.445</td><td class="tv-r">-21.146</td></tr>
+          <tr><td style="padding-left:1.5rem">Pró-labore</td><td>—</td><td class="tv-r">-4.863</td><td class="tv-r">-4.863</td><td class="tv-r">-4.853</td><td class="tv-r">-14.579</td></tr>
+          <tr><td style="padding-left:1.5rem">Repasse Advogados</td><td>—</td><td>—</td><td>—</td><td class="tv-r">-407</td><td class="tv-r">-407</td></tr>
+          <tr><td style="padding-left:1.5rem">Custas de Clientes</td><td class="tv-r">-3.610</td><td class="tv-r" style="font-weight:700">-6.185</td><td class="tv-r">-50</td><td class="tv-r">-669</td><td class="tv-r">-10.514</td></tr>
+          <tr><td style="padding-left:1.5rem">Endomarketing</td><td class="tv-r">-962</td><td class="tv-r" style="font-weight:700">-3.188</td><td class="tv-r">-200</td><td>—</td><td class="tv-r">-4.350</td></tr>
+          <tr><td style="padding-left:1.5rem">Aluguel</td><td class="tv-r">-3.800</td><td class="tv-r">-3.800</td><td class="tv-r">-3.800</td><td class="tv-r">-3.800</td><td class="tv-r">-15.200</td></tr>
+          <tr><td style="padding-left:1.5rem">Software e Aplicativos</td><td class="tv-r">-703</td><td class="tv-r">-733</td><td class="tv-r">-757</td><td class="tv-r">-758</td><td class="tv-r">-2.951</td></tr>
+          <tr><td style="padding-left:1.5rem">Energia / Água / Internet</td><td class="tv-r">-612</td><td class="tv-r">-807</td><td class="tv-r">-869</td><td class="tv-r">-1.005</td><td class="tv-r">-3.293</td></tr>
+          <tr><td style="padding-left:1.5rem">Máquinas / Material / Outros</td><td class="tv-r">-1.038</td><td class="tv-r">-1.983</td><td class="tv-r">-220</td><td class="tv-r">-840</td><td class="tv-r">-4.081</td></tr>
+          <tr style="font-weight:700;background:rgba(9,26,46,.6)"><td>TOTAL DESPESAS</td><td class="tv-r">-20.008</td><td class="tv-r">-30.340</td><td class="tv-r">-19.862</td><td class="tv-r">-21.387</td><td class="tv-r">-91.597</td></tr>
+
+          <tr style="font-weight:700;background:rgba(14,168,154,.06);border-top:1px solid rgba(14,168,154,.2)">
+            <td>RESULTADO OPERACIONAL</td>
+            <td class="tv-t">29.674</td><td class="tv-t">13.930</td><td class="tv-t">29.875</td><td class="tv-g" style="font-weight:900">52.019</td>
+            <td class="tv-gd" style="font-weight:900">125.498</td>
+          </tr>
+          <tr style="font-weight:700;background:rgba(9,26,46,.6)">
+            <td>MARGEM OPERACIONAL</td>
+            <td class="tv-t">59,7%</td><td class="tv-r">31,5%</td><td class="tv-t">60,1%</td><td class="tv-g" style="font-weight:900">70,9%</td>
+            <td class="tv-gd" style="font-weight:900">57,8%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:.9rem;display:flex;gap:.7rem;flex-wrap:wrap">
+        <div style="padding:.5rem .9rem;background:rgba(240,96,96,.07);border-left:2px solid var(--red);border-radius:0 6px 6px 0;font-size:.77rem;color:rgba(240,96,96,.8);flex:1;min-width:220px">⚠ <strong>Fevereiro</strong> — Custas de clientes (R$6,2K) + endomarketing (R$3,2K) foram os principais responsáveis pela queda de margem para 31,5%.</div>
+        <div style="padding:.5rem .9rem;background:rgba(62,201,142,.06);border-left:2px solid var(--green);border-radius:0 6px 6px 0;font-size:.77rem;color:rgba(62,201,142,.8);flex:1;min-width:220px">★ <strong>Abril</strong> — Melhor resultado: R$52K com margem 70,9%. Custas zeradas e Simples baixo resultaram na maior eficiência do quadrimestre.</div>
+      </div>
+    </div>
+
+    <div class="chart2col rv rv-d3">
+      <div class="chart-box">
+        <div class="chart-title">Receita vs Despesa — evolução mensal (R$ mil)</div>
+        <div style="position:relative;height:260px"><canvas id="c-desp"></canvas></div>
+        <div id="leg-desp"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Resultado operacional mensal (R$ mil)</div>
+        <div style="position:relative;height:260px"><canvas id="c-res"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ DISTRIBUIÇÃO DE LUCROS ══ -->
+<section id="s-dist" style="background:var(--dk)">
+  <div class="container">
+    <div class="sec-label rv">Remuneração das Sócias</div>
+    <h2 class="sec-title rv rv-d1">Distribuição de <em>Lucros</em></h2>
+    <p class="sec-body rv rv-d2">Total de R$ 95.072 distribuído entre as três sócias no quadrimestre — R$ 31.691 por sócia. Apresentado em regime de competência: valores referentes a cada mês, independente da data de pagamento.</p>
+
+    <div style="background:rgba(232,160,48,.07);border:1px solid rgba(232,160,48,.2);border-radius:8px;padding:.85rem 1.2rem;margin-bottom:1.8rem;font-size:.82rem;color:rgba(232,160,48,.85);line-height:1.6" class="rv rv-d2">
+      📌 <strong>Nota sobre regime de competência:</strong> os valores são apresentados no mês a que se referem. O pagamento ocorre no mês seguinte — ex: a distribuição de Janeiro foi paga em 03/02/2026. A distribuição de <strong>Abril (R$ 38.072)</strong> foi paga em 04/05/2026, fora do período Jan–Abr, mas é apresentada aqui por competência.
+    </div>
+
+    <div class="kpi-strip kpi-strip-4 rv rv-d2">
+      <div class="kpi"><div class="kval">R$ 21.000</div><div class="kdelta delta-up">R$ 7.000 / sócia</div><div class="klabel">Janeiro</div></div>
+      <div class="kpi"><div class="kval">R$ 15.000</div><div class="kdelta delta-warn">R$ 5.000 / sócia</div><div class="klabel">Fevereiro</div></div>
+      <div class="kpi"><div class="kval">R$ 21.000</div><div class="kdelta delta-up">R$ 7.000 / sócia</div><div class="klabel">Março</div></div>
+      <div class="kpi"><div class="kval">R$ 38.072</div><div class="kdelta delta-up">R$ 12.691 / sócia ★</div><div class="klabel">Abril — maior mês</div></div>
+    </div>
+
+    <div class="chart2col rv rv-d3">
+      <div class="chart-box">
+        <div class="chart-title">Distribuição de lucros vs resultado operacional (R$ mil)</div>
+        <div style="position:relative;height:280px"><canvas id="c-dist-bar"></canvas></div>
+        <div id="leg-dist-bar" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Saldo retido em caixa após distribuição (R$)</div>
+        <div style="position:relative;height:280px"><canvas id="c-dist-saldo"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-box rv rv-d4" style="margin-top:1.3rem;overflow-x:auto">
+      <div class="chart-title">DRE com distribuição de lucros — visão completa</div>
+      <table class="ftable">
+        <thead><tr>
+          <th style="text-align:left">Indicador</th><th>Jan/26</th><th>Fev/26</th><th>Mar/26</th><th>Abr/26</th><th>Quadrimestre</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Receita</td><td>R$ 49.682</td><td>R$ 44.270</td><td>R$ 49.737</td><td>R$ 73.406</td><td class="tv-gd">R$ 217.095</td></tr>
+          <tr><td>Despesas Operacionais</td><td class="tv-r">-R$ 20.008</td><td class="tv-r">-R$ 30.340</td><td class="tv-r">-R$ 19.862</td><td class="tv-r">-R$ 21.387</td><td class="tv-r">-R$ 91.597</td></tr>
+          <tr><td><strong>Resultado Operacional</strong></td><td class="tv-t">R$ 29.674</td><td class="tv-t">R$ 13.930</td><td class="tv-t">R$ 29.875</td><td class="tv-t">R$ 52.019</td><td class="tv-gd">R$ 125.498</td></tr>
+          <tr><td>Margem Operacional</td><td class="tv-t">59,7%</td><td class="tv-a">31,5%</td><td class="tv-t">60,1%</td><td class="tv-g">70,9%</td><td class="tv-gd">57,8%</td></tr>
+          <tr><td>Distribuição de Lucros</td><td class="tv-r">-R$ 21.000</td><td class="tv-r">-R$ 15.000</td><td class="tv-r">-R$ 21.000</td><td class="tv-r">-R$ 38.072</td><td class="tv-r">-R$ 95.072</td></tr>
+          <tr><td>% Distribuído do Resultado</td><td class="tv-a">70,8%</td><td class="tv-r" style="font-weight:700">107,7% ⚠</td><td class="tv-a">70,3%</td><td class="tv-a">73,2%</td><td class="tv-a">75,8%</td></tr>
+          <tr><td><strong>Saldo Retido em Caixa</strong></td><td class="tv-g">R$ 8.674</td><td class="tv-r">-R$ 1.070</td><td class="tv-g">R$ 8.875</td><td class="tv-g">R$ 13.947</td><td class="tv-gd">R$ 30.426</td></tr>
+          <tr><td>Margem Líquida (após dist.)</td><td>17,5%</td><td class="tv-r">-2,4%</td><td>17,8%</td><td class="tv-g">19,0%</td><td class="tv-gd">14,0%</td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:.7rem;margin-top:.9rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px;padding:.65rem .9rem;background:rgba(240,96,96,.07);border-left:2px solid var(--red);border-radius:0 6px 6px 0;font-size:.78rem;color:rgba(240,96,96,.85);line-height:1.55">⚠ <strong>Fevereiro:</strong> distribuição de R$ 15.000 superou o resultado operacional de R$ 13.930 em R$ 1.070. Em meses de resultado mais baixo, monitorar o valor da retirada para evitar descapitalização.</div>
+        <div style="flex:1;min-width:220px;padding:.65rem .9rem;background:rgba(62,201,142,.06);border-left:2px solid var(--green);border-radius:0 6px 6px 0;font-size:.78rem;color:rgba(62,201,142,.85);line-height:1.55">★ <strong>Abril:</strong> melhor saldo retido do quadrimestre — R$ 13.947 no caixa após R$ 38.072 distribuídos. A unidade cresceu e distribuiu mais, mantendo reserva positiva.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ MARGEM ══ -->
+<section id="s-margem" style="background:var(--dk)">
+  <div class="container">
+    <div class="sec-label rv">Rentabilidade</div>
+    <h2 class="sec-title rv rv-d1">Margem <em>Operacional</em></h2>
+    <p class="sec-body rv rv-d2">Cabo Verde tem a maior margem da rede em todos os meses do quadrimestre. A estrutura enxuta — sem ajuda de custo, sem grandes repasses, sem equipe superdimensionada — é o diferencial competitivo que precisa ser preservado e documentado como modelo.</p>
+
+    <div class="chart-box rv rv-d2" style="margin-bottom:1.3rem">
+      <div class="chart-title">Margem operacional — evolução mensal (%) · Cabo Verde vs Comparativos</div>
+      <div style="position:relative;height:280px"><canvas id="c-marg"></canvas></div>
+      <div id="leg-marg"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem" class="rv rv-d3">
+      <div class="mcard">
+        <div class="mcard-head" style="background:rgba(62,201,142,.05);border-bottom:1px solid rgba(62,201,142,.15)">
+          <div class="mcard-name">Janeiro</div>
+          <div class="mcard-val" style="color:var(--green)">59,7%</div>
+          <span class="badge b-green" style="margin-top:.35rem;display:inline-block">Forte</span>
+        </div>
+        <div class="mcard-body">
+          <div class="mcard-row"><span class="lbl">Receita</span><span>R$ 49.682</span></div>
+          <div class="mcard-row"><span class="lbl">Despesa</span><span class="tv-r">R$ 20.008</span></div>
+          <div class="mcard-row"><span class="lbl">Resultado</span><span class="tv-t">R$ 29.674</span></div>
+          <div class="mcard-row"><span class="lbl">vs Grupo</span><span class="tv-g">+21,8 p.p.</span></div>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-head" style="background:rgba(240,96,96,.05);border-bottom:1px solid rgba(240,96,96,.12)">
+          <div class="mcard-name">Fevereiro</div>
+          <div class="mcard-val" style="color:var(--amber)">31,5%</div>
+          <span class="badge b-warn" style="margin-top:.35rem;display:inline-block">Comprimida</span>
+        </div>
+        <div class="mcard-body">
+          <div class="mcard-row"><span class="lbl">Receita</span><span>R$ 44.270</span></div>
+          <div class="mcard-row"><span class="lbl">Despesa</span><span class="tv-r">R$ 30.340</span></div>
+          <div class="mcard-row"><span class="lbl">Resultado</span><span class="tv-a">R$ 13.930</span></div>
+          <div class="mcard-row"><span class="lbl">Causa</span><span class="tv-r" style="font-size:.7rem">Custas + Endo</span></div>
+        </div>
+      </div>
+      <div class="mcard">
+        <div class="mcard-head" style="background:rgba(62,201,142,.05);border-bottom:1px solid rgba(62,201,142,.15)">
+          <div class="mcard-name">Março</div>
+          <div class="mcard-val" style="color:var(--green)">60,1%</div>
+          <span class="badge b-green" style="margin-top:.35rem;display:inline-block">Forte</span>
+        </div>
+        <div class="mcard-body">
+          <div class="mcard-row"><span class="lbl">Receita</span><span>R$ 49.737</span></div>
+          <div class="mcard-row"><span class="lbl">Despesa</span><span class="tv-r">R$ 19.862</span></div>
+          <div class="mcard-row"><span class="lbl">Resultado</span><span class="tv-t">R$ 29.875</span></div>
+          <div class="mcard-row"><span class="lbl">vs Grupo</span><span class="tv-g">+24,9 p.p.</span></div>
+        </div>
+      </div>
+      <div class="mcard" style="border-color:rgba(62,201,142,.25)">
+        <div class="mcard-head" style="background:rgba(62,201,142,.09);border-bottom:1px solid rgba(62,201,142,.2)">
+          <div class="mcard-name">Abril — Melhor mês</div>
+          <div class="mcard-val" style="color:var(--green)">70,9%</div>
+          <span class="badge b-green" style="margin-top:.35rem;display:inline-block">Recorde ★</span>
+        </div>
+        <div class="mcard-body">
+          <div class="mcard-row"><span class="lbl">Receita</span><span>R$ 73.406</span></div>
+          <div class="mcard-row"><span class="lbl">Despesa</span><span class="tv-r">R$ 21.387</span></div>
+          <div class="mcard-row"><span class="lbl">Resultado</span><span class="tv-g" style="font-weight:700">R$ 52.019</span></div>
+          <div class="mcard-row"><span class="lbl">vs Grupo</span><span class="tv-g">+44,4 p.p.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ PONTO DE EQUILÍBRIO ══ -->
+<section id="s-pe" style="background:var(--nv)">
+  <div class="container">
+    <div class="sec-label rv">Sustentabilidade Operacional</div>
+    <h2 class="sec-title rv rv-d1">Ponto de <em>Equilíbrio</em></h2>
+    <p class="sec-body rv rv-d2">Com custos fixos médios de R$ 15.535/mês, Cabo Verde precisa de R$ 18.276 em receita para cobrir a operação. Incluindo a distribuição de lucros como referência de retirada, o PE sobe para a faixa de R$ 36K a R$ 63K dependendo do mês.</p>
+
+    <div class="kpi-strip kpi-strip-3 rv rv-d2">
+      <div class="kpi"><div class="kval">R$ 15.535</div><div class="kdelta delta-cv">Custo fixo mensal médio</div><div class="klabel">Estrutura operacional</div></div>
+      <div class="kpi"><div class="kval">R$ 18.276</div><div class="kdelta delta-up">PE operacional</div><div class="klabel">Sem distribuição</div></div>
+      <div class="kpi"><div class="kval">R$ 46.239</div><div class="kdelta delta-warn">PE médio com dist.</div><div class="klabel">Média quadrimestral</div></div>
+    </div>
+
+    <div class="chart-box rv rv-d3" style="margin-bottom:1.3rem">
+      <div class="chart-title">Receita vs Ponto de Equilíbrio — mensal (R$)</div>
+      <div style="position:relative;height:280px"><canvas id="c-pe-chart"></canvas></div>
+      <div id="leg-pe" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)"></div>
+    </div>
+
+    <div class="chart-box rv rv-d4" style="overflow-x:auto">
+      <div class="chart-title">Análise do ponto de equilíbrio — mês a mês</div>
+      <table class="ftable">
+        <thead><tr>
+          <th style="text-align:left">Mês</th>
+          <th>Receita</th>
+          <th>PE Operacional</th>
+          <th>Folga Op.</th>
+          <th>PE c/ Distribuição</th>
+          <th>Folga c/ Dist.</th>
+          <th style="text-align:center">Status</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>Janeiro</td><td>R$ 49.682</td><td>R$ 18.276</td>
+            <td class="tv-g">+R$ 31.406</td>
+            <td>R$ 42.982</td><td class="tv-g">+R$ 6.700</td>
+            <td style="text-align:center"><span class="badge b-green">Seguro ✓</span></td>
+          </tr>
+          <tr>
+            <td>Fevereiro</td><td>R$ 44.270</td><td>R$ 18.276</td>
+            <td class="tv-g">+R$ 25.994</td>
+            <td>R$ 35.924</td><td class="tv-g">+R$ 8.346</td>
+            <td style="text-align:center"><span class="badge b-green">Seguro ✓</span></td>
+          </tr>
+          <tr>
+            <td>Março</td><td>R$ 49.737</td><td>R$ 18.276</td>
+            <td class="tv-g">+R$ 31.461</td>
+            <td>R$ 42.982</td><td class="tv-g">+R$ 6.755</td>
+            <td style="text-align:center"><span class="badge b-green">Seguro ✓</span></td>
+          </tr>
+          <tr>
+            <td>Abril</td><td>R$ 73.406</td><td>R$ 18.276</td>
+            <td class="tv-g">+R$ 55.130</td>
+            <td>R$ 63.067</td><td class="tv-g">+R$ 10.339</td>
+            <td style="text-align:center"><span class="badge b-green">Forte ★</span></td>
+          </tr>
+          <tr>
+            <td><strong>Média Quadrimestral</strong></td>
+            <td><strong>R$ 54.274</strong></td>
+            <td><strong>R$ 18.276</strong></td>
+            <td class="tv-g"><strong>+R$ 35.998</strong></td>
+            <td><strong>R$ 46.239</strong></td>
+            <td class="tv-g"><strong>+R$ 8.035</strong></td>
+            <td style="text-align:center"><span class="badge b-green">Sustentável ✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:.9rem;padding:.65rem .9rem;background:rgba(14,168,154,.07);border-left:2px solid var(--teal);border-radius:0 6px 6px 0;font-size:.8rem;color:rgba(255,255,255,.62);line-height:1.6">
+        ★ Cabo Verde ficou acima do ponto de equilíbrio em todos os 4 meses — tanto operacional quanto com distribuição incluída. Para fechar no positivo após a retirada das sócias, a receita mínima necessária em meses de retirada padrão (R$ 21K) é de <strong style="color:var(--teal)">R$ 43K/mês</strong>. Todos os meses ficaram confortavelmente acima.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ INADIMPLÊNCIA ══ -->
+<section id="s-inadim" style="background:var(--nv)">
+  <div class="container">
+    <div class="sec-label rv">Gestão de Crédito</div>
+    <h2 class="sec-title rv rv-d1">Inadimplência <em>Cabo Verde</em></h2>
+    <p class="sec-body rv rv-d2">Cabo Verde é a única unidade da rede com queda expressiva de inadimplência em 2026. De R$ 17.095 em todo 2025 para R$ 3.222 nos primeiros 4 meses — o que indica melhora nas práticas de cobrança e perfil de cliente.</p>
+
+    <div class="inadim-3 rv rv-d2">
+      <div class="istat warn"><div class="istat-val">R$ 27.323</div><div class="istat-sub">Carteira total histórica</div></div>
+      <div class="istat good"><div class="istat-val">R$ 3.222</div><div class="istat-sub">2026 — queda vs 2025 ↓</div></div>
+      <div class="istat"><div class="istat-val">31</div><div class="istat-sub">Devedores únicos</div></div>
+    </div>
+
+    <div class="chart2col rv rv-d3" style="margin-bottom:1.3rem">
+      <div class="chart-box">
+        <div class="chart-title">Histórico de inadimplência por ano (R$)</div>
+        <div style="position:relative;height:240px"><canvas id="c-ina"></canvas></div>
+        <div id="leg-ina"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Segmentação da carteira atual</div>
+        <div style="display:flex;flex-direction:column;justify-content:center;height:240px;gap:.8rem;padding:.3rem 0">
+          <div>
+            <div class="pbar-label" style="font-size:.72rem"><span style="color:var(--red)">Inadimplente ativo</span><span style="color:var(--red)">R$ 7.359</span></div>
+            <div class="pbar"><div class="pbar-fill" style="width:26.9%;background:var(--red)"></div></div>
+          </div>
+          <div>
+            <div class="pbar-label" style="font-size:.72rem"><span style="color:var(--amber)">Status Cabo Verde</span><span style="color:var(--amber)">R$ 18.865</span></div>
+            <div class="pbar"><div class="pbar-fill" style="width:69%;background:var(--amber)"></div></div>
+          </div>
+          <div>
+            <div class="pbar-label" style="font-size:.72rem"><span style="color:var(--muted)">Contactar cliente</span><span style="color:var(--muted)">R$ 1.100</span></div>
+            <div class="pbar"><div class="pbar-fill" style="width:4.1%;background:var(--muted)"></div></div>
+          </div>
+          <div style="padding:.65rem .9rem;background:rgba(62,201,142,.07);border-left:2px solid var(--green);border-radius:0 6px 6px 0;font-size:.79rem;color:rgba(255,255,255,.6);line-height:1.55;margin-top:.5rem">
+            ★ Cabo Verde é a <strong style="color:var(--green)">única unidade com queda em 2026</strong> — R$ 3.222 vs R$ 17.095 em todo 2025. Queda de 81%. Boas práticas a documentar.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP 5 DEVEDORES -->
+    <div class="sec-label rv" style="margin-bottom:.8rem">Top 5 Devedores — Ação Recomendada</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.1rem" class="rv rv-d3">
+      <div class="dev-card" style="border-color:rgba(240,96,96,.3);background:rgba(240,96,96,.04)">
+        <div class="dev-rank" style="color:var(--red)">01</div>
+        <div class="dev-name">Rovilson Morais Ribeiro</div>
+        <div class="dev-val">R$ 4.554</div>
+        <span class="badge b-warn">3 parcelas · desde 2025</span>
+        <div class="dev-items">
+          <div class="dev-item">Maior devedor da unidade — prioridade máxima</div>
+          <div class="dev-item">3 parcelas em aberto com status ativo</div>
+        </div>
+        <div class="dev-action">Ação: Notificação formal com boleto + aviso de protesto. Prazo 7 dias. Ivana inicia imediatamente.</div>
+      </div>
+      <div class="dev-card" style="border-color:rgba(240,96,96,.3);background:rgba(240,96,96,.04)">
+        <div class="dev-rank" style="color:var(--red)">02</div>
+        <div class="dev-name">Silvia Mara De Assis</div>
+        <div class="dev-val">R$ 3.848</div>
+        <span class="badge b-red">26 parcelas · desde 2024</span>
+        <div class="dev-items">
+          <div class="dev-item">26 parcelas acumuladas — dívida crônica</div>
+          <div class="dev-item">Status: Inadimplente — sem acordo desde 2024</div>
+        </div>
+        <div class="dev-action">Ação: Encaminhar para Dr. Iago imediatamente — dívida acima de R$2K com histórico longo indica impossibilidade de acordo amigável.</div>
+      </div>
+      <div class="dev-card" style="border-color:rgba(245,160,48,.25);background:rgba(245,160,48,.04)">
+        <div class="dev-rank" style="color:var(--amber)">03</div>
+        <div class="dev-name">Ligia Miliani Congiu Moraes</div>
+        <div class="dev-val">R$ 2.752</div>
+        <span class="badge b-warn">2 parcelas · desde 2025</span>
+        <div class="dev-items">
+          <div class="dev-item">2 parcelas recentes — possibilidade de acordo</div>
+          <div class="dev-item">Acima de R$2K — elegível para judicial</div>
+        </div>
+        <div class="dev-action">Ação: Notificação extrajudicial formal. Se não houver resposta em 15 dias, encaminhar para Dr. Iago.</div>
+      </div>
+      <div class="dev-card" style="border-color:rgba(245,160,48,.25);background:rgba(245,160,48,.04)">
+        <div class="dev-rank" style="color:var(--amber)">04</div>
+        <div class="dev-name">Regiane Aparecida dos Santos Lucas</div>
+        <div class="dev-val">R$ 2.510</div>
+        <span class="badge b-red">7 parcelas · desde 2023</span>
+        <div class="dev-items">
+          <div class="dev-item">7 parcelas — dívida persistente desde 2023</div>
+          <div class="dev-item">Status: Inadimplente — 2+ anos sem solução</div>
+        </div>
+        <div class="dev-action">Ação: Encaminhar para judicial. Dívida acima de R$2K com histórico de 2 anos sem acordo — via administrativa esgotada.</div>
+      </div>
+    </div>
+    <div class="dev-card rv rv-d4" style="margin-top:1.1rem;border-color:rgba(62,201,142,.2);background:rgba(62,201,142,.04)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap">
+        <div>
+          <div class="dev-rank" style="color:var(--green)">05</div>
+          <div class="dev-name">Aparecido Alves (Cido)</div>
+          <div class="dev-val">R$ 1.635</div>
+          <span class="badge b-green">3 parcelas · desde 2025</span>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div class="dev-items" style="margin-top:.8rem">
+            <div class="dev-item">3 parcelas recentes — possibilidade de negociação</div>
+            <div class="dev-item">Abaixo do piso judicial — cobrança administrativa</div>
+          </div>
+          <div class="dev-action" style="margin-top:.6rem">Ação: Cobrança ativa por WhatsApp + ligação. Oferecer parcelamento ou desconto nos juros para fechar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.3rem;padding:1rem 1.3rem;background:rgba(232,160,48,.07);border:1px solid rgba(232,160,48,.2);border-radius:var(--r);display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap" class="rv rv-d4">
+      <div>
+        <div style="font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem">Potencial de recuperação — Top 5</div>
+        <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2rem;color:var(--gd)">R$ 15.299</div>
+      </div>
+      <div style="font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.65;flex:1;min-width:220px">
+        Os 5 maiores devedores representam <strong style="color:var(--gd2)">56% da carteira total</strong>. Com ações direcionadas — notificação formal, judicial para Silvia Mara e Regiane, e cobrança ativa para os demais — é possível recuperar parcela significativa ainda em 2026.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ ANÁLISE INTEGRADA ══ -->
+<section id="s-analise" style="background:var(--dk)">
+  <div class="container">
+    <div class="sec-label rv">Visão Estratégica</div>
+    <h2 class="sec-title rv rv-d1">Análise Integrada e <em>Recomendações</em></h2>
+    <p class="sec-body rv rv-d2">Cruzamento entre comercial, financeiro e inadimplência. Cada R$1 faturado em Abril converteu R$0,286 em receita — e desse R$0,286, R$0,203 foi resultado líquido. O modelo operacional de Cabo Verde é o mais eficiente da rede.</p>
+
+    <!-- Análise integrada -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin:2rem 0" class="rv rv-d2">
+      <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.3rem;text-align:center">
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">De R$ 1 faturado</div>
+        <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2.8rem;color:var(--gd);line-height:1">R$0,24</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.48);margin-top:.35rem">chegou ao caixa (quadrimestre)</div>
+        <div style="margin-top:.6rem;font-size:.75rem;color:rgba(14,168,154,.8)">Melhor: Abril R$0,29</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.3rem;text-align:center">
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">De R$ 1 de receita</div>
+        <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2.8rem;color:var(--green);line-height:1">R$0,58</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.48);margin-top:.35rem">virou resultado (margem média)</div>
+        <div style="margin-top:.6rem;font-size:.75rem;color:var(--green)">Grupo: R$0,38</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.3rem;text-align:center">
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Pipeline a receber</div>
+        <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:2.8rem;color:var(--amber);line-height:1">R$699K</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.48);margin-top:.35rem">faturado e não recebido</div>
+        <div style="margin-top:.6rem;font-size:.75rem;color:var(--amber)">Março: R$325K represados</div>
+      </div>
+    </div>
+
+    <!-- Recomendações -->
+    <div class="rec-grid rv rv-d3">
+      <div class="rec-card">
+        <div class="rec-num">01</div>
+        <div class="rec-title">Acelerar conversão de pipeline</div>
+        <div class="rec-body">Março gerou R$375K em faturamento e apenas R$49K de receita — a maior defasagem do período. Com processos previdenciários em andamento, o trabalho é mapear quais causas estão próximas de concessão e priorizá-las no acompanhamento. Um processo finalizado hoje pode converter em caixa nos próximos 30 a 90 dias. Sugestão: criar uma lista mensal dos 10 processos mais próximos de recebimento e acompanhar semanalmente.</div>
+        <span class="rec-tag">Curto prazo</span>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">02</div>
+        <div class="rec-title">Cobrança focada nos top 5</div>
+        <div class="rec-body">R$15.299 recuperáveis com ações direcionadas. Silvia Mara (26 parcelas desde 2024) e Regiane (7 parcelas desde 2023) precisam ir para judicial imediatamente — o caminho amigável está esgotado. Rovilson Morais (R$4.554) é prioridade da Ivana com notificação formal. Aparecido pode negociar parcelamento. Recuperando apenas os 2 primeiros o caixa recebe mais de R$8.400.</div>
+        <span class="rec-tag">Imediato</span>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">03</div>
+        <div class="rec-title">Meta de receita — consistência em Abril</div>
+        <div class="rec-body">Abril atingiu 70,5% da meta de receita — o melhor resultado do quadrimestre e o único que se aproximou da meta de R$104K. Para fechar a meta anual de R$1,25M, Cabo Verde precisa de média de R$127K/mês de Maio a Dezembro. Isso representa um crescimento de 72% em relação à média de Jan–Abr. O pipeline de R$699K já faturado será a principal fonte desse crescimento — a chave é acelerar o recebimento dos processos em andamento.</div>
+        <span class="rec-tag">Médio prazo</span>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">04</div>
+        <div class="rec-title">Modelo operacional como benchmark</div>
+        <div class="rec-body">Com despesa média de R$22,9K/mês e margem de 57,8% no quadrimestre — chegando a 70,9% em Abril — Cabo Verde tem a estrutura operacional mais eficiente da rede. Sem ajuda de custo, sem repasses expressivos, com equipe enxuta e infraestrutura controlada. Sugere-se documentar o modelo de gestão de custos — incluindo como são gerenciadas as custas de clientes (R$10,5K no quadrimestre, com pico de R$6,2K em Fevereiro) — e compartilhar como referência para as demais unidades.</div>
+        <span class="rec-tag">Estratégico</span>
+      </div>
+    </div>
+
+    <!-- Projeção de fechamento -->
+    <div class="chart-box rv rv-d4" style="margin-top:2rem">
+      <div class="chart-title">Projeção de fechamento anual — Cabo Verde 2026</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border2);border-radius:var(--r);overflow:hidden;margin-bottom:1rem">
+        <div style="background:var(--card);padding:1.1rem;text-align:center">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">Meta Anual</div>
+          <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--gd)">R$ 1,25M</div>
+        </div>
+        <div style="background:var(--card);padding:1.1rem;text-align:center">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">Realizado Jan–Abr</div>
+          <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--teal)">R$ 217K</div>
+        </div>
+        <div style="background:rgba(240,96,96,.05);border-left:1px solid rgba(240,96,96,.12);padding:1.1rem;text-align:center">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem">Projeção (ritmo atual)</div>
+          <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--red)">R$ 651K</div>
+          <div style="font-size:.66rem;color:rgba(240,96,96,.6);margin-top:.15rem">R$54K × 8 + R$217K</div>
+        </div>
+        <div style="background:rgba(240,96,96,.05);border-left:1px solid rgba(240,96,96,.12);padding:1.1rem;text-align:center">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem">Gap projetado</div>
+          <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--red)">-R$ 599K</div>
+          <div style="font-size:.66rem;color:rgba(240,96,96,.6);margin-top:.15rem">se não acelerar</div>
+        </div>
+      </div>
+      <div style="background:rgba(232,160,48,.07);border:1px solid rgba(232,160,48,.2);border-radius:8px;padding:.85rem 1.1rem;font-size:.82rem;color:rgba(245,192,96,.9);line-height:1.6">
+        ★ Para fechar a meta de R$1,25M: necessário <strong>R$ 127K/mês</strong> de Maio a Dezembro — +134% sobre a média de Jan–Abr. O pipeline de R$699K represado é o principal ativo para viabilizar essa aceleração. Abril (R$73,4K) já mostrou que é possível chegar mais perto — o foco é manter e crescer esse ritmo.
+      </div>
+    </div>
+
+    <!-- Próximos passos -->
+    <div class="sec-label rv" style="margin-top:3rem">Agenda Q2</div>
+    <h3 class="rv rv-d1" style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.6rem;color:var(--wh);margin-bottom:.2rem">Próximos <em style="color:var(--gd)">Passos</em></h3>
+    <div class="pp-grid rv rv-d2">
+      <div class="pp-card">
+        <div class="pp-num">01</div>
+        <div class="pp-title">Cobrança Ativa — Top 5</div>
+        <div class="pp-desc">Ivana inicia Rovilson e Aparecido (notificação + boleto). Dr. Iago recebe Silvia Mara e Regiane para ajuizamento imediato. Ligia com notificação extrajudicial.</div>
+        <div class="pp-prazo">Início: Imediato</div>
+      </div>
+      <div class="pp-card">
+        <div class="pp-num">02</div>
+        <div class="pp-title">Mapeamento de Pipeline</div>
+        <div class="pp-desc">Levantar os 10 processos mais próximos de concessão/recebimento. Acompanhar semanalmente para antecipar entradas de caixa e melhorar a conversão de faturamento.</div>
+        <div class="pp-prazo">Até: Junho/2026</div>
+      </div>
+      <div class="pp-card">
+        <div class="pp-num">03</div>
+        <div class="pp-title">Meta Receita — R$ 127K/mês</div>
+        <div class="pp-desc">Ritmo necessário de Maio a Dezembro para fechar R$1,25M. Abril mostrou que R$73K é alcançável. O pipeline represado e a sazonalidade favorável do 2º semestre são os principais vetores.</div>
+        <div class="pp-prazo">Meta: Dez/2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+<footer>
+  <p>Maximiano Cabo Verde · Relatório Estratégico Jan–Abr 2026 · Jean Barbosa, CEO · Documento Confidencial · Maio 2026</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.color='rgba(255,255,255,.4)';
+Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.plugins.datalabels={display:false};
+
+function fK(v){if(Math.abs(v)>=1e6)return'R$'+(v/1e6).toFixed(2).replace('.',',')+'M';if(Math.abs(v)>=1000)return'R$'+Math.round(v/1000)+'K';return'R$'+Math.round(v);}
+function mkLeg(id,items){const el=document.getElementById(id);if(!el)return;el.innerHTML=items.map(([c,l])=>`<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${c};display:inline-block"></span>${l}</span>`).join('');}
+
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('section[id]').forEach(s=>{
+    const el=document.getElementById('nl-'+s.id);if(!el)return;
+    const r=s.getBoundingClientRect();el.classList.toggle('active',r.top<=80&&r.bottom>80);
+  });
+},{passive:true});
+
+const rObs=new IntersectionObserver(e=>e.forEach(e2=>{if(e2.isIntersecting)e2.target.classList.add('in')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>rObs.observe(el));
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+// DATA
+const MESES=['Jan','Fev','Mar','Abr'];
+const FAT=[134016,150286,375182,256398];
+const REC=[49682,44270,49737,73406];
+const DESP=[20008,30340,19862,21387];
+const RES=[29674,13930,29875,52019];
+const MARG=[59.7,31.5,60.1,70.9];
+const META_REC=104166.67;
+const META_FAT=[202619,234049,184432,316796]; // metas mensais do comercial para CV
+
+// Faturamento vs meta comercial
+setTimeout(()=>{
+  new Chart(document.getElementById('c-fat').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Meta Comercial',data:META_FAT,backgroundColor:'rgba(232,160,48,.18)',borderColor:'rgba(232,160,48,.5)',borderWidth:1.5,borderRadius:4,datalabels:{display:false}},
+      {label:'Faturamento',data:FAT,backgroundColor:'rgba(14,168,154,.75)',borderColor:'rgba(14,168,154,1)',borderWidth:1.5,borderRadius:4,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(14,168,154,1)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'18%'},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-fat',[['rgba(232,160,48,.4)','Meta Comercial'],['rgba(14,168,154,.75)','Faturamento']]);
+},100);
+
+// Receita
+setTimeout(()=>{
+  new Chart(document.getElementById('c-rec').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Meta Receita',data:[META_REC,META_REC,META_REC,META_REC],backgroundColor:'rgba(232,160,48,.15)',borderColor:'rgba(232,160,48,.4)',borderWidth:1.5,borderRadius:4,datalabels:{display:false}},
+      {label:'Receita',data:REC,backgroundColor:REC.map(v=>v>=META_REC?'rgba(62,201,142,.8)':'rgba(20,196,180,.7)'),borderWidth:1.5,borderRadius:4,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(14,168,154,1)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'18%'},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-rec',[['rgba(232,160,48,.3)','Meta Receita (R$104K)'],['rgba(20,196,180,.7)','Receita em Caixa']]);
+},150);
+
+// Despesa vs receita
+setTimeout(()=>{
+  new Chart(document.getElementById('c-desp').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Receita',data:REC,backgroundColor:'rgba(14,168,154,.75)',borderColor:'rgba(14,168,154,1)',borderWidth:1.5,borderRadius:4,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(14,168,154,1)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+      {label:'Despesa',data:DESP,backgroundColor:'rgba(240,96,96,.55)',borderColor:'rgba(240,96,96,.8)',borderWidth:1.5,borderRadius:4,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(240,96,96,.9)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'18%'},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-desp',[['rgba(14,168,154,.75)','Receita'],['rgba(240,96,96,.55)','Despesa']]);
+},200);
+
+// Resultado
+setTimeout(()=>{
+  new Chart(document.getElementById('c-res').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[{
+      label:'Resultado',data:RES,
+      backgroundColor:['rgba(14,168,154,.7)','rgba(245,160,48,.7)','rgba(14,168,154,.7)','rgba(62,201,142,.85)'],
+      borderRadius:6,borderWidth:1.5,
+      datalabels:{display:true,anchor:'end',align:'end',offset:2,color:['rgba(14,168,154,1)','rgba(245,160,48,1)','rgba(14,168,154,1)','rgba(62,201,142,1)'],font:{weight:'700',size:9},formatter:v=>fK(v)}
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Resultado: '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'18%'},x:{grid:{display:false}}}}
+  });
+},250);
+
+// Margem
+setTimeout(()=>{
+  new Chart(document.getElementById('c-marg').getContext('2d'),{
+    type:'line',
+    data:{labels:MESES,datasets:[
+      {label:'Cabo Verde',data:MARG,borderColor:'#3EC98E',backgroundColor:'rgba(62,201,142,.1)',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#3EC98E',tension:.3,fill:true,
+        datalabels:{display:true,anchor:'end',align:'end',offset:4,color:'#3EC98E',font:{weight:'700',size:10},formatter:v=>v+'%'}},
+      {label:'Média Grupo',data:[43.7,27.3,49.2,26.6],borderColor:'rgba(232,160,48,.5)',backgroundColor:'transparent',borderWidth:1.5,borderDash:[6,4],pointRadius:3,tension:.3,datalabels:{display:false}},
+      {label:'Poços de Caldas',data:[29.6,-118.2,44.0,-14.6],borderColor:'rgba(107,132,168,.45)',backgroundColor:'transparent',borderWidth:1.5,borderDash:[3,3],pointRadius:3,tension:.3,datalabels:{display:false}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-marg',[['#3EC98E','Cabo Verde'],['rgba(232,160,48,.6)','Média Grupo'],['rgba(107,132,168,.6)','Poços de Caldas']]);
+},300);
+
+// Inadimplência histórico
+setTimeout(()=>{
+  const anos=['2022','2023','2024','2025','2026*'];
+  const vals=[1100,340,5565,17096,3223];
+  const cols=['rgba(14,168,154,.65)','rgba(14,168,154,.65)','rgba(245,160,48,.75)','rgba(240,96,96,.8)','rgba(62,201,142,.85)'];
+  new Chart(document.getElementById('c-ina').getContext('2d'),{
+    type:'bar',
+    data:{labels:anos,datasets:[{
+      label:'Inadimplência (R$)',data:vals,backgroundColor:cols,borderRadius:5,borderWidth:1.5,
+      datalabels:{display:true,anchor:'end',align:'end',offset:2,color:cols.map(c=>c.replace('.65','1').replace('.75','1').replace('.8','1').replace('.85','1')),font:{weight:'700',size:9},formatter:v=>fK(v)}
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R$ '+c.raw.toLocaleString('pt-BR')}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'20%'},x:{grid:{display:false}}}}
+  });
+},350);
+
+// Composição de receita — pizza quadrimestre
+setTimeout(()=>{
+  const labels=['Prev. Administrativo','Prev. Judicial','Hon. Cível','RPV/Precatório','Consultas','Serviços','Taxa Manutenção','Criminal/Outros'];
+  const vals=[102976,26747,70566,17123,6100,7907,5819,2856];
+  const cols=['#0EA89A','#14C4B4','#E8A030','#F5C060','#3EC98E','#4A90D9','#6B84A8','#9B7DC8'];
+  new Chart(document.getElementById('c-comp-pie').getContext('2d'),{
+    type:'doughnut',
+    data:{labels,datasets:[{data:vals,backgroundColor:cols,borderColor:'rgba(4,17,31,.8)',borderWidth:3,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+fK(c.raw)+' ('+Math.round(c.raw/217095*100)+'%)'}}}}
+  });
+  mkLeg('leg-comp-pie',labels.map((l,i)=>[cols[i],l]));
+},400);
+
+// Composição mensal prev vs cível vs outros
+setTimeout(()=>{
+  const cv_rec=[49682,44270,49737,73406];
+  const prev_adm=[18534,17288,36168,30987];
+  const prev_jud=[6030,2286,0,18431];
+  const civel=[21212,20990,6936,21428];
+  const rpv=[4512,666,0,11947];
+  const outros=cv_rec.map((r,i)=>Math.max(r-prev_adm[i]-prev_jud[i]-civel[i]-rpv[i],0));
+  new Chart(document.getElementById('c-comp-mensal').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Prev. Adm.',data:prev_adm.map(v=>Math.round(v/1000)),backgroundColor:'rgba(14,168,154,.8)',borderRadius:3,stack:'s',datalabels:{display:false}},
+      {label:'Prev. Judicial',data:prev_jud.map(v=>Math.round(v/1000)),backgroundColor:'rgba(20,196,180,.7)',borderRadius:0,stack:'s',datalabels:{display:false}},
+      {label:'Hon. Cível',data:civel.map(v=>Math.round(v/1000)),backgroundColor:'rgba(232,160,48,.8)',borderRadius:0,stack:'s',datalabels:{display:false}},
+      {label:'RPV/Precatório',data:rpv.map(v=>Math.round(v/1000)),backgroundColor:'rgba(245,192,96,.7)',borderRadius:0,stack:'s',datalabels:{display:false}},
+      {label:'Outros',data:outros.map(v=>Math.round(Math.max(v,0)/1000)),backgroundColor:'rgba(107,132,168,.6)',borderRadius:3,stack:'s',datalabels:{display:false}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': R$'+c.raw+'K'}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v*1000)},stacked:true,grace:'10%'},x:{grid:{display:false},stacked:true}}}
+  });
+  mkLeg('leg-comp-mensal',[['rgba(14,168,154,.8)','Prev. Adm.'],['rgba(20,196,180,.7)','Prev. Judicial'],['rgba(232,160,48,.8)','Hon. Cível'],['rgba(245,192,96,.7)','RPV/Precatório'],['rgba(107,132,168,.6)','Outros']]);
+},450);
+
+// Dependência do previdenciário — linha
+setTimeout(()=>{
+  const pct_prev=[49.4,44.2,72.7,67.3];
+  new Chart(document.getElementById('c-dep-prev').getContext('2d'),{
+    type:'line',
+    data:{labels:MESES,datasets:[
+      {label:'% Previdenciário',data:pct_prev,borderColor:'#0EA89A',backgroundColor:'rgba(14,168,154,.12)',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#0EA89A',tension:.3,fill:true,
+        datalabels:{display:true,anchor:'end',align:'end',offset:4,color:'#0EA89A',font:{weight:'700',size:10},formatter:v=>v+'%'}},
+      {label:'50% (equilíbrio)',data:[50,50,50,50],borderColor:'rgba(232,160,48,.35)',borderWidth:1.5,borderDash:[6,4],pointRadius:0,datalabels:{display:false}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>v+'%'},min:0,max:100},x:{grid:{display:false}}}}
+  });
+},500);
+
+// Distribuição de lucros vs resultado
+setTimeout(()=>{
+  const dist=[21000,15000,21000,38072];
+  const res_op=[29674,13930,29875,52019];
+  new Chart(document.getElementById('c-dist-bar').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Resultado Op.',data:res_op,backgroundColor:'rgba(14,168,154,.7)',borderRadius:4,borderWidth:1.5,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(14,168,154,1)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+      {label:'Distribuição',data:dist,backgroundColor:'rgba(232,160,48,.6)',borderRadius:4,borderWidth:1.5,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(232,160,48,.9)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'18%'},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-dist-bar',[['rgba(14,168,154,.7)','Resultado Operacional'],['rgba(232,160,48,.6)','Distribuição de Lucros']]);
+},550);
+
+// Saldo retido após distribuição
+setTimeout(()=>{
+  const saldo=[8674,-1070,8875,13947];
+  new Chart(document.getElementById('c-dist-saldo').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[{
+      label:'Saldo Retido',data:saldo,
+      backgroundColor:saldo.map(v=>v>=0?'rgba(62,201,142,.75)':'rgba(240,96,96,.7)'),
+      borderRadius:6,borderWidth:1.5,
+      datalabels:{display:true,anchor:ctx=>saldo[ctx.dataIndex]>=0?'end':'start',align:ctx=>saldo[ctx.dataIndex]>=0?'end':'end',offset:2,
+        color:saldo.map(v=>v>=0?'rgba(62,201,142,1)':'rgba(240,96,96,1)'),font:{weight:'700',size:9},formatter:v=>fK(v)}
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Saldo: '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'20%'},x:{grid:{display:false}}}}
+  });
+},600);
+
+// Ponto de equilíbrio
+setTimeout(()=>{
+  const pe_op=[18276,18276,18276,18276];
+  const pe_dist=[42982,35924,42982,63067];
+  new Chart(document.getElementById('c-pe-chart').getContext('2d'),{
+    type:'bar',
+    data:{labels:MESES,datasets:[
+      {label:'Receita',data:REC,backgroundColor:'rgba(14,168,154,.65)',borderRadius:4,borderWidth:1.5,
+        datalabels:{display:true,anchor:'end',align:'end',offset:2,color:'rgba(14,168,154,1)',font:{weight:'700',size:9},formatter:v=>fK(v)}},
+      {label:'PE Operacional',data:pe_op,type:'line',borderColor:'rgba(62,201,142,.7)',borderWidth:2,borderDash:[6,3],pointRadius:0,datalabels:{display:false}},
+      {label:'PE c/ Distribuição',data:pe_dist,type:'line',borderColor:'rgba(232,160,48,.7)',borderWidth:2,borderDash:[4,4],pointRadius:4,pointBackgroundColor:'rgba(232,160,48,.8)',datalabels:{display:false}},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fK(c.raw)}},datalabels:{display:false}},
+      scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'15%'},x:{grid:{display:false}}}}
+  });
+  mkLeg('leg-pe',[['rgba(14,168,154,.65)','Receita Mensal'],['rgba(62,201,142,.7)','PE Operacional (R$18K)'],['rgba(232,160,48,.7)','PE c/ Distribuição (variável)']]);
+},650);
+</script>
+</body>
+</html>
