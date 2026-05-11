@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Maximiano — Carteira de Inadimplência · Dr. Iago</title>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  MAXIMIANO ADVOCACIA — CARTEIRA DE INADIMPLÊNCIA · Dr. Iago             ║
+  ║  Versão CORRIGIDA — Maio/2026                                           ║
+  ╠══════════════════════════════════════════════════════════════════════════╣
+  ║  CORREÇÕES REALIZADAS:                                                   ║
+  ║  1. ARRAY DEVEDORES DUPLICADO REMOVIDO — havia dois arrays distintos     ║
+  ║     no arquivo original, o segundo incompleto (sem atualizado/multa/     ║
+  ║     juros/meses) e com faixas incompatíveis ('abaixo2k' em vez de       ║
+  ║     'entre1k2k'/'abaixo1k'). Mantido apenas o primeiro array completo.  ║
+  ║  2. REDECLARAÇÃO DE CONST CORRIGIDA — pre2021/pos2021/statusGroups       ║
+  ║     eram declarados 2x com const → ReferenceError bloqueava todos os    ║
+  ║     gráficos e listas.                                                   ║
+  ║  3. FUNÇÕES DUPLICADAS REMOVIDAS — statusBadge, unidBadge, getAction,   ║
+  ║     devCardHTML, toggleDev, showTab definidas 2x.                        ║
+  ║  4. RENDER LISTS DUPLICADO REMOVIDO — listas renderizadas 2x, sendo     ║
+  ║     a segunda com ID inválido ('list-abaixo2k' inexistente no HTML).     ║
+  ║  5. GRÁFICOS CORRIGIDOS — agora calculam dados dinamicamente do array   ║
+  ║     DEVEDORES em vez de valores hardcoded desatualizados.                ║
+  ║  6. DEVCARD MELHORADO — usa contador único para IDs evitando colisões   ║
+  ║     ao renderizar o mesmo devedor em múltiplas abas.                     ║
+  ║  7. NOVA ABA ANÁLISE JURÍDICA — separação automática em:                ║
+  ║     Ajuizamento Imediato / Análise Prescricional / Cobrança Admin.      ║
+  ║  8. ABA ATUALIZAÇÃO MELHORADA — ganho % individual, destaque visual,   ║
+  ║     alerta prescrição, ranking maiores atualizados.                      ║
+  ║  9. HERO KPIS E TEXTOS dinâmicos via JS.                                ║
+  ║  10. KPIs de bruto vs atualizado adicionados no painel geral.           ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<style>
+:root{
+  --dk:#06101E;--nv:#0D1B3E;--nv2:#112252;--nv3:#1A3060;
+  --gd:#F5A623;--gd2:#FFD080;
+  --wh:#FFFFFF;--muted:#7A8FB5;--card:#0F1F45;
+  --border:rgba(245,166,35,.18);--border2:rgba(255,255,255,.07);
+  --green:#5FCF8A;--red:#FF7070;--amber:#FFB84A;--r:12px;
+  --teal:#0EA89A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;background:rgba(6,16,30,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1rem;letter-spacing:.12em;color:var(--gd);text-transform:uppercase}
+.nav-brand span{color:rgba(255,255,255,.3);margin:0 .4rem}
+.nav-pill{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:.18rem .7rem;border-radius:20px}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:60px;
+  background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(255,112,112,.18) 0%,transparent 65%),
+  radial-gradient(ellipse 30% 30% at 92% 72%,rgba(245,166,35,.1) 0%,transparent 55%),var(--dk);
+  position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px);background-size:60px 60px}
+.hero-inner{max-width:1140px;margin:0 auto;padding:0 2rem;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,112,112,.1);border:1px solid rgba(255,112,112,.3);border-radius:20px;padding:.35rem 1rem;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;font-weight:700}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hero-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(2.8rem,6vw,5.5rem);line-height:.92;color:var(--wh);margin-bottom:.6rem}
+.hero-title em{color:var(--gd);font-style:normal}
+.hero-sub{font-size:.92rem;color:rgba(255,255,255,.5);max-width:560px;line-height:1.7;margin-bottom:2rem}
+.hero-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:2.5rem}
+.hkpi{background:rgba(13,27,62,.65);padding:1.1rem 1rem;text-align:center}
+.hkpi-val{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.65rem;color:var(--gd);line-height:1}
+.hkpi-val.red{color:var(--red)}
+.hkpi-val.green{color:var(--green)}
+.hkpi-val.amber{color:var(--amber)}
+.hkpi-label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+@media(max-width:900px){.hero-kpis{grid-template-columns:repeat(2,1fr)}}
+
+/* TABS */
+.tabs-wrap{max-width:1140px;margin:0 auto;padding:0 2rem}
+.tabs-bar{display:flex;gap:4px;background:rgba(255,255,255,.04);padding:5px;border-radius:10px;border:1px solid var(--border2);margin-bottom:2rem;flex-wrap:wrap}
+.tab-btn{padding:.5rem 1.1rem;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:none;background:transparent;border-radius:7px;cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap}
+.tab-btn.active{background:var(--nv3);color:var(--gd);border:1px solid var(--border)}
+.tab-btn:hover:not(.active){color:rgba(255,255,255,.7);background:rgba(255,255,255,.05)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* LAYOUT */
+.container{max-width:1140px;margin:0 auto;padding:0 2rem 4rem}
+.sec-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gd);font-weight:700;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::before{content:'';width:18px;height:2px;background:var(--gd);border-radius:1px}
+.sec-title{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1;margin-bottom:.5rem}
+.sec-title em{color:var(--gd);font-style:normal}
+.sec-body{color:rgba(255,255,255,.5);max-width:620px;font-size:.9rem;line-height:1.75;margin-bottom:1.8rem}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1.6rem 0}
+.kpi-strip-4{grid-template-columns:repeat(4,1fr)}
+.kpi-strip-3{grid-template-columns:repeat(3,1fr)}
+.kpi-strip-5{grid-template-columns:repeat(5,1fr)}
+.kpi-strip-6{grid-template-columns:repeat(6,1fr)}
+.kpi{background:rgba(13,27,62,.7);padding:1.2rem .9rem;text-align:center}
+.kval{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.6rem;color:var(--gd);line-height:1}
+.kdelta{display:inline-block;font-size:.67rem;font-weight:700;padding:.1rem .48rem;border-radius:20px;margin:.22rem 0;letter-spacing:.03em}
+.delta-up{background:rgba(95,207,138,.14);color:var(--green)}
+.delta-dn{background:rgba(255,112,112,.1);color:var(--red)}
+.delta-warn{background:rgba(255,184,74,.1);color:var(--amber)}
+.klabel{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.kpi-strip-4,.kpi-strip-5,.kpi-strip-6{grid-template-columns:repeat(2,1fr)}}
+
+/* CHARTS */
+.chart-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.5rem;margin-bottom:1.3rem}
+.chart-title{font-size:.67rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;font-weight:700}
+.chart2col{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:1.3rem}
+@media(max-width:700px){.chart2col{grid-template-columns:1fr}}
+
+/* BADGES */
+.badge{font-size:.67rem;font-weight:700;padding:.16rem .52rem;border-radius:20px}
+.b-red{background:rgba(255,112,112,.12);color:var(--red)}
+.b-green{background:rgba(95,207,138,.12);color:var(--green)}
+.b-warn{background:rgba(255,184,74,.1);color:var(--amber)}
+.b-teal{background:rgba(14,168,154,.12);color:var(--teal)}
+.b-muted{background:rgba(255,255,255,.06);color:var(--muted)}
+.b-gold{background:rgba(245,166,35,.12);color:var(--gd)}
+
+/* DEVEDOR CARDS */
+.dev-list{display:flex;flex-direction:column;gap:.7rem}
+.dev-row{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.1rem 1.3rem;display:grid;grid-template-columns:auto 1fr auto;gap:.8rem 1.2rem;align-items:center;transition:border-color .2s,background .2s;cursor:pointer}
+.dev-row:hover{border-color:rgba(245,166,35,.3);background:rgba(15,31,69,.9)}
+.dev-rank{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.8rem;color:rgba(245,166,35,.25);line-height:1;min-width:36px;text-align:center}
+.dev-info{}
+.dev-nome{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+.dev-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.75rem;color:var(--muted)}
+.dev-valor{text-align:right}
+.dev-valor-num{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.4rem;color:var(--gd);line-height:1}
+.dev-parcelas{font-size:.65rem;color:var(--muted);margin-top:.15rem}
+
+/* EXPANDABLE DETAIL */
+.dev-detail{display:none;padding:.9rem 1.3rem 1.1rem;background:rgba(13,27,62,.6);border-top:1px solid var(--border2);border-radius:0 0 var(--r) var(--r);margin-top:-1px}
+.dev-detail.open{display:block}
+.dev-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem 1.2rem;margin-bottom:.7rem}
+.dd-item{}
+.dd-label{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+.dd-val{font-size:.88rem;font-weight:600}
+.dev-action-box{padding:.65rem .9rem;border-radius:8px;font-size:.8rem;line-height:1.55;margin-top:.5rem}
+.action-judicial{background:rgba(255,112,112,.08);border-left:3px solid var(--red);color:rgba(255,112,112,.9)}
+.action-admin{background:rgba(245,166,35,.07);border-left:3px solid var(--gd);color:rgba(245,166,35,.85)}
+.action-interna{background:rgba(14,168,154,.07);border-left:3px solid var(--teal);color:rgba(14,168,154,.9)}
+.action-caduca{background:rgba(255,255,255,.04);border-left:3px solid var(--muted);color:var(--muted)}
+
+/* UNIDADE SECTION */
+.unid-header{background:rgba(13,27,62,.8);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.5rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s}
+.unid-header:hover{background:rgba(26,48,96,.8)}
+.unid-name{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.5rem;color:var(--gd)}
+.unid-stats{display:flex;gap:1.5rem;align-items:center}
+.unid-stat{text-align:right}
+.unid-stat-val{font-size:1.1rem;font-weight:700;color:var(--wh)}
+.unid-stat-label{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.unid-toggle{font-size:.8rem;color:var(--muted)}
+.unid-body{display:none}
+.unid-body.open{display:block}
+
+/* YEAR GROUP */
+.year-group{margin-bottom:1.5rem}
+.year-header{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;padding:.5rem .9rem;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid var(--border2);cursor:pointer}
+.year-label{font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.3rem;color:var(--gd)}
+.year-stats{font-size:.78rem;color:var(--muted)}
+.year-toggle{margin-left:auto;font-size:.75rem;color:var(--muted)}
+.year-body{display:none}
+.year-body.open{display:block}
+
+/* STATUS SECTION */
+.status-group{margin-bottom:1.5rem}
+.status-header{padding:1rem 1.3rem;border-radius:var(--r);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:opacity .2s}
+.status-header:hover{opacity:.85}
+.status-title{font-weight:700;font-size:.95rem}
+.status-meta{font-size:.78rem;color:rgba(255,255,255,.55)}
+.status-body{display:none;padding:.8rem 0}
+.status-body.open{display:block}
+
+/* RANKING BARS */
+.rank-bar-wrap{margin-bottom:.6rem}
+.rank-bar-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.25rem}
+.rank-bar-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+.rank-bar-val{font-size:.82rem;font-weight:700;color:var(--gd)}
+.rank-bar-track{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.rank-bar-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* ALERT BOXES */
+.alert-box{padding:.85rem 1.1rem;border-radius:8px;font-size:.82rem;line-height:1.6;margin-bottom:1rem}
+.alert-red{background:rgba(255,112,112,.07);border:1px solid rgba(255,112,112,.2);color:rgba(255,112,112,.9)}
+.alert-warn{background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2);color:rgba(245,166,35,.85)}
+.alert-teal{background:rgba(14,168,154,.06);border:1px solid rgba(14,168,154,.2);color:rgba(14,168,154,.9)}
+.alert-prescrição{background:rgba(107,132,168,.08);border:1px solid rgba(107,132,168,.25);color:rgba(200,210,240,.8)}
+
+/* TABELA ATUALIZAÇÃO */
+.tbl-atu tr:hover td{background:rgba(245,166,35,.04)}
+.prescricao-warn{background:rgba(107,132,168,.08)!important;color:var(--muted)!important}
+.prescricao-warn td{opacity:.7}
+.aumento-destaque td:last-child{color:var(--red)!important;font-weight:800}
+
+/* MISC */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2rem 0}
+.rv{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.rv.in{opacity:1;transform:none}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--dk)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Maximiano <span>·</span> Inadimplência</div>
+  <div class="nav-pill">Carteira Completa · Dr. Iago · Confidencial</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="padding-top:80px;padding-bottom:3rem">
+  <div class="hero-grid"></div>
+  <div style="max-width:1140px;margin:0 auto;padding:0 2rem">
+    <div class="hero-badge"><span class="badge-dot"></span>Uso Exclusivo · Dr. Iago · Análise Judicial</div>
+    <h1 class="hero-title">CARTEIRA DE<br/><em>INADIMPLÊNCIA</em></h1>
+    <p class="hero-sub" id="hero-sub">Carregando análise da carteira...</p>
+    <div class="hero-kpis" id="hero-kpis">
+      <div class="hkpi"><div class="hkpi-val red" id="hkpi-total-dev">—</div><div class="hkpi-label">Devedores únicos</div></div>
+      <div class="hkpi"><div class="hkpi-val red" id="hkpi-total-bruto">—</div><div class="hkpi-label">Carteira bruta</div></div>
+      <div class="hkpi"><div class="hkpi-val green" id="hkpi-total-atu">—</div><div class="hkpi-label">Valor atualizado</div></div>
+      <div class="hkpi"><div class="hkpi-val amber" id="hkpi-judicial">—</div><div class="hkpi-label">Acima R$2K — judicial</div></div>
+      <div class="hkpi"><div class="hkpi-val amber" id="hkpi-prescricao">—</div><div class="hkpi-label">Possível prescrição (pré-2021)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('geral',this)">📊 Painel Geral</button>
+    <button class="tab-btn" onclick="showTab('acima2k',this)">⚖️ Acima R$2K</button>
+    <button class="tab-btn" onclick="showTab('entre1k2k',this)">📋 R$1K–R$2K</button>
+    <button class="tab-btn" onclick="showTab('abaixo1k',this)">📋 Abaixo R$1K</button>
+    <button class="tab-btn" onclick="showTab('pre2021',this)">📅 Pré-2021</button>
+    <button class="tab-btn" onclick="showTab('pos2021',this)">📅 Pós-2021</button>
+    <button class="tab-btn" onclick="showTab('unidades',this)">🏢 Por Unidade</button>
+    <button class="tab-btn" onclick="showTab('status',this)">🏷️ Status</button>
+    <button class="tab-btn" onclick="showTab('advogado',this)">👤 Por Advogado</button>
+    <button class="tab-btn" onclick="showTab('juridico',this)">⚖️ Análise Jurídica</button>
+    <button class="tab-btn" onclick="showTab('atualizacao',this)">💰 Atualização</button>
+  </div>
+</div>
+
+<!-- ═══ TAB: PAINEL GERAL ═══ -->
+<div id="tab-geral" class="tab-panel active">
+<div class="container">
+  <div class="sec-label rv">Visão Geral</div>
+  <h2 class="sec-title rv">Painel <em>Executivo</em></h2>
+  <p class="sec-body rv" id="pg-intro">Carregando...</p>
+
+  <!-- KPI bruto vs atualizado -->
+  <div class="kpi-strip kpi-strip-4 rv" id="kpi-bruto-atu"></div>
+
+  <div class="kpi-strip kpi-strip-3 rv" id="kpi-por-unidade"></div>
+
+  <div class="kpi-strip kpi-strip-3 rv" id="kpi-por-faixa"></div>
+
+  <div class="chart2col rv">
+    <div class="chart-box">
+      <div class="chart-title">Devedores por ano de início da dívida</div>
+      <div style="position:relative;height:260px"><canvas id="c-por-ano"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Valor por unidade (R$)</div>
+      <div style="position:relative;height:260px"><canvas id="c-por-unid"></canvas></div>
+      <div id="leg-unid" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <div class="chart2col rv">
+    <div class="chart-box">
+      <div class="chart-title">Segmentação por faixa de valor</div>
+      <div style="position:relative;height:220px"><canvas id="c-faixa"></canvas></div>
+      <div id="leg-faixa" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Carteira por status</div>
+      <div style="position:relative;height:220px"><canvas id="c-status"></canvas></div>
+      <div id="leg-status" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <!-- RANKING TOP 10 -->
+  <div class="sec-label rv" style="margin-top:1rem">Ranking</div>
+  <h3 class="rv" style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.5rem;margin-bottom:1.2rem">Top 10 <em style="color:var(--gd)">Maiores Devedores</em></h3>
+  <div class="chart-box rv">
+    <div id="ranking-bars"></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ TAB: ACIMA R$2K ═══ -->
+<div id="tab-acima2k" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Prioridade Judicial</div>
+  <h2 class="sec-title">Acima de R$2.000 — <em id="tit-acima2k">24 Devedores</em></h2>
+  <p class="sec-body">Carteira prioritária para ajuizamento. Ordenados por valor decrescente.</p>
+  <div class="kpi-strip kpi-strip-4" id="kpi-acima2k-strip"></div>
+  <div class="alert-box alert-red">⚖️ <strong>Nota para o Dr. Iago:</strong> estes devedores representam a maior concentração de valor da carteira. São o foco prioritário para ajuizamento. Verificar prescrição nos casos anteriores a 2021 antes de protocolar. Considerar também os da faixa R$1K–R$2K com multa+juros que já ultrapassam R$2K no valor atualizado.</div>
+  <div class="dev-list" id="list-acima2k"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: R$1K–R$2K ═══ -->
+<div id="tab-entre1k2k" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Faixa Intermediária</div>
+  <h2 class="sec-title">Entre R$1.000 e R$2.000 — <em id="tit-entre1k2k">35 Devedores</em></h2>
+  <p class="sec-body">Faixa que merece análise individual. Correção monetária, juros e honorários advocatícios podem elevar o valor acima do piso judicial.</p>
+  <div class="kpi-strip kpi-strip-4" id="kpi-entre1k2k-strip"></div>
+  <div class="alert-box alert-warn">📋 <strong>Análise caso a caso:</strong> avaliar correção monetária + juros sobre o valor original — vários podem ultrapassar R$2.000 e se tornarem elegíveis para ajuizamento. Priorizar os mais próximos de R$2K e com status "Inadimplente" ativo.</div>
+  <div class="dev-list" id="list-entre1k2k"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: ABAIXO R$1K ═══ -->
+<div id="tab-abaixo1k" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Cobrança Administrativa</div>
+  <h2 class="sec-title">Abaixo de R$1.000 — <em id="tit-abaixo1k">64 Devedores</em></h2>
+  <p class="sec-body">Processo civil inviável nesta faixa. Cobrança administrativa via boleto, WhatsApp e ligação.</p>
+  <div class="kpi-strip kpi-strip-4" id="kpi-abaixo1k-strip"></div>
+  <div class="alert-box" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--muted)">📋 Foco em contato simples — boleto por e-mail + mensagem no WhatsApp. Casos com "Dívida Caduca" ou "Perda/baixa" têm baixíssimo potencial. Priorizar os inadimplentes ativos mais próximos de R$1.000.</div>
+  <div class="dev-list" id="list-abaixo1k"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: PRÉ-2021 ═══ -->
+<div id="tab-pre2021" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Carteira Histórica</div>
+  <h2 class="sec-title">Pré-2021 — <em id="tit-pre2021">Devedores</em></h2>
+  <p class="sec-body">Dívidas originadas antes de 2021. Maioria com status caduca ou perda. Verificar prazo prescricional antes de qualquer ação judicial.</p>
+  <div class="kpi-strip kpi-strip-4" id="kpi-pre2021-strip"></div>
+  <div class="alert-box alert-warn">⏱️ <strong>Atenção prescricional:</strong> dívidas de 2016 e 2017 têm prazo de prescrição de 5 anos para honorários contratuais (CC art. 206, §5º, II). Verificar se há interrupção de prazo antes de ajuizar. Dívidas de 2019–2020 também merecem análise.</div>
+  <div id="list-pre2021-byano"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: PÓS-2021 ═══ -->
+<div id="tab-pos2021" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Carteira Ativa</div>
+  <h2 class="sec-title">Pós-2021 — <em id="tit-pos2021">Devedores</em></h2>
+  <p class="sec-body">Core da carteira ativa. Dívidas com menor risco de prescrição. Subdividido por ano para facilitar priorização.</p>
+  <div class="kpi-strip kpi-strip-5" id="kpi-pos2021-strip"></div>
+  <div id="list-pos2021-byano"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: POR UNIDADE ═══ -->
+<div id="tab-unidades" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Distribuição</div>
+  <h2 class="sec-title">Por <em>Unidade</em></h2>
+  <p class="sec-body">Carteira segmentada por unidade. Clique em cada unidade para expandir a lista completa de devedores.</p>
+  <div id="list-por-unidade"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: POR STATUS ═══ -->
+<div id="tab-status" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Classificação</div>
+  <h2 class="sec-title">Por <em>Status</em></h2>
+  <p class="sec-body">Carteira agrupada por status de cobrança. Cada grupo tem ação recomendada específica.</p>
+  <div id="list-por-status"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: RANKING ADVOGADO ═══ -->
+<div id="tab-advogado" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Responsabilidade</div>
+  <h2 class="sec-title">Ranking por <em>Advogado</em></h2>
+  <p class="sec-body">Carteira de inadimplência agrupada pelo advogado responsável pelo processo. Clique em cada advogado para ver os devedores vinculados.</p>
+  <div class="kpi-strip kpi-strip-4" id="kpi-adv-strip"></div>
+
+  <div class="chart2col" style="margin-bottom:1.3rem">
+    <div class="chart-box">
+      <div class="chart-title">Valor por advogado — principal (R$)</div>
+      <div style="position:relative;height:280px"><canvas id="c-adv-bar"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Principal vs Atualizado por advogado (R$)</div>
+      <div style="position:relative;height:280px"><canvas id="c-adv-comp"></canvas></div>
+      <div id="leg-adv-comp" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-warn" style="margin-bottom:1.2rem">
+    ⚠️ <strong>Atenção:</strong> "Sem Repasse (Maximiano)" representa processos onde o honorário fica 100% com o escritório — maior concentração e maior potencial de recuperação direta. Casos com advogado parceiro exigem alinhamento interno antes de acionar o cliente.
+  </div>
+  <div id="adv-ranking"></div>
+</div>
+</div>
+
+<!-- ═══ TAB: ANÁLISE JURÍDICA ═══ -->
+<div id="tab-juridico" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Estratégia Jurídica</div>
+  <h2 class="sec-title">Análise <em>Jurídica Automática</em></h2>
+  <p class="sec-body">Separação automática da carteira por estratégia jurídica recomendada, com base em valor, data, status e prescrição quinquenal (CC art. 206, §5º, II).</p>
+
+  <div class="kpi-strip kpi-strip-3" id="kpi-juridico-strip"></div>
+
+  <!-- BLOCO 1: AJUIZAMENTO IMEDIATO -->
+  <div style="margin-bottom:2rem">
+    <div class="sec-label" style="margin-bottom:.5rem">⚖️ Ajuizamento Imediato</div>
+    <div class="alert-box alert-red" style="margin-bottom:1rem">
+      <strong>Critérios:</strong> Valor original ≥ R$2.000 + pós-2020 + status Inadimplente ou Potencial de recuperação. Total de devedores e valor calculados dinamicamente abaixo.
+    </div>
+    <div class="kpi-strip kpi-strip-4" id="kpi-jud-imediato"></div>
+    <div class="dev-list" id="list-jud-imediato"></div>
+  </div>
+
+  <!-- BLOCO 2: ANÁLISE PRESCRICIONAL -->
+  <div style="margin-bottom:2rem">
+    <div class="sec-label" style="margin-bottom:.5rem">⏱️ Análise Prescricional</div>
+    <div class="alert-box alert-prescrição" style="margin-bottom:1rem">
+      <strong>Critérios:</strong> Dívidas pré-2021. Prazo prescricional de 5 anos para honorários contratuais (CC art. 206, §5º, II). Verificar interrupção do prazo (reconhecimento, pagamento parcial, citação judicial). Dívidas de 2016 e 2017 estão <em>muito provavelmente prescritas</em> salvo causa interruptiva.
+    </div>
+    <div class="dev-list" id="list-prescrição"></div>
+  </div>
+
+  <!-- BLOCO 3: COBRANÇA ADMINISTRATIVA -->
+  <div style="margin-bottom:2rem">
+    <div class="sec-label" style="margin-bottom:.5rem">📋 Cobrança Administrativa</div>
+    <div class="alert-box alert-warn" style="margin-bottom:1rem">
+      <strong>Critérios:</strong> Valor original abaixo de R$1.000 + status ativo. Processo civil inviável nesta faixa. Acionar Ivana para cobrança por boleto e WhatsApp.
+    </div>
+    <div class="dev-list" id="list-jur-admin"></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ TAB: ATUALIZAÇÃO MONETÁRIA ═══ -->
+<div id="tab-atualizacao" class="tab-panel">
+<div class="container">
+  <div class="sec-label">Correção Monetária</div>
+  <h2 class="sec-title">Atualização <em>Monetária</em></h2>
+  <p class="sec-body">Simulação dos valores atualizados com multa contratual de 2% + juros moratórios de 1% ao mês, calculados até Maio/2026. Fórmula: Principal + (Principal × 2%) + (Principal × 1% × meses em atraso).</p>
+
+  <div class="kpi-strip kpi-strip-4" id="kpi-atu-strip"></div>
+
+  <div class="alert-box alert-teal" style="margin-bottom:1.3rem">
+    📌 <strong>Base de cálculo:</strong> Multa de 2% aplicada uma única vez sobre o principal. Juros de 1% ao mês calculados sobre o principal × número de meses em atraso até Maio/2026. Cláusula típica em contratos de honorários advocatícios. Não substitui análise jurídica do contrato individual.
+  </div>
+
+  <div class="chart2col" style="margin-bottom:1.3rem">
+    <div class="chart-box">
+      <div class="chart-title">Principal vs Atualizado — Top 15 devedores (R$)</div>
+      <div style="position:relative;height:320px"><canvas id="c-atu-bar"></canvas></div>
+      <div id="leg-atu-bar" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Distribuição por tempo de atraso</div>
+      <div style="position:relative;height:320px"><canvas id="c-atu-tempo"></canvas></div>
+      <div id="leg-atu-tempo" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <!-- RANKING MAIORES ATUALIZADOS -->
+  <div class="chart-box" style="margin-bottom:1.3rem">
+    <div class="chart-title">Ranking — Maiores ganhos absolutos pela atualização (Top 10)</div>
+    <div id="ranking-atu-bars"></div>
+  </div>
+
+  <div class="chart-box" style="overflow-x:auto">
+    <div class="chart-title">Tabela completa — valor original vs atualizado por devedor (ordenado por maior atualizado)</div>
+    <div style="display:flex;gap:.5rem;margin-bottom:.8rem;font-size:.72rem;color:var(--muted)">
+      <span style="display:flex;align-items:center;gap:.3rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Atraso +37m</span>
+      <span style="display:flex;align-items:center;gap:.3rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block"></span>Atraso 13–36m</span>
+      <span style="display:flex;align-items:center;gap:.3rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>Atraso 0–12m</span>
+      <span style="display:flex;align-items:center;gap:.3rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block"></span>⚠️ Possível prescrição</span>
+    </div>
+    <table style="width:100%;border-collapse:collapse;min-width:780px" class="tbl-atu">
+      <thead>
+        <tr style="background:rgba(9,26,46,.9)">
+          <th style="padding:.75rem .8rem;text-align:left;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">#</th>
+          <th style="padding:.75rem .8rem;text-align:left;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Devedor</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Principal</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Meses</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Multa 2%</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Juros 1%/mês</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Total Atualizado</th>
+          <th style="padding:.75rem .8rem;text-align:right;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gd);border-bottom:1px solid var(--border)">Ganho %</th>
+        </tr>
+      </thead>
+      <tbody id="atualizacao-list"></tbody>
+      <tfoot id="atualizacao-totais" style="border-top:1px solid var(--border)"></tfoot>
+    </table>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   MAXIMIANO ADVOCACIA — CARTEIRA DE INADIMPLÊNCIA · Dr. Iago
+   Script corrigido — Maio/2026
+   
+   CORREÇÕES TÉCNICAS:
+   - Array DEVEDORES único e completo (removido array duplicado/incompleto)
+   - Funções declaradas uma única vez (removidas todas as duplicações)
+   - Render lists executado uma única vez por lista
+   - Gráficos calculam dados dinamicamente do array em vez de valores hardcoded
+   - Contador global de IDs de devcard para evitar colisões entre abas
+   - KPIs do hero e das abas populados dinamicamente via JS
+════════════════════════════════════════════════════════════════════════ */
+
+Chart.register(ChartDataLabels);
+Chart.defaults.color='rgba(255,255,255,.4)';
+Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
+Chart.defaults.font.size=11;
+Chart.defaults.plugins.datalabels={display:false};
+
+// ─── FORMATADORES ────────────────────────────────────────────────────────────
+function fK(v){if(v>=1e6)return'R$'+(v/1e6).toFixed(2)+'M';if(v>=1000)return'R$'+Math.round(v/1000)+'K';return'R$'+Math.round(v);}
+function fBRL(v){return'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function mkLeg(id,items){const el=document.getElementById(id);if(!el)return;el.innerHTML=items.map(([c,l])=>`<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block"></span>${l}</span>`).join('');}
+
+// ─── DADOS — ARRAY ÚNICO COMPLETO ────────────────────────────────────────────
+// Campos: nome, valor (bruto), atualizado, multa (2%), juros (1%/mês×meses),
+//         meses (em atraso), parcelas, ano (início), unidade, status, advogado,
+//         era (pre2021|pos2021), faixa (acima2k|entre1k2k|abaixo1k), obs
+const DEVEDORES = [
+  {nome:'Francisco Ribeiro',valor:6072.0,atualizado:6436.32,multa:121.44,juros:242.88,meses:4,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'Cliente estava doente na época da concessão, esposa disse que não consegue pagar'},
+  {nome:'Alexandra Marcos',valor:5433.8,atualizado:6357.55,multa:108.68,juros:815.07,meses:15,parcelas:4,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'Cliente recebe auxílio acidente, verificado no extrato de pagamento'},
+  {nome:'Rovilson Morais Ribeiro',valor:4554.0,atualizado:5100.48,multa:91.08,juros:455.4,meses:10,parcelas:3,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Terezinha De Lourdes Dos Reis Souza',valor:4385.46,atualizado:5218.7,multa:87.71,juros:745.53,meses:17,parcelas:6,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Luis Carlos Domingos',valor:4000.0,atualizado:4920.0,multa:80.0,juros:840.0,meses:21,parcelas:10,ano:2024,unidade:'Poços de Caldas',status:'Pendência Advogado',advogado:'Hommer',era:'pos2021',faixa:'acima2k',obs:'Aguardando posição do Dr. Hommer sobre recebimento do cliente'},
+  {nome:'Luciene De Cassia Paulino dos Reis',valor:4000.0,atualizado:4440.0,multa:80.0,juros:360.0,meses:9,parcelas:8,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'Cliente já cobrada várias vezes, fechou serviço recente conosco'},
+  {nome:'João Batista Galdino',valor:3960.0,atualizado:5385.6,multa:79.2,juros:1346.4,meses:34,parcelas:6,ano:2023,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Maylon',era:'pos2021',faixa:'acima2k',obs:'Rapha disse que teve problemas com filha do cliente, só irá pagar o restante'},
+  {nome:'Silvia Mara De Assis',valor:3848.5,atualizado:4964.57,multa:76.97,juros:1039.1,meses:27,parcelas:26,ano:2024,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Maylon',era:'pos2021',faixa:'acima2k',obs:'Várias tentativas de cobrança sem sucesso desde 08/2024'},
+  {nome:'Mario Cezar Braz',valor:3789.6,atualizado:4206.45,multa:75.79,juros:341.06,meses:9,parcelas:5,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Eliana Maria Lemes Teixeira Vales',valor:3672.6,atualizado:4517.3,multa:73.45,juros:771.25,meses:21,parcelas:5,ano:2024,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Maylon',era:'pos2021',faixa:'acima2k',obs:'Cliente é esposa do Julio Cesar Teixeira Vales Lemes, também inadimplente'},
+  {nome:'Paulo Vitor de Souza',valor:3672.6,atualizado:4590.75,multa:73.45,juros:844.7,meses:23,parcelas:5,ano:2024,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Gervasio Antônio Chiminazo Filho',valor:3536.24,atualizado:4950.73,multa:70.72,juros:1343.77,meses:38,parcelas:1,ano:2023,unidade:'Poços de Caldas',status:'Potencial de recuperação',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'Cliente pagou R$ 30 mil, falta R$ 3.535,24 do boleto'},
+  {nome:'Julio Cesar Teixeira Vales Lemes',valor:3477.6,atualizado:4103.57,multa:69.55,juros:556.42,meses:16,parcelas:6,ano:2025,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Maylon',era:'pos2021',faixa:'acima2k',obs:'Processo 0004626-06.2019.8.13.0084 em andamento'},
+  {nome:'Jose Tarciso Venancio',valor:3396.65,atualizado:4042.01,multa:67.93,juros:577.43,meses:17,parcelas:5,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Dione Augusto Bernardes',valor:3106.08,atualizado:3292.44,multa:62.12,juros:124.24,meses:4,parcelas:4,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'João Victor',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Lucila Moreira Domingues',valor:3030.0,atualizado:4423.8,multa:60.6,juros:1333.2,meses:44,parcelas:5,ano:2022,unidade:'Botelhos',status:'Inadimplente',advogado:'Maylon',era:'pos2021',faixa:'acima2k',obs:''},
+  {nome:'Eder Farias Pereira',valor:2975.77,atualizado:3928.02,multa:59.52,juros:892.73,meses:30,parcelas:7,ano:2023,unidade:'Botelhos',status:'Pendência Advogado',advogado:'João Victor',era:'pos2021',faixa:'acima2k',obs:'Sem andamento no sistema, verificar com advogado'},
+  {nome:'Eliedson dos Santos Castro',valor:2960.0,atualizado:3196.8,multa:59.2,juros:177.6,meses:6,parcelas:4,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'João Victor',era:'pos2021',faixa:'acima2k',obs:'João disse que está falando com cliente pelo Instagram'},
+  {nome:'Ligia Miliani Congiu Moraes',valor:2752.95,atualizado:2945.66,multa:55.06,juros:137.65,meses:5,parcelas:2,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'acima2k',obs:'Verificar com Dani o acordo de 03/02/2026'},
+  {nome:'Regiane Aparecida dos Santos Lucas',valor:2510.03,atualizado:3313.24,multa:50.2,juros:753.01,meses:30,parcelas:7,ano:2023,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Maylon | Sociedade Cabo Verde',era:'pos2021',faixa:'acima2k',obs:'COBRAR FIRME, ficou de levar cheque. Se não receber, penhorar.'},
+  {nome:'Claudia dos Santos Rodrigues',valor:2500.0,atualizado:2600.0,multa:50.0,juros:50.0,meses:2,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'A pedido da Raphaela, encaminhado valores ao cliente'},
+  {nome:'Valdirene Gonçalves Frazão',valor:2390.0,atualizado:4325.9,multa:47.8,juros:1888.1,meses:79,parcelas:5,ano:2019,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'acima2k',obs:'Rapha pediu para quitar no sistema'},
+  {nome:'Jose Elias Da Silva',valor:2340.0,atualizado:2480.4,multa:46.8,juros:93.6,meses:4,parcelas:3,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'acima2k',obs:'Cliente está pagando as parcelas em atraso'},
+  {nome:'José Jeronimo Da Silva',valor:2000.0,atualizado:3680.0,multa:40.0,juros:1640.0,meses:82,parcelas:4,ano:2019,unidade:'Botelhos',status:'Perda/baixa financeira',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'acima2k',obs:'Rapha pediu para quitar. Várias tentativas de negociação sem sucesso'},
+  {nome:'Vanoir Baraldi Mendes',valor:1994.0,atualizado:3768.66,multa:39.88,juros:1734.78,meses:87,parcelas:1,ano:2019,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'entre1k2k',obs:''},
+  {nome:'Renato Roberto Barbosa',valor:1980.0,atualizado:2653.2,multa:39.6,juros:633.6,meses:32,parcelas:3,ano:2023,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Não consta boleto pelo Cora'},
+  {nome:'José Benedito',valor:1906.0,atualizado:2649.34,multa:38.12,juros:705.22,meses:37,parcelas:3,ano:2023,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Anivaldo Antônio Rodrigues',valor:1818.0,atualizado:2599.74,multa:36.36,juros:745.38,meses:41,parcelas:1,ano:2022,unidade:'Botelhos',status:'Inadimplente',advogado:'Maylon',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Zelia Jacira De Freitas',valor:1818.0,atualizado:2508.84,multa:36.36,juros:654.48,meses:36,parcelas:4,ano:2023,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Nilton Candido Ribeiro',valor:1713.6,atualizado:1816.41,multa:34.27,juros:68.54,meses:4,parcelas:3,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Aparecido Alves - cido',valor:1635.0,atualizado:1831.2,multa:32.7,juros:163.5,meses:10,parcelas:3,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'entre1k2k',obs:'Negociado para pagar em 31/05/2026, verificado com Dani'},
+  {nome:'Adenilson Ramos de Andrade',valor:1556.14,atualizado:1649.51,multa:31.12,juros:62.25,meses:4,parcelas:1,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Jonas Dos Reis Melo (Sandra)',valor:1518.0,atualizado:1684.98,multa:30.36,juros:136.62,meses:9,parcelas:1,ano:2025,unidade:'Botelhos',status:'Erro interno – falha na cobrança',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Na época do RPV ficou para trás o restante do boleto'},
+  {nome:'Joao Batista Rodrigues (Pai da Cintia Eletrozema)',valor:1518.0,atualizado:1578.72,multa:30.36,juros:30.36,meses:2,parcelas:2,ano:2026,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Processo 6000382-73.2024.4.06.3805 em andamento'},
+  {nome:'José Carlos Nanini',valor:1518.0,atualizado:1593.9,multa:30.36,juros:45.54,meses:3,parcelas:3,ano:2026,unidade:'Botelhos',status:'Perda/baixa financeira',advogado:'Maylon',era:'pos2021',faixa:'entre1k2k',obs:'Cliente falecido, sem processo ativo'},
+  {nome:'Zion Maycon Petreca',valor:1518.0,atualizado:1609.08,multa:30.36,juros:60.72,meses:4,parcelas:2,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Antonio Cesar do Prado',valor:1511.0,atualizado:3218.43,multa:30.22,juros:1677.21,meses:111,parcelas:2,ano:2017,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'entre1k2k',obs:'Processo 0006450-68.2017.8.13.0084 em andamento'},
+  {nome:'Jose Antonio de Souza Junior',valor:1500.0,atualizado:1935.0,multa:30.0,juros:405.0,meses:27,parcelas:6,ano:2024,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'João Gabriel',era:'pos2021',faixa:'entre1k2k',obs:'Entregue boletos para cliente, ainda inadimplente'},
+  {nome:'Rodrigo Martins Evangelista',valor:1500.0,atualizado:1605.0,multa:30.0,juros:75.0,meses:5,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Tiago Augusto da Silva',valor:1477.72,atualizado:1581.16,multa:29.55,juros:73.89,meses:5,parcelas:8,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Valor renegociado, inadimplente'},
+  {nome:'Donizete Manoel De Toledo',valor:1460.0,atualizado:2715.6,multa:29.2,juros:1226.4,meses:84,parcelas:4,ano:2019,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'entre1k2k',obs:'Rapha pediu para investigar se pagou'},
+  {nome:'APARECIDO MESSIAS ALVES',valor:1448.0,atualizado:1650.72,multa:28.96,juros:173.76,meses:12,parcelas:1,ano:2025,unidade:'Botelhos',status:'Sem status',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Divino Antonio Muniz',valor:1416.28,atualizado:1897.82,multa:28.33,juros:453.21,meses:32,parcelas:2,ano:2023,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Sebastião Sabino De Figueiredo',valor:1320.0,atualizado:1386.0,multa:26.4,juros:39.6,meses:3,parcelas:1,ano:2026,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'entre1k2k',obs:'Conferido Inadimplência'},
+  {nome:'OZEIAS DE PAULA MARTINS',valor:1231.95,atualizado:1429.06,multa:24.64,juros:172.47,meses:14,parcelas:3,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'João Gabriel',era:'pos2021',faixa:'entre1k2k',obs:'Família Martins, verificar com João Gabriel'},
+  {nome:'José Vitor da Silva (Bandeira)',valor:1212.0,atualizado:1708.92,multa:24.24,juros:472.68,meses:39,parcelas:2,ano:2023,unidade:'Botelhos',status:'Quitar no sistema',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Rapha pediu para quitar, cliente pagava na conta pessoal'},
+  {nome:'Maitê Macari de Sousa Correa',valor:1200.0,atualizado:1524.0,multa:24.0,juros:300.0,meses:25,parcelas:4,ano:2024,unidade:'Poços de Caldas',status:'Pendência Advogado',advogado:'João Gabriel',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Maria De Fatima Luciana Dos Santos',valor:1100.0,atualizado:1661.0,multa:22.0,juros:539.0,meses:49,parcelas:2,ano:2022,unidade:'Cabo Verde',status:'Contactar cliente',advogado:'Maylon',era:'pos2021',faixa:'entre1k2k',obs:'Rapha pediu para fazer contato com jeito'},
+  {nome:'Maura Domingues Correa',valor:1093.48,atualizado:1421.52,multa:21.87,juros:306.17,meses:28,parcelas:3,ano:2024,unidade:'Poços de Caldas',status:'Erro interno – falha na cobrança',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Boletos entregues no valor de R$380, ainda inadimplente'},
+  {nome:'Rosanete Teodoro Batista Da Silva',valor:1059.0,atualizado:1249.62,multa:21.18,juros:169.44,meses:16,parcelas:2,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'2 parcelas inadimplentes: 18/01 e 18/02/2025'},
+  {nome:'Carlos Cesar Horacio',valor:1040.92,atualizado:1103.38,multa:20.82,juros:41.64,meses:4,parcelas:2,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'entre1k2k',obs:'Processo 5006366-22.2023.4.03.6344'},
+  {nome:'Volnei Xavier Filho',valor:1005.0,atualizado:2070.3,multa:20.1,juros:1045.2,meses:104,parcelas:3,ano:2017,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'entre1k2k',obs:''},
+  {nome:'Heloisa Helena De Melo',valor:1000.0,atualizado:1630.0,multa:20.0,juros:610.0,meses:61,parcelas:2,ano:2021,unidade:'Botelhos',status:'Quitar no sistema',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'entre1k2k',obs:'Verificar histórico antigo'},
+  {nome:'SIRLENE PEREIRA DA CRUZ BORGES',valor:1000.0,atualizado:1130.0,multa:20.0,juros:110.0,meses:11,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'entre1k2k',obs:''},
+  {nome:'Maria De Lourdes De Souza',valor:996.0,atualizado:1772.88,multa:19.92,juros:756.96,meses:76,parcelas:1,ano:2020,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'Ronildo Pinto Da Silva',valor:970.0,atualizado:1134.9,multa:19.4,juros:145.5,meses:15,parcelas:2,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Amanda da Silva',valor:963.3,atualizado:1069.27,multa:19.27,juros:86.7,meses:9,parcelas:3,ano:2025,unidade:'Botelhos',status:'Pendência Advogado',advogado:'João Victor',era:'pos2021',faixa:'abaixo1k',obs:'Cliente João Vitor, já feita renegociação'},
+  {nome:'Decio Batista (CORRETO)',valor:884.0,atualizado:1900.6,multa:17.68,juros:998.92,meses:113,parcelas:4,ano:2016,unidade:'Botelhos',status:'Quitar no sistema',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:'Processo judicial 0013801-58.2018.8.13.0084'},
+  {nome:'DULCINEIA MARTINS MOISES',valor:824.0,atualizado:947.6,multa:16.48,juros:107.12,meses:13,parcelas:2,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'João Gabriel',era:'pos2021',faixa:'abaixo1k',obs:'Família Martins'},
+  {nome:'Lucimara Martins Vilas Boas',valor:816.0,atualizado:938.4,multa:16.32,juros:106.08,meses:13,parcelas:2,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'João Gabriel',era:'pos2021',faixa:'abaixo1k',obs:'Família Martins'},
+  {nome:'Bruno dos Santos Gomes',valor:800.0,atualizado:872.0,multa:16.0,juros:56.0,meses:7,parcelas:4,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Sebastião Mauro De Paula',valor:790.0,atualizado:1303.5,multa:15.8,juros:497.7,meses:63,parcelas:1,ano:2021,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Jessica Aparecida da Silva',valor:759.0,atualizado:819.72,multa:15.18,juros:45.54,meses:6,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Reginaldo de Jesus Gonçalves',valor:759.0,atualizado:804.54,multa:15.18,juros:30.36,meses:4,parcelas:2,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Sandra Aparecida Leoncio da Silva',valor:750.0,atualizado:892.5,multa:15.0,juros:127.5,meses:17,parcelas:1,ano:2024,unidade:'Poços de Caldas',status:'Pendência Advogado',advogado:'Rapha',era:'pos2021',faixa:'abaixo1k',obs:'Processo 6001698-58.2024.4.06.3826, cliente com processo judicial'},
+  {nome:'Carlos Henrique Filho',valor:750.0,atualizado:787.5,multa:15.0,juros:22.5,meses:3,parcelas:1,ano:2026,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Já verificado'},
+  {nome:'Roberto Dias Leite',valor:740.0,atualizado:828.8,multa:14.8,juros:74.0,meses:10,parcelas:2,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Juliano Silva',valor:706.0,atualizado:833.08,multa:14.12,juros:112.96,meses:16,parcelas:1,ano:2025,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'abaixo1k',obs:'Processo 6003426-03.2024.4.06.3805'},
+  {nome:'Alexandre Da Silva',valor:700.0,atualizado:1218.0,multa:14.0,juros:504.0,meses:72,parcelas:7,ano:2020,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'IZABEL MARIA DA SILVA',valor:700.0,atualizado:770.0,multa:14.0,juros:56.0,meses:8,parcelas:7,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Conferido Inadimplência'},
+  {nome:'Davi Garcia',valor:660.0,atualizado:844.8,multa:13.2,juros:171.6,meses:26,parcelas:1,ano:2024,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'José Roberto Marques',valor:648.0,atualizado:784.08,multa:12.96,juros:123.12,meses:19,parcelas:1,ano:2024,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Verificar com Tainá'},
+  {nome:'Valdivino Aparecido Barbosa',valor:618.0,atualizado:760.14,multa:12.36,juros:129.78,meses:21,parcelas:1,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'João Batista Da Luz',valor:606.0,atualizado:860.52,multa:12.12,juros:242.4,meses:40,parcelas:1,ano:2023,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Aurora Domingos Martins',valor:600.0,atualizado:660.0,multa:12.0,juros:48.0,meses:8,parcelas:3,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'José Flávio',valor:546.0,atualizado:1228.5,multa:10.92,juros:671.58,meses:123,parcelas:1,ano:2016,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'Reginaldo Garcia',valor:500.0,atualizado:880.0,multa:10.0,juros:370.0,meses:74,parcelas:2,ano:2020,unidade:'Botelhos',status:'Quitar no sistema',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:'Rapha pediu para quitar'},
+  {nome:'Helena Batista De Castro',valor:500.0,atualizado:685.0,multa:10.0,juros:175.0,meses:35,parcelas:2,ano:2023,unidade:'Botelhos',status:'Perda/baixa financeira',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:'Cliente falecida'},
+  {nome:'Gustavo Henrique Severino De Araujo',valor:484.8,atualizado:702.96,multa:9.7,juros:208.46,meses:43,parcelas:4,ano:2022,unidade:'Botelhos',status:'Perda/baixa financeira',advogado:'Maylon',era:'pos2021',faixa:'abaixo1k',obs:'Usuário de drogas, internado. Rapha pediu para quitar'},
+  {nome:'JESSICA FRANCISCA APARECIDA RIBEIRO',valor:468.5,atualizado:983.85,multa:9.37,juros:505.98,meses:108,parcelas:1,ano:2017,unidade:'Botelhos',status:'Perda/baixa financeira',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:'Prima da Raphaela'},
+  {nome:'Luis Henrique Ferreira (Tjsp)',valor:415.06,atualizado:460.72,multa:8.3,juros:37.36,meses:9,parcelas:2,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Juscelino Tereza',valor:412.0,atualizado:477.92,multa:8.24,juros:57.68,meses:14,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Verificar caso com as sócias'},
+  {nome:'Victor Hugo Vieira bento',valor:400.0,atualizado:428.0,multa:8.0,juros:20.0,meses:5,parcelas:4,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Conferido Inadimplência'},
+  {nome:'Aparecida Gomes da Silva Ramos',valor:379.5,atualizado:406.07,multa:7.59,juros:18.98,meses:5,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Augusto',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Maria Celia De Lima Ramos',valor:379.5,atualizado:402.27,multa:7.59,juros:15.18,meses:4,parcelas:1,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Paulo Barreiro',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Giovani Jose Do Prado',valor:374.0,atualizado:665.72,multa:7.48,juros:284.24,meses:76,parcelas:5,ano:2020,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:'Tentativas de negociação sem sucesso'},
+  {nome:'Gisely Leocadio Da Silva',valor:359.0,atualizado:387.72,multa:7.18,juros:21.54,meses:6,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Augusto',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Erminia Marceli Mendonça',valor:357.7,atualizado:439.97,multa:7.15,juros:75.12,meses:21,parcelas:2,ano:2024,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Isabelly Martins',valor:352.93,atualizado:370.58,multa:7.06,juros:10.59,meses:3,parcelas:1,ano:2026,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Já verificado'},
+  {nome:'Junior Rodrigues Antunes',valor:324.2,atualizado:337.16,multa:6.48,juros:6.48,meses:2,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Alessandra Alves Ribeiro',valor:320.08,atualizado:348.89,multa:6.4,juros:22.41,meses:7,parcelas:1,ano:2025,unidade:'Botelhos',status:'Pendência Advogado',advogado:'João Victor',era:'pos2021',faixa:'abaixo1k',obs:'Verificar reembolso com João Vitor'},
+  {nome:'Michaelle De Oliveira Custodio Silva',valor:303.6,atualizado:321.81,multa:6.07,juros:12.14,meses:4,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Sonia Izabel Ferreira',valor:300.0,atualizado:360.0,multa:6.0,juros:54.0,meses:18,parcelas:1,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Laudelina Gonçalves Da Silva',valor:300.0,atualizado:312.0,multa:6.0,juros:6.0,meses:2,parcelas:1,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'João Victor',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'André Donizeti Martins',valor:293.25,atualizado:536.65,multa:5.87,juros:237.53,meses:81,parcelas:1,ano:2019,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'Sueli Felix De Oliveira e Oliveira',valor:282.4,atualizado:338.88,multa:5.65,juros:50.83,meses:18,parcelas:1,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Karen Kristine Pereira',valor:277.77,atualizado:288.89,multa:5.56,juros:5.56,meses:2,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'João Gabriel',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Adriana Maciel',valor:254.16,atualizado:294.82,multa:5.08,juros:35.58,meses:14,parcelas:1,ano:2025,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Bruna Nascimento da Silva',valor:250.0,atualizado:300.0,multa:5.0,juros:45.0,meses:18,parcelas:1,ano:2024,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:'Ref. desistência de divórcio'},
+  {nome:'Cleide Maria da Silva',valor:250.0,atualizado:262.5,multa:5.0,juros:7.5,meses:3,parcelas:1,ano:2026,unidade:'Botelhos',status:'Inadimplente',advogado:'Rafael',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Sara Marques Dos Reis',valor:227.71,atualizado:236.81,multa:4.55,juros:4.55,meses:2,parcelas:1,ano:2026,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:'Ver Ivana, valor caixa R$200 pagamento anterior'},
+  {nome:'Nataly Sabrina da Costa de Oliveira',valor:210.0,atualizado:319.2,multa:4.2,juros:105.0,meses:50,parcelas:3,ano:2022,unidade:'Botelhos',status:'Potencial de recuperação',advogado:'Rapha',era:'pos2021',faixa:'abaixo1k',obs:'Processo 5000176-95.2020.8.13.0084'},
+  {nome:'JOÃO BATISTA DE AVILA',valor:200.0,atualizado:214.0,multa:4.0,juros:10.0,meses:5,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Meire Aparecida Da Silva',valor:199.0,atualizado:354.22,multa:3.98,juros:151.24,meses:76,parcelas:1,ano:2020,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'Eleandra Aparecida De Oliveira',valor:166.98,atualizado:188.69,multa:3.34,juros:18.37,meses:11,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Telma Rabelo Pereira',valor:155.25,atualizado:166.11,multa:3.1,juros:7.76,meses:5,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Ezequiel Marcos de Paula Severino',valor:150.0,atualizado:175.5,multa:3.0,juros:22.5,meses:15,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Josiane Aparecida Antonio',valor:150.0,atualizado:165.0,multa:3.0,juros:12.0,meses:8,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Jurema Aparecida Ribeiro',valor:150.0,atualizado:165.0,multa:3.0,juros:12.0,meses:8,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Laura Gabrielle Golçalves Vieira',valor:150.0,atualizado:165.0,multa:3.0,juros:12.0,meses:8,parcelas:1,ano:2025,unidade:'Poços de Caldas',status:'Inadimplente',advogado:'Iago',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Maria Aparecida De Sousa',valor:150.0,atualizado:168.0,multa:3.0,juros:15.0,meses:10,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'ROBERTO DA SILVA',valor:150.0,atualizado:162.0,multa:3.0,juros:9.0,meses:6,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Roseli da Silva',valor:150.0,atualizado:169.5,multa:3.0,juros:16.5,meses:11,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Silvana Pedrina Teodoro',valor:150.0,atualizado:169.5,multa:3.0,juros:16.5,meses:11,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Carlos Roberto Clemente',valor:107.72,atualizado:116.33,multa:2.15,juros:6.46,meses:6,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Tatiana Cristina Da Silva',valor:100.0,atualizado:187.0,multa:2.0,juros:85.0,meses:85,parcelas:1,ano:2019,unidade:'Botelhos',status:'Dívida Caduca',advogado:'Sem Repasse (Maximiano)',era:'pre2021',faixa:'abaixo1k',obs:''},
+  {nome:'Aparecida Rodrigues Costa',valor:100.0,atualizado:108.0,multa:2.0,juros:6.0,meses:6,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'João Victor',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Nicelia Maria Candido',valor:73.3,atualizado:79.9,multa:1.47,juros:5.13,meses:7,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sem advogado',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Angela Maria da Silva Borges',valor:65.8,atualizado:79.62,multa:1.32,juros:12.5,meses:19,parcelas:1,ano:2024,unidade:'Poços de Caldas',status:'Potencial de recuperação',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:'Processo judicial em andamento'},
+  {nome:'Maria de Fátima Vicente',valor:56.48,atualizado:67.78,multa:1.13,juros:10.17,meses:18,parcelas:1,ano:2024,unidade:'Poços de Caldas',status:'Potencial de recuperação',advogado:'Augusto',era:'pos2021',faixa:'abaixo1k',obs:'Processo prev. 6000856-44.2025.4.06.3826 em andamento'},
+  {nome:'Maria Luiza Vilas Boas',valor:50.0,atualizado:55.5,multa:1.0,juros:4.5,meses:9,parcelas:1,ano:2025,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Mario Donizetti De Oliveira',valor:50.0,atualizado:53.5,multa:1.0,juros:2.5,meses:5,parcelas:1,ano:2025,unidade:'Botelhos',status:'Inadimplente',advogado:'Sem Repasse (Maximiano)',era:'pos2021',faixa:'abaixo1k',obs:''},
+  {nome:'Celso Rosa Pinto',valor:47.06,atualizado:56.0,multa:0.94,juros:8.0,meses:17,parcelas:1,ano:2024,unidade:'Cabo Verde',status:'Inadimplente',advogado:'Sociedade Cabo Verde',era:'pos2021',faixa:'abaixo1k',obs:'Ver com sócias como proceder'},
+];
+
+// Ordenar por valor decrescente
+DEVEDORES.sort((a,b)=>b.valor-a.valor);
+
+// ─── COMPUTAÇÕES DINÂMICAS ────────────────────────────────────────────────────
+const totalBruto = DEVEDORES.reduce((s,d)=>s+d.valor,0);
+const totalAtualizado = DEVEDORES.reduce((s,d)=>s+(d.atualizado||d.valor),0);
+const totalMulta = DEVEDORES.reduce((s,d)=>s+(d.multa||0),0);
+const totalJuros = DEVEDORES.reduce((s,d)=>s+(d.juros||0),0);
+const acima2k = DEVEDORES.filter(d=>d.faixa==='acima2k');
+const entre1k2k = DEVEDORES.filter(d=>d.faixa==='entre1k2k');
+const abaixo1k = DEVEDORES.filter(d=>d.faixa==='abaixo1k');
+const pre2021 = DEVEDORES.filter(d=>d.era==='pre2021');
+const pos2021 = DEVEDORES.filter(d=>d.era==='pos2021');
+// Dívidas possivelmente prescritas: pré-2021 + (não tem processo ativo nas obs + status não é Potencial)
+const prescProvaveis = DEVEDORES.filter(d=>d.era==='pre2021'&&!d.status.includes('Potencial'));
+const prescValor = prescProvaveis.reduce((s,d)=>s+d.valor,0);
+
+// ─── POPULA HERO ─────────────────────────────────────────────────────────────
+document.getElementById('hkpi-total-dev').textContent = DEVEDORES.length;
+document.getElementById('hkpi-total-bruto').textContent = fK(totalBruto);
+document.getElementById('hkpi-total-atu').textContent = fK(totalAtualizado);
+document.getElementById('hkpi-judicial').textContent = acima2k.length;
+document.getElementById('hkpi-prescricao').textContent = prescProvaveis.length;
+document.getElementById('hero-sub').textContent = `Análise completa da carteira histórica — ${DEVEDORES.length} devedores, ${fBRL(totalBruto)} (bruto) / ${fBRL(totalAtualizado)} (atualizado). Segmentado por unidade, ano, valor e status para apoiar a estratégia de cobrança e ajuizamento.`;
+
+// ─── KPI STRIPS DINÂMICOS ─────────────────────────────────────────────────────
+function kpiHTML(val,label,cor,delta){
+  return `<div class="kpi"><div class="kval" style="color:${cor}">${val}</div>${delta?`<div class="kdelta delta-warn">${delta}</div>`:''}<div class="klabel">${label}</div></div>`;
+}
+
+// Bruto vs Atualizado
+const difPerc = ((totalAtualizado/totalBruto-1)*100).toFixed(1);
+document.getElementById('kpi-bruto-atu').innerHTML =
+  kpiHTML(fBRL(totalBruto),'Total bruto (principal)','var(--gd)','') +
+  kpiHTML(fBRL(totalAtualizado),'Total atualizado (+'+difPerc+'%)','var(--green)','') +
+  kpiHTML(fBRL(totalAtualizado-totalBruto),'Acréscimo multa+juros','var(--amber)','') +
+  kpiHTML(DEVEDORES.length,'Devedores na carteira','var(--red)','');
+
+// Por unidade
+const unidades=['Botelhos','Poços de Caldas','Cabo Verde'];
+const unidCols=['var(--gd)','var(--green)','var(--teal)'];
+document.getElementById('kpi-por-unidade').innerHTML = unidades.map((u,i)=>{
+  const devs=DEVEDORES.filter(d=>d.unidade===u);
+  const tot=devs.reduce((s,d)=>s+d.valor,0);
+  const pct=(tot/totalBruto*100).toFixed(1);
+  return kpiHTML(devs.length,u,''+unidCols[i],'R$'+Math.round(tot/1000)+'K · '+pct+'%');
+}).join('');
+
+// Por faixa
+const faixaData=[['acima2k','Acima R$2K — Judicial','var(--red)'],['entre1k2k','R$1K–R$2K — Analisar','var(--amber)'],['abaixo1k','Abaixo R$1K — Adm.','var(--muted)']];
+document.getElementById('kpi-por-faixa').innerHTML = faixaData.map(([f,l,c])=>{
+  const devs=DEVEDORES.filter(d=>d.faixa===f);
+  const tot=devs.reduce((s,d)=>s+d.valor,0);
+  return kpiHTML(devs.length,l,c,fBRL(tot));
+}).join('');
+
+// Abas titulos dinamicos
+document.getElementById('tit-acima2k').textContent = acima2k.length+' Devedores';
+document.getElementById('tit-entre1k2k').textContent = entre1k2k.length+' Devedores';
+document.getElementById('tit-abaixo1k').textContent = abaixo1k.length+' Devedores';
+document.getElementById('tit-pre2021').textContent = pre2021.length+' Devedores';
+document.getElementById('tit-pos2021').textContent = pos2021.length+' Devedores';
+document.getElementById('pg-intro').textContent = `Carteira histórica de ${DEVEDORES.length} devedores distribuídos em Botelhos, Poços de Caldas e Cabo Verde.`;
+
+// KPI strips das abas
+const tot2k=acima2k.reduce((s,d)=>s+d.valor,0);
+const med2k=tot2k/acima2k.length;
+const max2k=acima2k[0].valor;
+document.getElementById('kpi-acima2k-strip').innerHTML =
+  kpiHTML(acima2k.length,'Devedores','var(--red)','') +
+  kpiHTML(fBRL(tot2k),'Valor total','var(--red)','') +
+  kpiHTML(fBRL(med2k),'Valor médio','var(--amber)','') +
+  kpiHTML(fBRL(max2k),'Maior dívida','var(--amber)','');
+
+const tot1k2k=entre1k2k.reduce((s,d)=>s+d.valor,0);
+document.getElementById('kpi-entre1k2k-strip').innerHTML =
+  kpiHTML(entre1k2k.length,'Devedores','var(--amber)','') +
+  kpiHTML(fBRL(tot1k2k),'Valor total','var(--amber)','') +
+  kpiHTML(fBRL(tot1k2k/entre1k2k.length),'Valor médio','var(--amber)','') +
+  kpiHTML(fBRL(entre1k2k[0].valor),'Maior desta faixa','var(--amber)','');
+
+const totAbaixo=abaixo1k.reduce((s,d)=>s+d.valor,0);
+const menorAbaixo=abaixo1k[abaixo1k.length-1].valor;
+document.getElementById('kpi-abaixo1k-strip').innerHTML =
+  kpiHTML(abaixo1k.length,'Devedores','var(--muted)','') +
+  kpiHTML(fBRL(totAbaixo),'Valor total','var(--muted)','') +
+  kpiHTML(fBRL(totAbaixo/abaixo1k.length),'Valor médio','var(--muted)','') +
+  kpiHTML(fBRL(menorAbaixo),'Menor dívida','var(--muted)','');
+
+const totPre=pre2021.reduce((s,d)=>s+d.valor,0);
+document.getElementById('kpi-pre2021-strip').innerHTML =
+  kpiHTML(pre2021.length,'Devedores','var(--muted)','') +
+  kpiHTML(fBRL(totPre),'Valor total','var(--muted)','') +
+  kpiHTML(pre2021.filter(d=>d.valor>=2000).length,'Acima R$2K','var(--red)','') +
+  kpiHTML(prescProvaveis.length,'Status caduca/perda/quitar','var(--muted)','');
+
+const totPos=pos2021.reduce((s,d)=>s+d.valor,0);
+document.getElementById('kpi-pos2021-strip').innerHTML =
+  kpiHTML(pos2021.length,'Devedores','var(--red)','') +
+  kpiHTML(fBRL(totPos),'Valor total','var(--red)','') +
+  kpiHTML(pos2021.filter(d=>d.valor>=2000).length,'Acima R$2K','var(--amber)','') +
+  kpiHTML(DEVEDORES.filter(d=>d.ano===2025).length,'Devedores 2025','var(--red)','') +
+  kpiHTML(DEVEDORES.filter(d=>d.ano===2026).length,'Devedores 2026','var(--red)','');
+
+// KPI Atualização
+document.getElementById('kpi-atu-strip').innerHTML =
+  kpiHTML(fBRL(totalBruto),'Valor bruto (principal)','var(--gd)','') +
+  kpiHTML(fBRL(totalMulta),'Multa total (2%)','var(--amber)','') +
+  kpiHTML(fBRL(totalJuros),'Juros total (1%/mês)','var(--amber)','') +
+  kpiHTML(fBRL(totalAtualizado),'Total atualizado (+'+difPerc+'%)','var(--green)','');
+
+// ─── HELPERS — BADGES E AÇÕES ─────────────────────────────────────────────────
+function statusBadge(s){
+  if(s.includes('Inadimplente')) return `<span class="badge b-red">Inadimplente</span>`;
+  if(s.includes('Potencial')) return `<span class="badge b-teal">Potencial rec.</span>`;
+  if(s.includes('Pendência')) return `<span class="badge b-warn">Pendência Adv.</span>`;
+  if(s.includes('Caduca')) return `<span class="badge b-muted">Dívida Caduca</span>`;
+  if(s.includes('Perda')) return `<span class="badge b-muted">Perda/Baixa</span>`;
+  if(s.includes('Quitar')) return `<span class="badge b-warn">Quitar Sistema</span>`;
+  if(s.includes('Erro')) return `<span class="badge b-warn">Erro Interno</span>`;
+  if(s.includes('Contactar')) return `<span class="badge b-gold">Contactar</span>`;
+  return `<span class="badge b-muted">${s.substring(0,20)}</span>`;
+}
+function unidBadge(u){
+  if(u==='Botelhos') return `<span class="badge" style="background:rgba(245,166,35,.1);color:var(--gd)">${u}</span>`;
+  if(u==='Poços de Caldas') return `<span class="badge" style="background:rgba(95,207,138,.1);color:var(--green)">${u}</span>`;
+  if(u==='Cabo Verde') return `<span class="badge" style="background:rgba(14,168,154,.1);color:var(--teal)">${u}</span>`;
+  return `<span class="badge b-muted">${u}</span>`;
+}
+function advBadge(a){
+  if(!a||a==='Sem advogado') return `<span class="badge b-muted">Sem adv.</span>`;
+  const c=a.includes('Maximiano')||a.includes('Repasse')?'rgba(107,132,168,.1)':a==='Sociedade Cabo Verde'?'rgba(14,168,154,.1)':'rgba(245,166,35,.1)';
+  const tc=a.includes('Maximiano')||a.includes('Repasse')?'var(--muted)':a==='Sociedade Cabo Verde'?'var(--teal)':'var(--gd)';
+  const label=a.length>22?a.substring(0,20)+'…':a;
+  return `<span class="badge" style="background:${c};color:${tc}">${label}</span>`;
+}
+function prescAlert(d){
+  // Prescrição quinquenal: dívidas pré-2021, sem causa interruptiva aparente (sem processo nas obs)
+  if(d.era==='pre2021'&&d.ano<=2019&&!d.obs.toLowerCase().includes('processo')) return true;
+  return false;
+}
+function getAction(d){
+  if(d.status.includes('Perda')) return {cls:'action-caduca',text:'⬜ Irrecuperável — avaliar baixa definitiva no sistema.'};
+  if(prescAlert(d)) return {cls:'action-caduca',text:'⏱️ Possível prescrição quinquenal (CC art. 206, §5º, II) — verificar causa interruptiva antes de ajuizar. Dívida de '+d.ano+', sem processo ativo identificado nas observações.'};
+  if(d.status.includes('Caduca')) return {cls:'action-caduca',text:'⏱️ Status caduca — verificar prescrição. Se dentro do prazo, notificação formal antes do judicial.'};
+  if(d.status.includes('Quitar')) return {cls:'action-interna',text:'🔧 Verificar internamente — possível erro de lançamento ou quitação não registrada.'};
+  if(d.status.includes('Pendência Advogado')) return {cls:'action-interna',text:'📌 Pendência interna — resolver com o advogado responsável antes de acionar o cliente.'};
+  if(d.status.includes('Erro interno')) return {cls:'action-interna',text:'🔧 Erro interno de cobrança — verificar histórico com equipe antes de contato com cliente.'};
+  if(d.status.includes('Potencial')&&d.valor>=2000) return {cls:'action-judicial',text:'⚖️ Processo judicial em andamento — acompanhar e aguardar desfecho para liquidação do honorário.'};
+  if(d.status.includes('Potencial')) return {cls:'action-admin',text:'📞 Processo em andamento — monitorar. Se paralisar, acionar cobrança direta.'};
+  if(d.valor>=2000) return {cls:'action-judicial',text:`⚖️ Prioridade judicial — dívida acima de R$2.000.${d.parcelas>=5?' Longa persistência ('+d.parcelas+' parcelas) indica impossibilidade de acordo amigável.':''} Preparar petição inicial.`};
+  if(d.faixa==='entre1k2k'){
+    const atu=d.atualizado||d.valor;
+    const msg=atu>=2000?` Com multa+juros, valor atualizado (${fBRL(atu)}) já ultrapassa R$2K — elegível para ajuizamento!`:'';
+    return {cls:'action-admin',text:'📋 Faixa intermediária — avaliar correção monetária.'+msg+' Cobrança ativa pela Ivana enquanto analisa.'};
+  }
+  if(d.valor>=500) return {cls:'action-admin',text:'📞 Cobrança ativa — Ivana notifica com boleto e WhatsApp. Processo civil inviável nesta faixa.'};
+  return {cls:'action-admin',text:'📋 Cobrança administrativa — boleto + WhatsApp. Valor baixo — prioridade baixa.'};
+}
+
+// ─── DEVCARD — contador único para evitar colisões de ID entre abas ───────────
+let _dc=0;
+function devCardHTML(d,rank){
+  _dc++;
+  const id='dc'+_dc;
+  const action=getAction(d);
+  const aumento=d.atualizado?((d.atualizado-d.valor)/d.valor*100).toFixed(1):0;
+  const prescFlag=prescAlert(d);
+  return `
+  <div style="background:var(--card);border:1px solid ${prescFlag?'rgba(107,132,168,.3)':'var(--border2)'};border-radius:var(--r);overflow:hidden;margin-bottom:.7rem">
+    <div class="dev-row" onclick="toggleDev('${id}')">
+      <div class="dev-rank">${rank}</div>
+      <div class="dev-info">
+        <div class="dev-nome">${d.nome}${prescFlag?' <span style="font-size:.65rem;color:var(--muted);font-weight:400">⏱️ poss. prescrito</span>':''}</div>
+        <div class="dev-meta">
+          ${unidBadge(d.unidade)}
+          ${statusBadge(d.status)}
+          ${advBadge(d.advogado||'Sem advogado')}
+          <span style="color:var(--muted);font-size:.72rem">desde ${d.ano} · ${d.meses||'?'}m atraso</span>
+          ${d.faixa==='acima2k'?'<span class="badge b-red">⚖️ Judicial</span>':d.faixa==='entre1k2k'?'<span class="badge b-warn">📋 Analisar</span>':''}
+        </div>
+      </div>
+      <div class="dev-valor">
+        <div class="dev-valor-num">${fBRL(d.valor)}</div>
+        <div class="dev-parcelas" style="color:var(--amber)">${d.atualizado&&d.atualizado>d.valor?'→ '+fBRL(d.atualizado)+' (+'+aumento+'%)':''}</div>
+      </div>
+    </div>
+    <div id="${id}" class="dev-detail">
+      <div class="dev-detail-grid">
+        <div class="dd-item"><div class="dd-label">Unidade</div><div class="dd-val">${d.unidade}</div></div>
+        <div class="dd-item"><div class="dd-label">Advogado</div><div class="dd-val">${d.advogado||'—'}</div></div>
+        <div class="dd-item"><div class="dd-label">Status</div><div class="dd-val">${d.status}</div></div>
+        <div class="dd-item"><div class="dd-label">Ano início</div><div class="dd-val">${d.ano}</div></div>
+        <div class="dd-item"><div class="dd-label">Meses atraso</div><div class="dd-val">${d.meses||'?'} meses</div></div>
+        <div class="dd-item"><div class="dd-label">Parcelas</div><div class="dd-val">${d.parcelas}</div></div>
+        <div class="dd-item"><div class="dd-label">Valor bruto</div><div class="dd-val">${fBRL(d.valor)}</div></div>
+        <div class="dd-item"><div class="dd-label">Multa (2%)</div><div class="dd-val" style="color:var(--amber)">${d.multa?fBRL(d.multa):'—'}</div></div>
+        <div class="dd-item"><div class="dd-label">Juros (1%/mês)</div><div class="dd-val" style="color:var(--amber)">${d.juros?fBRL(d.juros):'—'}</div></div>
+        <div class="dd-item" style="grid-column:span 3"><div class="dd-label">Valor atualizado</div><div class="dd-val" style="color:var(--gd);font-size:1.1rem">${d.atualizado?fBRL(d.atualizado):'—'}</div></div>
+      </div>
+      ${d.obs?`<div style="padding:.5rem .8rem;background:rgba(255,255,255,.03);border-radius:6px;font-size:.78rem;color:var(--muted);margin-bottom:.5rem;font-style:italic">📝 ${d.obs}</div>`:''}
+      <div class="dev-action-box ${action.cls}">${action.text}</div>
+    </div>
+  </div>`;
+}
+
+function toggleDev(id){document.getElementById(id)?.classList.toggle('open');}
+
+// ─── TAB SYSTEM ──────────────────────────────────────────────────────────────
+function showTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ─── RENDER LISTS ─────────────────────────────────────────────────────────────
+// Faixas de valor
+document.getElementById('list-acima2k').innerHTML = acima2k.map((d,i)=>devCardHTML(d,i+1)).join('');
+document.getElementById('list-entre1k2k').innerHTML = entre1k2k.map((d,i)=>devCardHTML(d,i+1)).join('');
+document.getElementById('list-abaixo1k').innerHTML = [...abaixo1k].sort((a,b)=>b.valor-a.valor).map((d,i)=>devCardHTML(d,i+1)).join('');
+
+// Pré-2021 por ano
+const pre2021Container=document.getElementById('list-pre2021-byano');
+const preYears=[...new Set(pre2021.map(d=>d.ano))].sort();
+pre2021Container.innerHTML=preYears.map(ano=>{
+  const devs=pre2021.filter(d=>d.ano===ano).sort((a,b)=>b.valor-a.valor);
+  const total=devs.reduce((s,d)=>s+d.valor,0);
+  return `<div class="year-group">
+    <div class="year-header" onclick="toggleYear('pre-${ano}')">
+      <span class="year-label">${ano}</span>
+      <span class="year-stats">${devs.length} devedor${devs.length>1?'es':''} · ${fBRL(total)}</span>
+      <span class="year-toggle">▼</span>
+    </div>
+    <div id="pre-${ano}" class="year-body">
+      ${devs.map((d,i)=>devCardHTML(d,i+1)).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+// Pós-2021 por ano
+const pos2021Container=document.getElementById('list-pos2021-byano');
+const posYears=[...new Set(pos2021.map(d=>d.ano))].sort((a,b)=>b-a);
+pos2021Container.innerHTML=posYears.map(ano=>{
+  const devs=pos2021.filter(d=>d.ano===ano).sort((a,b)=>b.valor-a.valor);
+  const total=devs.reduce((s,d)=>s+d.valor,0);
+  const nAcima=devs.filter(d=>d.valor>=2000).length;
+  return `<div class="year-group">
+    <div class="year-header" onclick="toggleYear('pos-${ano}')">
+      <span class="year-label">${ano}</span>
+      <span class="year-stats">${devs.length} devedor${devs.length>1?'es':''} · ${fBRL(total)} · ${nAcima} acima R$2K</span>
+      <span class="year-toggle">▼</span>
+    </div>
+    <div id="pos-${ano}" class="year-body">
+      ${devs.map((d,i)=>devCardHTML(d,i+1)).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+// Por unidade
+const unidColors={'Botelhos':'rgba(245,166,35,.7)','Poços de Caldas':'rgba(95,207,138,.7)','Cabo Verde':'rgba(14,168,154,.7)'};
+document.getElementById('list-por-unidade').innerHTML=unidades.map(u=>{
+  const devs=DEVEDORES.filter(d=>d.unidade===u);
+  const total=devs.reduce((s,d)=>s+d.valor,0);
+  const nAcima=devs.filter(d=>d.valor>=2000).length;
+  const col=unidColors[u];
+  return `<div style="margin-bottom:1.5rem">
+    <div class="unid-header" onclick="toggleUnid('u-${u.replace(/\s/g,'')}')">
+      <div>
+        <div class="unid-name" style="color:${col.replace('.7','1')}">${u}</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.2rem">${devs.length} devedores</div>
+      </div>
+      <div class="unid-stats">
+        <div class="unid-stat"><div class="unid-stat-val">${fBRL(total)}</div><div class="unid-stat-label">Total</div></div>
+        <div class="unid-stat"><div class="unid-stat-val">${nAcima}</div><div class="unid-stat-label">Jud. potencial</div></div>
+        <div class="unid-toggle">▼</div>
+      </div>
+    </div>
+    <div id="u-${u.replace(/\s/g,'')}" class="unid-body">
+      ${devs.map((d,i)=>devCardHTML(d,i+1)).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+// Por status
+const statusGroups=[
+  {key:'Inadimplente',label:'Inadimplente',color:'rgba(255,112,112,.12)',border:'rgba(255,112,112,.3)',action:'Foco principal da cobrança ativa e judicial conforme faixa de valor.',icon:'🔴'},
+  {key:'Potencial de recuperação',label:'Potencial de Recuperação',color:'rgba(14,168,154,.08)',border:'rgba(14,168,154,.25)',action:'Processo judicial em andamento. Monitorar e aguardar desfecho.',icon:'⚖️'},
+  {key:'Pendência Advogado',label:'Pendência com Advogado',color:'rgba(245,166,35,.07)',border:'rgba(245,166,35,.2)',action:'Resolver internamente antes de cobrar o cliente.',icon:'📌'},
+  {key:'Dívida Caduca',label:'Dívida Caduca',color:'rgba(255,255,255,.04)',border:'rgba(255,255,255,.1)',action:'Verificar prescrição. Ação judicial pode ser inviável.',icon:'⏱️'},
+  {key:'Quitar no sistema',label:'Quitar no Sistema',color:'rgba(14,168,154,.06)',border:'rgba(14,168,154,.15)',action:'Possível erro de lançamento ou quitação não registrada. Verificar internamente.',icon:'🔧'},
+  {key:'Perda/baixa financeira',label:'Perda / Baixa Financeira',color:'rgba(255,255,255,.03)',border:'rgba(255,255,255,.07)',action:'Irrecuperável — cliente falecido ou sem condições. Avaliar baixa definitiva.',icon:'⬜'},
+  {key:'Erro interno',label:'Erro Interno',color:'rgba(245,166,35,.06)',border:'rgba(245,166,35,.15)',action:'Falha na cobrança registrada internamente. Verificar histórico.',icon:'⚠️'},
+];
+document.getElementById('list-por-status').innerHTML=statusGroups.map(sg=>{
+  const devs=DEVEDORES.filter(d=>d.status.includes(sg.key)).sort((a,b)=>b.valor-a.valor);
+  if(!devs.length) return '';
+  const total=devs.reduce((s,d)=>s+d.valor,0);
+  return `<div class="status-group">
+    <div class="status-header" style="background:${sg.color};border:1px solid ${sg.border};border-radius:var(--r);" onclick="toggleStatus('st-${sg.key.replace(/[\s\/]/g,'')}')">
+      <div><div class="status-title">${sg.icon} ${sg.label}</div><div class="status-meta">${devs.length} devedores · ${fBRL(total)}</div></div>
+      <span style="color:var(--muted);font-size:.8rem">▼</span>
+    </div>
+    <div id="st-${sg.key.replace(/[\s\/]/g,'')}" class="status-body">
+      <div class="alert-box alert-warn" style="margin-bottom:1rem">${sg.action}</div>
+      ${devs.map((d,i)=>devCardHTML(d,i+1)).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+// ─── RANKING POR ADVOGADO ─────────────────────────────────────────────────────
+const advMap={};
+DEVEDORES.forEach(d=>{
+  const advs=(d.advogado||'Sem advogado').split(' | ');
+  advs.forEach(a=>{
+    if(!advMap[a]) advMap[a]={devs:0,valor:0,atualizado:0};
+    advMap[a].devs++;
+    advMap[a].valor+=d.valor;
+    advMap[a].atualizado+=(d.atualizado||d.valor);
+  });
+});
+const advRanked=Object.entries(advMap).sort((a,b)=>b[1].valor-a[1].valor);
+const maxAdvVal=advRanked[0][1].valor;
+
+// KPI advogado strip: top 4
+document.getElementById('kpi-adv-strip').innerHTML=advRanked.slice(0,4).map(([adv,d])=>
+  kpiHTML(d.devs,adv.length>18?adv.substring(0,16)+'…':adv,'var(--amber)',fBRL(d.valor))
+).join('');
+
+document.getElementById('adv-ranking').innerHTML=advRanked.map(([adv,d])=>`
+  <div style="background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.2rem 1.4rem;margin-bottom:.8rem;cursor:pointer" onclick="toggleYear('adv-${adv.replace(/[\s|]/g,'_')}')">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+      <div>
+        <div style="font-weight:700;font-size:1rem">${adv}</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.15rem">${d.devs} devedor${d.devs>1?'es':''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Arial Narrow','Arial',sans-serif;font-weight:900;font-size:1.3rem;color:var(--gd)">${fBRL(d.valor)}</div>
+        <div style="font-size:.72rem;color:var(--amber)">→ ${fBRL(d.atualizado)} atualizado</div>
+      </div>
+    </div>
+    <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:.6rem">
+      <div style="height:100%;width:${(d.valor/maxAdvVal*100).toFixed(1)}%;background:var(--gd);border-radius:3px"></div>
+    </div>
+    <div id="adv-${adv.replace(/[\s|]/g,'_')}" class="year-body" style="margin-top:.5rem">
+      <div style="display:flex;flex-direction:column;gap:.3rem">
+        ${DEVEDORES.filter(x=>(x.advogado||'').includes(adv)).sort((a,b)=>b.valor-a.valor).map(x=>`
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.35rem .6rem;background:rgba(255,255,255,.03);border-radius:6px">
+            <span>${x.nome}</span><span style="color:var(--gd);font-weight:700">${fBRL(x.valor)}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`).join('');
+
+// ─── ANÁLISE JURÍDICA AUTOMÁTICA ──────────────────────────────────────────────
+// Bloco 1: Ajuizamento imediato
+const judImediato=DEVEDORES.filter(d=>d.valor>=2000&&d.era==='pos2021'&&(d.status.includes('Inadimplente')||d.status.includes('Potencial')));
+const totJudImediato=judImediato.reduce((s,d)=>s+d.valor,0);
+const totJudImediatoAtu=judImediato.reduce((s,d)=>s+(d.atualizado||d.valor),0);
+document.getElementById('kpi-jud-imediato').innerHTML=
+  kpiHTML(judImediato.length,'Para ajuizamento imediato','var(--red)','') +
+  kpiHTML(fBRL(totJudImediato),'Valor bruto','var(--red)','') +
+  kpiHTML(fBRL(totJudImediatoAtu),'Valor atualizado','var(--amber)','') +
+  kpiHTML(fBRL(totJudImediatoAtu-totJudImediato),'Acréscimo multa+juros','var(--gd)','');
+document.getElementById('list-jud-imediato').innerHTML=judImediato.map((d,i)=>devCardHTML(d,i+1)).join('');
+
+// Bloco 2: Análise prescricional
+const listPrescricao=DEVEDORES.filter(d=>d.era==='pre2021').sort((a,b)=>b.valor-a.valor);
+document.getElementById('list-prescrição').innerHTML=listPrescricao.map((d,i)=>devCardHTML(d,i+1)).join('');
+
+// Bloco 3: Cobrança admin
+const listAdmin=DEVEDORES.filter(d=>d.valor<1000&&(d.status.includes('Inadimplente')||d.status.includes('Erro')||d.status.includes('Contactar'))).sort((a,b)=>b.valor-a.valor);
+document.getElementById('list-jur-admin').innerHTML=listAdmin.map((d,i)=>devCardHTML(d,i+1)).join('');
+
+// KPI jurídico
+const totPresVal=listPrescricao.reduce((s,d)=>s+d.valor,0);
+const totAdminVal=listAdmin.reduce((s,d)=>s+d.valor,0);
+document.getElementById('kpi-juridico-strip').innerHTML=
+  kpiHTML(judImediato.length,'Ajuizamento imediato','var(--red)',fBRL(totJudImediato))+
+  kpiHTML(listPrescricao.length,'Análise prescricional','var(--muted)',fBRL(totPresVal))+
+  kpiHTML(listAdmin.length,'Cobrança administrativa','var(--amber)',fBRL(totAdminVal));
+
+// ─── ATUALIZAÇÃO MONETÁRIA — TABELA ───────────────────────────────────────────
+const devOrdAtu=[...DEVEDORES].sort((a,b)=>(b.atualizado||b.valor)-(a.atualizado||a.valor));
+document.getElementById('atualizacao-list').innerHTML=devOrdAtu.map((d,i)=>{
+  const atu=d.atualizado||d.valor;
+  const aumento=((atu-d.valor)/d.valor*100).toFixed(1);
+  const prescFlag=prescAlert(d);
+  const corMeses=d.meses>36?'var(--red)':d.meses>12?'var(--amber)':'var(--green)';
+  const corAumento=parseFloat(aumento)>80?'var(--red)':parseFloat(aumento)>30?'var(--amber)':'var(--gd)';
+  return `<tr style="border-bottom:1px solid rgba(255,255,255,.04)${prescFlag?';opacity:.65;background:rgba(107,132,168,.04)':''}">
+    <td style="padding:.7rem .8rem;font-size:.78rem;color:var(--muted)">${i+1}</td>
+    <td style="padding:.7rem .8rem;font-size:.82rem;font-weight:600">${d.nome}${prescFlag?' <span style="font-size:.65rem;color:var(--muted)">⏱️</span>':''}</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.82rem">${fBRL(d.valor)}</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.82rem;color:${corMeses}">${d.meses}m</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.82rem;color:var(--amber)">${fBRL(d.multa||0)}</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.82rem;color:var(--amber)">${fBRL(d.juros||0)}</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.9rem;font-weight:700;color:var(--gd)">${fBRL(atu)}</td>
+    <td style="padding:.7rem .8rem;text-align:right;font-size:.8rem;font-weight:700;color:${corAumento}">+${aumento}%</td>
+  </tr>`;
+}).join('');
+document.getElementById('atualizacao-totais').innerHTML=`
+  <tr style="background:rgba(9,26,46,.8)">
+    <td style="padding:.85rem .8rem;font-weight:700"></td>
+    <td style="padding:.85rem .8rem;font-weight:700">TOTAL</td>
+    <td style="padding:.85rem .8rem;text-align:right;font-weight:700">${fBRL(totalBruto)}</td>
+    <td style="padding:.85rem .8rem;text-align:right">—</td>
+    <td style="padding:.85rem .8rem;text-align:right;color:var(--amber);font-weight:700">${fBRL(totalMulta)}</td>
+    <td style="padding:.85rem .8rem;text-align:right;color:var(--amber);font-weight:700">${fBRL(totalJuros)}</td>
+    <td style="padding:.85rem .8rem;text-align:right;font-weight:700;color:var(--gd);font-size:1rem">${fBRL(totalAtualizado)}</td>
+    <td style="padding:.85rem .8rem;text-align:right;color:var(--amber);font-weight:700">+${difPerc}%</td>
+  </tr>`;
+
+// Ranking maiores ganhos absolutos (top 10)
+const top10Ganho=[...DEVEDORES].sort((a,b)=>((b.atualizado||b.valor)-b.valor)-((a.atualizado||a.valor)-a.valor)).slice(0,10);
+const maxGanho=top10Ganho[0].atualizado-top10Ganho[0].valor;
+document.getElementById('ranking-atu-bars').innerHTML=top10Ganho.map((d,i)=>{
+  const ganho=(d.atualizado||d.valor)-d.valor;
+  const pct=((d.atualizado||d.valor)/d.valor*100-100).toFixed(1);
+  return `<div class="rank-bar-wrap">
+    <div class="rank-bar-label">
+      <span class="rank-bar-name">${i+1}. ${d.nome}</span>
+      <span class="rank-bar-val" style="color:var(--amber)">+${fBRL(ganho)} (+${pct}%)</span>
+    </div>
+    <div class="rank-bar-track">
+      <div class="rank-bar-fill" style="width:${(ganho/maxGanho*100).toFixed(1)}%;background:${pct>80?'var(--red)':pct>30?'var(--amber)':'var(--gd)'}"></div>
+    </div>
+  </div>`;
+}).join('');
+
+// ─── TOGGLE HELPERS ───────────────────────────────────────────────────────────
+function toggleYear(id){document.getElementById(id)?.classList.toggle('open');}
+function toggleUnid(id){document.getElementById(id)?.classList.toggle('open');}
+function toggleStatus(id){document.getElementById(id)?.classList.toggle('open');}
+
+// ─── CHARTS — TODOS DINÂMICOS ─────────────────────────────────────────────────
+// 1. Por ano
+const todosAnos=[...new Set(DEVEDORES.map(d=>d.ano))].sort();
+const devsPorAno=todosAnos.map(a=>DEVEDORES.filter(d=>d.ano===a).length);
+const valPorAno=todosAnos.map(a=>DEVEDORES.filter(d=>d.ano===a).reduce((s,d)=>s+d.valor,0));
+new Chart(document.getElementById('c-por-ano').getContext('2d'),{
+  type:'bar',
+  data:{labels:todosAnos.map(String),datasets:[{
+    label:'Devedores',data:devsPorAno,
+    backgroundColor:todosAnos.map(a=>a>=2025?'rgba(255,112,112,.75)':a>=2023?'rgba(255,184,74,.7)':'rgba(245,166,35,.45)'),
+    borderRadius:4,borderWidth:1.5
+  }]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' devedores · '+fK(valPorAno[c.dataIndex])}},datalabels:{display:false}},
+    scales:{y:{grid:{color:'rgba(255,255,255,.05)'},grace:'18%'},x:{grid:{display:false}}}}
+});
+
+// 2. Por unidade (donut)
+const unidVals=unidades.map(u=>DEVEDORES.filter(d=>d.unidade===u).reduce((s,d)=>s+d.valor,0));
+const totalUnid=unidVals.reduce((a,b)=>a+b,0);
+new Chart(document.getElementById('c-por-unid').getContext('2d'),{
+  type:'doughnut',
+  data:{
+    labels:unidades,
+    datasets:[{data:unidVals,backgroundColor:['rgba(245,166,35,.75)','rgba(95,207,138,.7)','rgba(14,168,154,.75)'],borderColor:'rgba(6,16,30,.8)',borderWidth:3,hoverOffset:8}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+fK(c.raw)+' ('+Math.round(c.raw/totalUnid*100)+'%)'}}}}
+});
+mkLeg('leg-unid',unidades.map((u,i)=>{
+  const c=['rgba(245,166,35,.75)','rgba(95,207,138,.7)','rgba(14,168,154,.75)'][i];
+  return [c,u+' '+Math.round(unidVals[i]/totalUnid*100)+'%'];
+}));
+
+// 3. Faixa (donut)
+const faixaVals=['acima2k','entre1k2k','abaixo1k'].map(f=>DEVEDORES.filter(d=>d.faixa===f).reduce((s,d)=>s+d.valor,0));
+const faixaLabels=[`Acima R$2K (${acima2k.length})`,`R$1K–R$2K (${entre1k2k.length})`,`Abaixo R$1K (${abaixo1k.length})`];
+new Chart(document.getElementById('c-faixa').getContext('2d'),{
+  type:'doughnut',
+  data:{labels:faixaLabels,datasets:[{data:faixaVals,backgroundColor:['rgba(255,112,112,.75)','rgba(255,184,74,.65)','rgba(107,132,168,.45)'],borderColor:'rgba(6,16,30,.8)',borderWidth:3,hoverOffset:8}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+fK(c.raw)}}}}
+});
+mkLeg('leg-faixa',[['rgba(255,112,112,.75)','Acima R$2K · '+fK(faixaVals[0])],['rgba(255,184,74,.65)','R$1K–R$2K · '+fK(faixaVals[1])],['rgba(107,132,168,.45)','Abaixo R$1K · '+fK(faixaVals[2])]]);
+
+// 4. Status (donut)
+const stKeys=['Inadimplente','Potencial','Pendência','Caduca','Quitar','Perda','Erro'];
+const stColors=['rgba(255,112,112,.75)','rgba(14,168,154,.7)','rgba(255,184,74,.65)','rgba(107,132,168,.5)','rgba(245,166,35,.5)','rgba(255,255,255,.2)','rgba(74,144,217,.5)'];
+const stVals=stKeys.map(k=>DEVEDORES.filter(d=>d.status.includes(k.split(' ')[0])).reduce((s,d)=>s+d.valor,0));
+new Chart(document.getElementById('c-status').getContext('2d'),{
+  type:'doughnut',
+  data:{labels:stKeys,datasets:[{data:stVals,backgroundColor:stColors,borderColor:'rgba(6,16,30,.8)',borderWidth:3,hoverOffset:8}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+fK(c.raw)}}}}
+});
+mkLeg('leg-status',stKeys.slice(0,4).map((k,i)=>[stColors[i],k]));
+
+// 5. Ranking top 10 bars
+const top10=DEVEDORES.slice(0,10);
+const maxVal10=top10[0].valor;
+document.getElementById('ranking-bars').innerHTML=top10.map((d,i)=>`
+  <div class="rank-bar-wrap">
+    <div class="rank-bar-label">
+      <span class="rank-bar-name">${i+1}. ${d.nome}</span>
+      <span class="rank-bar-val">${fBRL(d.valor)}</span>
+    </div>
+    <div class="rank-bar-track">
+      <div class="rank-bar-fill" style="width:${(d.valor/maxVal10*100).toFixed(1)}%;background:${d.faixa==='acima2k'?'var(--red)':d.faixa==='entre1k2k'?'var(--amber)':'var(--muted)'}"></div>
+    </div>
+  </div>`).join('');
+
+// 6. Advogado — bar
+const advLabels=advRanked.map(([a])=>a.length>22?a.substring(0,20)+'…':a);
+const advVals2=advRanked.map(([,d])=>d.valor);
+const advAtu=advRanked.map(([,d])=>d.atualizado);
+new Chart(document.getElementById('c-adv-bar').getContext('2d'),{
+  type:'bar',
+  data:{labels:advLabels,datasets:[{label:'Principal',data:advVals2,backgroundColor:'rgba(245,166,35,.65)',borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fBRL(c.raw)}},datalabels:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'15%'},y:{grid:{display:false}}}}
+});
+new Chart(document.getElementById('c-adv-comp').getContext('2d'),{
+  type:'bar',
+  data:{labels:advLabels,datasets:[
+    {label:'Principal',data:advVals2,backgroundColor:'rgba(245,166,35,.55)',borderRadius:3,datalabels:{display:false}},
+    {label:'Atualizado',data:advAtu,backgroundColor:'rgba(255,112,112,.55)',borderRadius:3,datalabels:{display:false}}
+  ]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fBRL(c.raw)}},datalabels:{display:false}},
+    scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)}},y:{grid:{display:false}}}}
+});
+mkLeg('leg-adv-comp',[['rgba(245,166,35,.55)','Principal'],['rgba(255,112,112,.55)','Atualizado']]);
+
+// 7. Top 15 principal vs atualizado
+const top15=[...DEVEDORES].slice(0,15);
+new Chart(document.getElementById('c-atu-bar').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:top15.map(d=>d.nome.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Principal',data:top15.map(d=>d.valor),backgroundColor:'rgba(245,166,35,.55)',borderRadius:3,datalabels:{display:false}},
+      {label:'Atualizado',data:top15.map(d=>d.atualizado||d.valor),backgroundColor:'rgba(255,112,112,.55)',borderRadius:3,datalabels:{display:false}}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fBRL(c.raw)}},datalabels:{display:false}},
+    scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{callback:v=>fK(v)},grace:'15%'},x:{grid:{display:false},ticks:{font:{size:9}}}}}
+});
+mkLeg('leg-atu-bar',[['rgba(245,166,35,.55)','Principal'],['rgba(255,112,112,.55)','Atualizado']]);
+
+// 8. Por tempo de atraso (donut) — calculado dinamicamente
+const faixasTempo=[
+  {label:'0–6 meses',min:0,max:6,cor:'rgba(95,207,138,.75)'},
+  {label:'7–12 meses',min:7,max:12,cor:'rgba(245,166,35,.7)'},
+  {label:'13–24 meses',min:13,max:24,cor:'rgba(255,184,74,.65)'},
+  {label:'25–36 meses',min:25,max:36,cor:'rgba(255,112,112,.7)'},
+  {label:'37+ meses',min:37,max:9999,cor:'rgba(200,50,50,.75)'}
+];
+const tempoVals=faixasTempo.map(f=>DEVEDORES.filter(d=>d.meses>=f.min&&d.meses<=f.max).reduce((s,d)=>s+d.valor,0));
+const tempoCounts=faixasTempo.map(f=>DEVEDORES.filter(d=>d.meses>=f.min&&d.meses<=f.max).length);
+new Chart(document.getElementById('c-atu-tempo').getContext('2d'),{
+  type:'doughnut',
+  data:{
+    labels:faixasTempo.map((f,i)=>`${f.label} (${tempoCounts[i]})`),
+    datasets:[{data:tempoVals,backgroundColor:faixasTempo.map(f=>f.cor),borderColor:'rgba(6,16,30,.8)',borderWidth:3,hoverOffset:8}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'52%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+fK(c.raw)}}}}
+});
+mkLeg('leg-atu-tempo',faixasTempo.map((f,i)=>[f.cor,f.label+' ('+tempoCounts[i]+')']));
+
+// ─── REVEAL ANIMATION ─────────────────────────────────────────────────────────
+const rObs=new IntersectionObserver(e=>e.forEach(e2=>{if(e2.isIntersecting)e2.target.classList.add('in')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>rObs.observe(el));
+</script>
+</body>
+</html>
